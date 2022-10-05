@@ -45,7 +45,6 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
     }
 
 /*
-// Below are added just to test purpose.
     fun findProduct(name: String) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults1.value = asyncFind(name).await()
@@ -68,7 +67,6 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
              Log.e("ProductRepository","findProductsHavingAccountNumberUsingAsync returned after await()")
          }
      }
-
  */
 
 
