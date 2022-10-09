@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.amitnadiger.myinvestment.room.Product
 import com.amitnadiger.myinvestment.room.ProductStoreDao
+import com.amitnadiger.myinvestment.room.ProductUpdate
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -31,6 +32,18 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
         coroutineScope.launch(Dispatchers.IO) {
             try {
                 productStoreDao.insertProduct(newProduct)
+            } catch (e: android.database.sqlite.SQLiteConstraintException) {
+                Log.e(TAG, "Exception is caught " + e.message)
+                Log.e(TAG, "Exception Type is  " + e.toString())
+            }
+        }
+    }
+
+    fun updateProduct(newProduct: ProductUpdate) {
+        Log.e(TAG,"updateFinProduct API finished ${newProduct.investorName}")
+        coroutineScope.launch(Dispatchers.IO) {
+            try {
+                productStoreDao.update(newProduct)
             } catch (e: android.database.sqlite.SQLiteConstraintException) {
                 Log.e(TAG, "Exception is caught " + e.message)
                 Log.e(TAG, "Exception Type is  " + e.toString())

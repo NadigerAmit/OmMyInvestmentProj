@@ -42,6 +42,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyInvestmentTheme {
+
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -49,10 +50,13 @@ class MainActivity : ComponentActivity() {
                 ) {
                     setupMainScreen()
                 }
+
             }
         }
     }
 }
+
+
 
 @Composable
 fun setupMainScreen() {
@@ -70,7 +74,7 @@ fun setupMainScreen() {
         val navController = rememberNavController()
         //ScreenNavigation(navController,viewModel,padding)
         // pass map of configuration of scaffold items
-        var showFabButton by rememberSaveable { mutableStateOf(false) }
+       // var showFabButton by rememberSaveable { mutableStateOf(false) }
         var screenConfig by remember { mutableStateOf(
             ScreenConfig(true,
             true,
@@ -82,18 +86,32 @@ fun setupMainScreen() {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
         screenConfig = when (navBackStackEntry?.destination?.route) {
-            "home" -> getScreenConfig4Home()
-            "addProduct" -> getScreenConfig4AddProduct()
-            "searchProduct" -> getScreenConfig4SearchScreen()
+            "home" -> {
+                Log.e("MainActivity"," Home ->screen config")
+                getScreenConfig4Home()
+            }
+            "addProduct/{id}" -> {
+                Log.e("MainActivity"," addProduct ->screen config")
+                getScreenConfig4AddProduct()
+            }
+            "searchProduct" -> {
+                Log.e("MainActivity"," searchProduct ->screen config")
+                getScreenConfig4SearchScreen()
+            }
+            "productDetail/{id}" -> {
+                Log.e("MainActivity"," productDetail ->screen config")
+                getScreenConfig4ProductDetail()
+            }
             //"searchProduct" -> getScreenConfig4Sea() todo
             else -> {
-                Log.e("MainActivity","${navBackStackEntry?.destination?.route}")
-                getScreenConfig4ProductDetail()
+                Log.e("MainActivity"," Else  ->screen config")
+                Log.e("MainActivity"," screen config${navBackStackEntry?.destination?.route}")
+                getScreenConfig4Home()
             }
 
         }
         ScaffoldImpl(navController = navController,
-            viewModel,showFabButton,screenConfig)
+            viewModel,screenConfig)
     }
 }
 

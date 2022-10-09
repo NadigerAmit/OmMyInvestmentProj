@@ -29,51 +29,71 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.room.Product
+import com.amitnadiger.myinvestment.room.ProductUpdate
 import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.utility.DateUtility
 import com.amitnadiger.myinvestment.utility.DateUtility.Companion.getNumberOfDaysBetweenTwoDays
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import java.util.*
 
+var isRecordInUpdateMode =  mutableStateOf(false)
 
 @Composable
-fun AddProduct(navController: NavHostController,viewModel: FinProductViewModel,padding: PaddingValues) {
+fun AddProduct(navController: NavHostController,viewModel: FinProductViewModel,padding: PaddingValues,
+    accountNumber:String = "") {
     Log.e("AddProductScreen","Adding the product ");
     /*
     BackHandler(enabled = true) {
         navController.navigate(NavRoutes.Home.route )
     }
      */
-    screenSetUpInAddProductScreen(viewModel,padding)
+    screenSetUpInAddProductScreen(viewModel,padding,accountNumber)
 }
 
 fun getScreenConfig4AddProduct():ScreenConfig {
+    Log.e("AddProduct","getScreenConfig4AddProduct");
+    if(!isRecordInUpdateMode.value) {
+        return ScreenConfig(true,
+            true,
+            true,
+            false,
+            "Add Investment","",
+            "",
+        )
+    }
     return ScreenConfig(true,
         true,
         true,
         false,
-        "Add Investment","",
-        "",
-    )
+        "Update Investment","",
+        "",)
 }
 
 
 @Composable
-fun screenSetUpInAddProductScreen(viewModel: FinProductViewModel,padding:PaddingValues)  {
+fun screenSetUpInAddProductScreen(viewModel: FinProductViewModel,
+                                  padding:PaddingValues,
+                                  accountNumber:String)  {
 
+
+    var product:Product? = null
+    if(accountNumber!= null) {
+        product = viewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
+    }
     val dateFormat = "yyyy-MM-dd"
 
-    var accountNumber by remember { mutableStateOf("") }
-    var finInstitutionName by remember { mutableStateOf("") }
-    var investorName by remember { mutableStateOf("") }
-    var investmentAmount by remember { mutableStateOf("") }
-    var investmentDate by remember { mutableStateOf(Calendar.getInstance()) }
-    var maturityDate by remember { mutableStateOf(Calendar.getInstance()) }
-    var maturityAmount by remember { mutableStateOf("") }
-    var interestRate by remember { mutableStateOf("") }
-    var productType by remember { mutableStateOf("") }
-    var nomineeName by remember { mutableStateOf("") }
+    var accountNumber by remember { mutableStateOf(product?.accountNumber?:"") }
+    var finInstitutionName by remember { mutableStateOf(product?.financialInstitutionName?:"") }
+    var investorName by remember { mutableStateOf(product?.investorName?:"") }
+    var investmentAmount by remember { mutableStateOf(product?.investmentAmount?.toString()?:"") }
+    var investmentDate by remember { mutableStateOf(product?.investmentDate?:Calendar.getInstance()) }
+    var maturityDate by remember { mutableStateOf(product?.maturityDate?:Calendar.getInstance()) }
+    var maturityAmount by remember { mutableStateOf(product?.maturityAmount?.toString()?:"") }
+    var interestRate by remember { mutableStateOf(product?.interestRate?.toString()?:"") }
+    var productType by remember { mutableStateOf(product?.productType?:"") }
+    var nomineeName by remember { mutableStateOf(product?.nomineeName?:"") }
     var searching by remember { mutableStateOf(false) }
+
 
     val onAccountNumTextChange = { text : String ->
         accountNumber = text
@@ -114,6 +134,23 @@ fun screenSetUpInAddProductScreen(viewModel: FinProductViewModel,padding:Padding
 
     val onNomineeNameTextChange = { text : String ->
         nomineeName = text
+    }
+
+    if(product !=null) {
+        LaunchedEffect(Unit) {
+            isRecordInUpdateMode.value = true
+            finInstitutionName = product.financialInstitutionName
+            investmentAmount = product.investmentAmount.toString()
+            investorName = product.investorName
+            investmentDate = product.investmentDate
+            maturityDate = product.maturityDate
+            maturityAmount = product.maturityAmount.toString()
+            interestRate = product.interestRate.toString()
+            productType = product.productType
+            nomineeName = product.nomineeName
+        }
+    } else {
+        isRecordInUpdateMode.value = false
     }
 
     val productDetailItemList = listOf(
@@ -165,22 +202,42 @@ fun screenSetUpInAddProductScreen(viewModel: FinProductViewModel,padding:Padding
                             return true
                         }
                         if(validateInputs()) {
-                            viewModel.insertFinProduct(
-                                Product(
-                                    accountNumber,
-                                    finInstitutionName,
-                                    productType,
-                                    investorName,
-                                    investmentAmount.toInt(),
-                                    investmentDate,
-                                    maturityDate,
-                                    maturityAmount.toDouble(),
-                                    interestRate.toFloat(),
-                                    getNumberOfDaysBetweenTwoDays(maturityDate,investmentDate).toInt(),
-                                    nomineeName
+                            if(!isRecordInUpdateMode.value ) {
+                                Log.e("AddProduct","Inserting the new product  ")
+                                viewModel.insertFinProduct(
+                                    Product(
+                                        accountNumber,
+                                        finInstitutionName,
+                                        productType,
+                                        investorName,
+                                        investmentAmount.toInt(),
+                                        investmentDate,
+                                        maturityDate,
+                                        maturityAmount.toDouble(),
+                                        interestRate.toFloat(),
+                                        getNumberOfDaysBetweenTwoDays(maturityDate,investmentDate).toInt(),
+                                        nomineeName
+                                    )
                                 )
-                            )
-
+                            } else {
+                                Log.e("AddProduct","Updating the existing product  ")
+                                viewModel.updateFinProduct(
+                                    ProductUpdate(
+                                        accountNumber,
+                                        finInstitutionName,
+                                        productType,
+                                        investorName,
+                                        investmentAmount.toInt(),
+                                        investmentDate,
+                                        maturityDate,
+                                        maturityAmount.toDouble(),
+                                        interestRate.toFloat(),
+                                        getNumberOfDaysBetweenTwoDays(maturityDate,investmentDate).toInt(),
+                                        nomineeName
+                                    )
+                                )
+                            }
+                            isRecordInUpdateMode.value = false
                             Toast.makeText(context, "Saving to DB", Toast.LENGTH_LONG)
                                 .show()
                         }
@@ -204,8 +261,11 @@ fun screenSetUpInAddProductScreen(viewModel: FinProductViewModel,padding:Padding
                 "MaturityAmount",
                 "InterestRate" -> {
                     CustomTextField(
+                        modifier = Modifier.clickable {
+
+                        },
+                        text = items.second.first,
                         placeholder = items.first,
-                        text = items.second.first.toString(),
                         onChange = items.second.second,
                         keyboardType = KeyboardType.Number,
                         imeAction = ImeAction.Next
@@ -214,7 +274,7 @@ fun screenSetUpInAddProductScreen(viewModel: FinProductViewModel,padding:Padding
                 else -> {
                     CustomTextField(
                         placeholder = items.first,
-                        text = items.second.first.toString(),
+                        text = items.second.first,
                         onChange = items.second.second,
                         keyboardType = KeyboardType.Text,
                         imeAction = ImeAction.Next

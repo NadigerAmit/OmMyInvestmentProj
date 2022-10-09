@@ -1,9 +1,7 @@
 package com.amitnadiger.myinvestment.room
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import java.util.*
 
 /*
@@ -183,6 +181,9 @@ interface ProductStoreDao {
     @Query("SELECT * FROM productTable WHERE depositPeriod <= :depositPeriodInInt")
     fun findProductsHavingDepositPeriodLessThanOrEqualTo(depositPeriodInInt: Int): List<Product>
 
+
+    @Update(entity = Product::class)
+    fun update(obj: ProductUpdate)
 
     // Need to define the query methods based on the other fields such as Maturity date ;
 }

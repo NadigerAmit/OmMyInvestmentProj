@@ -17,13 +17,17 @@ import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun ScaffoldImpl(navController: NavHostController,viewModel: FinProductViewModel,showFabButton:Boolean,screenConfig: ScreenConfig) {
+fun ScaffoldImpl(navController: NavHostController,viewModel: FinProductViewModel,screenConfig: ScreenConfig) {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     // Create a coroutine scope. Opening of Drawer snackbar should happen in background
     // thread without blocking main thread
 
-    Log.e("Scafold"," Entry showFabButton = $showFabButton")
+   // Log.e("Scafold"," Entry showFabButton = $showFabButton")
     val coroutineScope = rememberCoroutineScope()
+
+    Log.e("ScaffoldImpl","topAppBarTitle - ${screenConfig.topAppBarTitle}")
+
+
 
     // Scaffold Composable
     Scaffold(
