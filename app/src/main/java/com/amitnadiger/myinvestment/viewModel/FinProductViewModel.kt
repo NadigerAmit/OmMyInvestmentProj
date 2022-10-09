@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.amitnadiger.myinvestment.repository.ProductRepository
 import com.amitnadiger.myinvestment.room.Product
 import com.amitnadiger.myinvestment.room.ProductRoomDatabase
+import com.amitnadiger.myinvestment.room.ProductUpdate
 import com.amitnadiger.myinvestment.ui.screens.dateFormat
 import com.amitnadiger.myinvestment.utility.DateUtility
 
@@ -37,6 +38,15 @@ class FinProductViewModel(application: Application): ViewModel() {
 
     fun insertFinProduct(product: Product) {
         repository.insertProduct(product)
+    }
+
+    fun updateFinProduct(productUpdate: ProductUpdate) {
+        Log.e("FinProductViewModel.kt","updateFinProduct API finished ${productUpdate.investorName}")
+        repository.updateProduct(productUpdate)
+    }
+
+    fun deleteFinProduct(accountNum: String) {
+        repository.deleteProduct(accountNum.toLong())
     }
 
     fun findProductBasedOnAccountNumberFromLocalCache(accountNum: String):Product? {

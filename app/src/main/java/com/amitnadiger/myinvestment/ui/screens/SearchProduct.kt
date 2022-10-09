@@ -283,6 +283,7 @@ fun getOperationList(searchFieldList:String):List<String> {
     return operationFieldList
 }
 fun getScreenConfig4SearchScreen():ScreenConfig {
+    Log.e("SearchScreen","getScreenConfig4SearchScreen");
     return ScreenConfig(true,
         true,
         false,

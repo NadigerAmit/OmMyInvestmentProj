@@ -28,8 +28,9 @@ fun ScreenNavigation(navController: NavHostController, viewModel: FinProductView
             Home(navController = navController, viewModel,padding)
         }
 
-        composable(NavRoutes.AddProduct.route) {
-            AddProduct(navController = navController, viewModel,padding)
+        composable(NavRoutes.AddProduct.route+ "/{id}" ) { navBackStack ->
+            val accountId = navBackStack.arguments?.getString("id")
+            AddProduct(navController = navController, viewModel,padding, accountNumber = accountId!!)
         }
 
         composable(NavRoutes.ProductDetail.route + "/{id}") { navBackStack ->

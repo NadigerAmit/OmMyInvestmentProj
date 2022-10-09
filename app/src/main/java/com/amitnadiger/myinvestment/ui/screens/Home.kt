@@ -39,6 +39,7 @@ fun Home(navController: NavHostController,viewModel: FinProductViewModel,padding
 }
 
 fun getScreenConfig4Home():ScreenConfig {
+    Log.e("HomeScvreen","getScreenConfig4Home");
     return ScreenConfig(true,
         true,
         true,

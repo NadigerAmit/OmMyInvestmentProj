@@ -26,7 +26,8 @@ fun Fab(navController: NavHostController, screenConfig:ScreenConfig, coroutineSc
                 // When clicked open Snackbar
                 coroutineScope.launch {
                     if(screenConfig.fabString == "add") {
-                        navController.navigate(NavRoutes.AddProduct.route)
+                        var accountNumber:String? = null
+                        navController.navigate(NavRoutes.AddProduct.route + "/$accountNumber")
                     }
                     if(screenConfig.fabString == "search") {
                         search(viewModel)
