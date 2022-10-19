@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt' //Kapt is the "Kotlin Annotation Processing Tool" you need this, to generate annotated code in compile time
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -72,6 +73,8 @@ dependencies {
 
     // Below 1 dep is for navigation control
     implementation "androidx.navigation:navigation-compose:2.4.2"
+
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

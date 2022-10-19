@@ -22,6 +22,7 @@ import com.amitnadiger.myinvestment.utility.ProductRow
 import com.amitnadiger.myinvestment.utility.TitleRow
 import com.amitnadiger.myinvestment.utility.truncateString
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
+import java.text.NumberFormat
 import java.util.*
 
 
@@ -110,7 +111,7 @@ fun MainScreen(
                     )
                             + "\n" + truncateString(product.productType),
                     SecondColumn = truncateString(product.investmentAmount.toString()) + "\n" + truncateString(
-                        product.maturityAmount.toString()
+                        NumberFormat.getInstance().format(product.maturityAmount)
                     ) + "\n" +
                             truncateString(product.interestRate.toString()),
                     ThirdColumn = truncateString(

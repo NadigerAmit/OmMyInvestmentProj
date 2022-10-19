@@ -217,7 +217,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
     }
 
     // Maturity Amount
-    fun findProductsHavingMaturityAmount(maturityAmountAmountInInt: Int) {
+    fun findProductsHavingMaturityAmount(maturityAmountAmountInInt: Double) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = coroutineScope.async(Dispatchers.IO) {
                 return@async productStoreDao.findProductsHavingMaturityAmount(maturityAmountAmountInInt)
@@ -225,7 +225,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
         }
     }
 
-    fun findProductsHavingMaturityAmountNotEqualTo(maturityAmountInInt: Int) {
+    fun findProductsHavingMaturityAmountNotEqualTo(maturityAmountInInt: Double) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = coroutineScope.async(Dispatchers.IO) {
                 return@async productStoreDao.findProductsHavingMaturityAmountNotEqualTo(maturityAmountInInt)
@@ -233,7 +233,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
         }
     }
 
-    fun findProductsHavingMaturityAmountGraterThan(maturityAmountInInt: Int) {
+    fun findProductsHavingMaturityAmountGraterThan(maturityAmountInInt: Double) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = coroutineScope.async(Dispatchers.IO) {
                 return@async productStoreDao.findProductsHavingMaturityAmountGraterThan(maturityAmountInInt)
@@ -241,7 +241,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
         }
     }
 
-    fun findProductsHavingMaturityAmountGraterThanOrEqualTo(maturityAmountInInt: Int) {
+    fun findProductsHavingMaturityAmountGraterThanOrEqualTo(maturityAmountInInt: Double) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = coroutineScope.async(Dispatchers.IO) {
                 return@async productStoreDao.findProductsHavingMaturityAmountGraterThanOrEqualTo(maturityAmountInInt)
@@ -249,7 +249,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
         }
     }
 
-    fun findProductsHavingMaturityAmountLessThanOrEqualTo(maturityAmountInInt: Int) {
+    fun findProductsHavingMaturityAmountLessThanOrEqualTo(maturityAmountInInt: Double) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = coroutineScope.async(Dispatchers.IO) {
                 return@async productStoreDao.findProductsHavingMaturityAmountLessThanOrEqualTo(maturityAmountInInt)
@@ -257,7 +257,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
         }
     }
 
-    fun findProductsHavingMaturityAmountLessThan(maturityAmountInInt: Int) {
+    fun findProductsHavingMaturityAmountLessThan(maturityAmountInInt: Double) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = coroutineScope.async(Dispatchers.IO) {
                 return@async productStoreDao.findProductsHavingMaturityAmountLessThan(maturityAmountInInt)

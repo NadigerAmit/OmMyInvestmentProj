@@ -148,7 +148,7 @@ class FinProductViewModel(application: Application): ViewModel() {
 
     fun findProductsHavingMaturityAmount(maturityAmount: String,
                                            operation:String) {
-        val maturityAmountInInt = maturityAmount.toInt()
+        val maturityAmountInInt = maturityAmount.replace(",", "").toDouble()
         Log.e("FinProductViewModel.kt","investmentAmountInString = $maturityAmount")
         Log.e("FinProductViewModel.kt","investmentAmountInInt = $maturityAmountInInt")
         when(operation) {
