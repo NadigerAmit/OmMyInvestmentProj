@@ -28,8 +28,15 @@ import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.room.Product
 import com.amitnadiger.myinvestment.utility.*
+import com.amitnadiger.myinvestment.utility.DataStoreManager.Companion.dataStoreManager
 import com.amitnadiger.myinvestment.utility.DateUtility.Companion.getDateInCalendar
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import java.lang.Exception
+import java.text.NumberFormat
 import java.util.*
 
 
@@ -38,15 +45,67 @@ var operationFieldValue = mutableStateOf("")
 var valueFieldValue = mutableStateOf("")
 
 
+data class SearchQuery(val searchByFieldValue: String,
+                       val operationFieldValue: String,
+                       val valueFieldValue: String)
+
+fun saveToDataStore(query: SearchQuery,dataStorageManager:DataStoreManager) {
+    val coroutineScope = CoroutineScope(Dispatchers.Main)
+    coroutineScope.launch(Dispatchers.IO) {
+        dataStorageManager.saveSearchDataToDataStore(query)
+    }
+}
+
+fun getSearchQuery( searchQueryLocal : Flow<SearchQuery>):SearchQuery? {
+    var query :SearchQuery?= null
+    val coroutineScope = CoroutineScope(Dispatchers.Main)
+    coroutineScope.launch {
+        query =coroutineScope.async(Dispatchers.IO) {
+            return@async SearchQuery(searchQueryLocal.first().searchByFieldValue,
+                searchQueryLocal.first().operationFieldValue,
+                searchQueryLocal.first().valueFieldValue)
+        }.await()
+    }
+    return query
+}
 
 @Composable
 fun SearchProduct(navController: NavHostController,viewModel: FinProductViewModel,padding:PaddingValues) {
+
+
     val allProducts by viewModel.allAccounts.observeAsState(listOf())
     val searchResults by viewModel.searchResults.observeAsState(listOf())
     var searching by rememberSaveable { mutableStateOf(false) }
+
     var searchByField by rememberSaveable { mutableStateOf("") }
     var operationField by rememberSaveable { mutableStateOf("") }
     var valueField by rememberSaveable { mutableStateOf("") }
+    var totalInvestmentAmount = 0
+    var totalMaturityAmount = 0.0
+
+    for(i in searchResults) {
+        totalInvestmentAmount +=i.investmentAmount
+        totalMaturityAmount +=i.maturityAmount
+    }
+/*
+    val dataStorageManager = DataStoreManager.getLocalDataStoreManagerInstance()
+    val coroutineScope = CoroutineScope(Dispatchers.Main)
+    val getSearchQuery = getSearchQuery(dataStorageManager.searchQueryLocal)
+    if(getSearchQuery !=null) {
+        Log.e("SearchProduct","getSearchQuery.searchByFieldValue = ${getSearchQuery.searchByFieldValue}")
+        Log.e("SearchProduct","getSearchQuery.operationFieldValue = ${getSearchQuery.operationFieldValue}")
+        Log.e("SearchProduct","getSearchQuery.valueFieldValue = ${getSearchQuery.valueFieldValue}")
+    } else {
+        Log.e("SearchProduct","getSearchQuery is null")
+    }
+ */
+    var finalList:MutableList<Product> = searchResults.toMutableList()
+    finalList.add(
+        Product("00000000000",
+    "","","TotalInvestmentAmount",0, Calendar.getInstance(), Calendar.getInstance(),1.1,
+            0.0f,0)
+    )
+    Log.e("SearchProduct","After Size of searchResults  = ${finalList.size}")
 
     // Create a list of cities
     val searchFieldList = listOf("accountNumber",
@@ -71,17 +130,23 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
                 .fillMaxWidth()
                 .padding(padding)
         ) {
-            searchByField = DropDownBox(searchFieldList,"Search by",280.dp)
-            operationField = DropDownBox(getOperationList(searchByField),"Operation",130.dp)
-            valueField = DropDownBox(getValuesList(searchByField,allProducts),"Value",280.dp)
-            //Log.e("SearchProduct","Selected searchField Text = $searchByField")
-            Log.e("SearchProduct","Selected operationField Text = $operationField")
-            Log.e("SearchProduct","Selected searchField Text = $valueField")
+            searchByField = DropDownBox(searchFieldList,"Search by",280.dp,searchByFieldValue.value)
+            operationField = DropDownBox(getOperationList(searchByField),"Operation",130.dp,operationFieldValue.value)
+            valueField = DropDownBox(getValuesList(searchByField,allProducts),"Value",280.dp,valueFieldValue.value)
+
             searchByFieldValue.value = searchByField
             operationFieldValue.value = operationField
             valueFieldValue.value = valueField
+            /*
+            saveToDataStore(SearchQuery(searchByField,
+                    operationField,
+                    valueField),
+                dataStorageManager)
 
-            if(searchResults.isNotEmpty()) {
+             */
+
+
+            if(finalList.size>1) {
                 TitleRow(head1 = " Fin Ins\n\n AccNum\n\n Product ",
                     head2 = " Dep.amount\n\n Mat.amount\n\n Int.Rte %",
                     head3 =" Dep.Date\n\n Mat.Date\n\n Investor")
@@ -92,7 +157,7 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
                         .border(width = 1.dp, color = Color.Black)
                 ) {
 
-                    items(searchResults) { product ->
+                    items(finalList) { product ->
                         var maturityPeriodIsLessThan30Days = false
                         var isAlreadyMatured = false
                         var color: Color = Color.Black
@@ -106,35 +171,44 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
                             maturityPeriodIsLessThan30Days
                             color = Color.Magenta
                         }
+                        Log.e("SearchProduct","Product investorName  = ${product.investorName}")
 
-
-                        ProductRow(
-                            product.accountNumber,
-                            FirstColumn = truncateString(product.financialInstitutionName) + "\n" + truncateString(
-                                product.accountNumber.toString()
-                            )
-                                    + "\n" + truncateString(product.productType),
-                            SecondColumn = truncateString(product.investmentAmount.toString()) + "\n" + truncateString(
-                                product.maturityAmount.toString()
-                            ) + "\n" +
-                                    truncateString(product.interestRate.toString()),
-                            ThirdColumn = truncateString(
-                                DateUtility.getPickedDateAsString(
-                                    product.investmentDate.get(Calendar.YEAR),
-                                    product.investmentDate.get(Calendar.MONTH),
-                                    product.investmentDate.get(Calendar.DAY_OF_MONTH), dateFormat
+                        if(product.accountNumber == "00000000000"
+                            && totalInvestmentAmount != 0 ) {
+                           // Log.e("SearchProduct"," !!!!  Printing the Summary here !!!!")
+                            SummaryRow("\n  TotalInvestmentAmount\n\n"+
+                                    "  TotalMaturityAmount\n","\n"+"  "+totalInvestmentAmount.toString()
+                                    + "\n\n"+"  "+
+                                    NumberFormat.getInstance().format(totalMaturityAmount)+ "\n")
+                        } else {
+                            ProductRow(
+                                product.accountNumber,
+                                FirstColumn = truncateString(product.financialInstitutionName) + "\n" + truncateString(
+                                    product.accountNumber.toString()
                                 )
-                            ) + "\n" +
-                                    truncateString(
-                                        DateUtility.getPickedDateAsString(
-                                            product.maturityDate.get(Calendar.YEAR),
-                                            product.maturityDate.get(Calendar.MONTH),
-                                            product.maturityDate.get(Calendar.DAY_OF_MONTH), dateFormat
-                                        )
-                                    ) + "\n" +
-                                    truncateString(product.investorName),
-                            navController, color
-                        )
+                                        + "\n" + truncateString(product.productType),
+                                SecondColumn = truncateString(product.investmentAmount.toString()) + "\n" + truncateString(
+                                    NumberFormat.getInstance().format(product.maturityAmount)
+                                ) + "\n" +
+                                        truncateString(product.interestRate.toString()),
+                                ThirdColumn = truncateString(
+                                    DateUtility.getPickedDateAsString(
+                                        product.investmentDate.get(Calendar.YEAR),
+                                        product.investmentDate.get(Calendar.MONTH),
+                                        product.investmentDate.get(Calendar.DAY_OF_MONTH), dateFormat
+                                    )
+                                ) + "\n" +
+                                        truncateString(
+                                            DateUtility.getPickedDateAsString(
+                                                product.maturityDate.get(Calendar.YEAR),
+                                                product.maturityDate.get(Calendar.MONTH),
+                                                product.maturityDate.get(Calendar.DAY_OF_MONTH), dateFormat
+                                            )
+                                        ) + "\n" +
+                                        truncateString(product.investorName),
+                                navController, color
+                            )
+                        }
                     }
                 }
             }
@@ -243,7 +317,7 @@ fun getValuesList(fieldName:String,allProducts: List<Product>,):List<String> {
         }
         "maturityAmount"->{
             for(i in allProducts) {
-                listOfValues.add(i.maturityAmount.toString())
+                listOfValues.add(NumberFormat.getInstance().format(i.maturityAmount))
             }
         }
         "interestRate"->{
@@ -291,5 +365,4 @@ fun getScreenConfig4SearchScreen():ScreenConfig {
         "Search Investment","",
         "search",
     )
-
 }

@@ -37,6 +37,7 @@ import com.amitnadiger.myinvestment.utility.DateUtility.Companion.localDateToCal
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
 import java.time.LocalDateTime
 import java.util.*
 
@@ -73,7 +74,8 @@ private fun getListOPropertiesOfProduct(productDetail: Product): List<Pair<Strin
             productDetail.maturityDate.get(Calendar.MONTH),
             productDetail.maturityDate.get(Calendar.DAY_OF_MONTH)
             ,dateFormat)),
-        Pair("Maturity amount", productDetail.maturityAmount.toString()),
+
+        Pair("Maturity amount", NumberFormat.getInstance().format(productDetail.maturityAmount)),
         Pair("Interest rate", productDetail.interestRate.toString()),
 
         Pair("Nominee name", productDetail.nomineeName)

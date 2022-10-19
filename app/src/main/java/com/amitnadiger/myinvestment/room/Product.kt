@@ -59,7 +59,7 @@ class Product {
     constructor(accountNumber: String, financialInstitutionName: String,
                 productType:String,investorName: String,
                 investmentAmount: Int, investmentDate: Calendar, maturityDate: Calendar,
-                maturityAmount: Double =1.1, interestRate: Float =1.1f, depositPeriod: Int=1,
+                maturityAmount: Double =0.0, interestRate: Float =0.0f, depositPeriod: Int=1,
                 nomineeName: String ="") {
         this.accountNumber = accountNumber
 

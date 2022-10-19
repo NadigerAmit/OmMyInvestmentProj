@@ -65,6 +65,26 @@ fun TitleRow(head1: String, head2: String, head3: String) {
 }
 
 @Composable
+fun SummaryRow(summaryField:String,
+               summaryValue: String,
+               textColor: Color = Color.Black) {
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(3.dp)
+
+    ) {
+        Text(summaryField,color = textColor ,modifier = Modifier
+            .weight(0.2f)
+            .border(width = 1.dp, color = Color.Black))
+        Text(summaryValue ,color = textColor, modifier = Modifier
+            .weight(0.2f)
+            .border(width = 1.dp, color = Color.Black))
+    }
+}
+
+@Composable
 fun ProductRow(accountNumber:String,
                FirstColumn: String,
                SecondColumn: String,
@@ -77,7 +97,7 @@ fun ProductRow(accountNumber:String,
             .fillMaxWidth()
             .padding(3.dp)
             .clickable {
-                Log.e("Home", "Jai shree Ram Row is clicked , AccountNumber = $accountNumber ")
+               // Log.e("Home", "Jai shree Ram Row is clicked , AccountNumber = $accountNumber ")
                 navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber")
             }
     ) {
@@ -95,7 +115,7 @@ fun ProductRow(accountNumber:String,
 }
 
 @Composable
-fun DropDownBox(searchFieldList:List<String>,label:String,width: Dp=0.dp):String{
+fun DropDownBox(searchFieldList:List<String>,label:String,width: Dp=0.dp,preSelectedText:String = ""):String{
 
     // Declaring a boolean value to store
     // the expanded state of the Text Field
@@ -104,7 +124,7 @@ fun DropDownBox(searchFieldList:List<String>,label:String,width: Dp=0.dp):String
 
 
     // Create a string value to store the selected city
-    var selectedText by rememberSaveable{ mutableStateOf("") }
+    var selectedText by rememberSaveable{ mutableStateOf(preSelectedText) }
 
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
 

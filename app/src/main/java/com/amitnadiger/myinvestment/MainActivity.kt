@@ -1,5 +1,6 @@
 package com.amitnadiger.myinvestment
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Bundle
 import android.util.Log
@@ -31,15 +32,21 @@ import com.amitnadiger.myinvestment.ui.theme.MyInvestmentTheme
 import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.ui.scaffold.ScaffoldImpl
 import com.amitnadiger.myinvestment.ui.screens.*
+import com.amitnadiger.myinvestment.utility.DataStoreManager
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModelFactory
+
+@SuppressLint("StaticFieldLeak")
 
 
 class MainActivity : ComponentActivity() {
     val TAG = "MainActivity"
 
+    //lateinit var dataStoreManager: DataStoreManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DataStoreManager.initializeDataStoreManager(this@MainActivity)
         setContent {
             MyInvestmentTheme {
 
@@ -50,13 +57,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     setupMainScreen()
                 }
-
             }
         }
     }
 }
-
-
 
 @Composable
 fun setupMainScreen() {

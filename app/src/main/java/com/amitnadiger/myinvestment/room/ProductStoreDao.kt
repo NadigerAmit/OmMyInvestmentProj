@@ -125,23 +125,23 @@ interface ProductStoreDao {
 
 
     // MaturityAmount related queries
-    @Query("SELECT * FROM productTable WHERE maturityAmount = :maturityAmountInInt")
-    fun findProductsHavingMaturityAmount(maturityAmountInInt: Int): List<Product>
+    @Query("SELECT * FROM productTable WHERE maturityAmount = :maturityAmountInDouble")
+    fun findProductsHavingMaturityAmount(maturityAmountInDouble: Double): List<Product>
 
-    @Query("SELECT * FROM productTable WHERE maturityAmount != :maturityAmountInInt")
-    fun findProductsHavingMaturityAmountNotEqualTo(maturityAmountInInt: Int): List<Product>
+    @Query("SELECT * FROM productTable WHERE maturityAmount != :maturityAmountInDouble")
+    fun findProductsHavingMaturityAmountNotEqualTo(maturityAmountInDouble: Double): List<Product>
 
-    @Query("SELECT * FROM productTable WHERE maturityAmount > :maturityAmountInInt")
-    fun findProductsHavingMaturityAmountGraterThan(maturityAmountInInt: Int): List<Product>
+    @Query("SELECT * FROM productTable WHERE maturityAmount > :maturityAmountInDouble")
+    fun findProductsHavingMaturityAmountGraterThan(maturityAmountInDouble: Double): List<Product>
 
-    @Query("SELECT * FROM productTable WHERE maturityAmount >= :maturityAmountInInt")
-    fun findProductsHavingMaturityAmountGraterThanOrEqualTo(maturityAmountInInt: Int): List<Product>
+    @Query("SELECT * FROM productTable WHERE maturityAmount >= :maturityAmountInDouble")
+    fun findProductsHavingMaturityAmountGraterThanOrEqualTo(maturityAmountInDouble: Double): List<Product>
 
-    @Query("SELECT * FROM productTable WHERE maturityAmount < :maturityAmountInInt")
-    fun findProductsHavingMaturityAmountLessThan(maturityAmountInInt: Int): List<Product>
+    @Query("SELECT * FROM productTable WHERE maturityAmount < :maturityAmountInDouble")
+    fun findProductsHavingMaturityAmountLessThan(maturityAmountInDouble: Double): List<Product>
 
-    @Query("SELECT * FROM productTable WHERE maturityAmount <= :maturityAmountInInt")
-    fun findProductsHavingMaturityAmountLessThanOrEqualTo(maturityAmountInInt: Int): List<Product>
+    @Query("SELECT * FROM productTable WHERE maturityAmount <= :maturityAmountInDouble")
+    fun findProductsHavingMaturityAmountLessThanOrEqualTo(maturityAmountInDouble: Double): List<Product>
 
     // MaturityAmount related queries
     @Query("SELECT * FROM productTable WHERE interestRate = :interestRateInInt")
