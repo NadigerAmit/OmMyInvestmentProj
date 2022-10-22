@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.room.Product
 import com.amitnadiger.myinvestment.utility.*
@@ -33,8 +34,10 @@ import com.amitnadiger.myinvestment.utility.DateUtility.Companion.getDateInCalen
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import java.io.IOException
 import java.lang.Exception
 import java.text.NumberFormat
 import java.util.*
@@ -51,21 +54,51 @@ data class SearchQuery(val searchByFieldValue: String,
 
 fun saveToDataStore(query: SearchQuery,dataStorageManager:DataStoreManager) {
     val coroutineScope = CoroutineScope(Dispatchers.Main)
-    coroutineScope.launch(Dispatchers.IO) {
+    coroutineScope.launch {
         dataStorageManager.saveSearchDataToDataStore(query)
     }
 }
 
-fun getSearchQuery( searchQueryLocal : Flow<SearchQuery>):SearchQuery? {
-    var query :SearchQuery?= null
+fun getSearchQueryAsync( searchQueryLocal : Flow<SearchQuery>,dataStorageManager:DataStoreManager):SearchQuery? {
     val coroutineScope = CoroutineScope(Dispatchers.Main)
-    coroutineScope.launch {
-        query =coroutineScope.async(Dispatchers.IO) {
-            return@async SearchQuery(searchQueryLocal.first().searchByFieldValue,
-                searchQueryLocal.first().operationFieldValue,
-                searchQueryLocal.first().valueFieldValue)
-        }.await()
+    //var TestTrple = dataStorageManager.getSearchDataFromDataStore()
+    var query1 :SearchQuery?=null
+    coroutineScope.launch  {
+        dataStorageManager.getSearchDataFromDataStore().catch {
+                exception ->
+            if (exception is IOException) {
+                emit(Triple("","",""))
+            } else {
+                throw exception
+            }
+        }.collect { value ->
+            query1 = SearchQuery(value.first,
+                value.second,
+                value.third)
+        }
     }
+    return query1
+    //return query
+}
+
+
+fun getSearchQuerySync( searchQueryLocal : Flow<SearchQuery>,dataStorageManager:DataStoreManager):SearchQuery {
+  //  var TestTrple = dataStorageManager.getSearchDataFromDataStore()
+    var query :SearchQuery
+    var query1 :SearchQuery
+    runBlocking {
+        /*
+        query1 = SearchQuery(TestTrple.first().first,
+            TestTrple.first().second,
+            TestTrple.first().third)
+
+         */
+
+        query = SearchQuery(searchQueryLocal.first().searchByFieldValue,
+            searchQueryLocal.first().operationFieldValue,
+            searchQueryLocal.first().valueFieldValue)
+    }
+    //return query1
     return query
 }
 
@@ -87,10 +120,9 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
         totalInvestmentAmount +=i.investmentAmount
         totalMaturityAmount +=i.maturityAmount
     }
-/*
+///*
     val dataStorageManager = DataStoreManager.getLocalDataStoreManagerInstance()
-    val coroutineScope = CoroutineScope(Dispatchers.Main)
-    val getSearchQuery = getSearchQuery(dataStorageManager.searchQueryLocal)
+    val getSearchQuery = getSearchQuerySync(dataStorageManager.searchQueryLocal,dataStorageManager)
     if(getSearchQuery !=null) {
         Log.e("SearchProduct","getSearchQuery.searchByFieldValue = ${getSearchQuery.searchByFieldValue}")
         Log.e("SearchProduct","getSearchQuery.operationFieldValue = ${getSearchQuery.operationFieldValue}")
@@ -98,14 +130,13 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
     } else {
         Log.e("SearchProduct","getSearchQuery is null")
     }
- */
+// */
     var finalList:MutableList<Product> = searchResults.toMutableList()
     finalList.add(
         Product("00000000000",
     "","","TotalInvestmentAmount",0, Calendar.getInstance(), Calendar.getInstance(),1.1,
             0.0f,0)
     )
-    Log.e("SearchProduct","After Size of searchResults  = ${finalList.size}")
 
     // Create a list of cities
     val searchFieldList = listOf("accountNumber",
@@ -137,13 +168,13 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
             searchByFieldValue.value = searchByField
             operationFieldValue.value = operationField
             valueFieldValue.value = valueField
-            /*
+            ///*
             saveToDataStore(SearchQuery(searchByField,
                     operationField,
                     valueField),
                 dataStorageManager)
 
-             */
+            // */
 
 
             if(finalList.size>1) {
@@ -171,15 +202,13 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
                             maturityPeriodIsLessThan30Days
                             color = Color.Magenta
                         }
-                        Log.e("SearchProduct","Product investorName  = ${product.investorName}")
 
                         if(product.accountNumber == "00000000000"
                             && totalInvestmentAmount != 0 ) {
-                           // Log.e("SearchProduct"," !!!!  Printing the Summary here !!!!")
-                            SummaryRow("\n  TotalInvestmentAmount\n\n"+
-                                    "  TotalMaturityAmount\n","\n"+"  "+totalInvestmentAmount.toString()
+                            SummaryRow("\n  TotalInvestAmount\n\n"+
+                                    "  TotalMaturityAmount\n\n","\n  "+totalInvestmentAmount.toString()
                                     + "\n\n"+"  "+
-                                    NumberFormat.getInstance().format(totalMaturityAmount)+ "\n")
+                                    NumberFormat.getInstance().format(totalMaturityAmount)+ "\n\n")
                         } else {
                             ProductRow(
                                 product.accountNumber,
@@ -217,7 +246,6 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
 }
 
 fun search(viewModel: FinProductViewModel) {
-    Log.e("search", "InSide function")
     when(searchByFieldValue.value) {
         "accountNumber"->{
             viewModel.findProductsBasedOnAccountNumber(valueFieldValue.value,

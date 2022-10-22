@@ -1,8 +1,8 @@
 package com.amitnadiger.myinvestment.ui.scaffold
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.amitnadiger.myinvestment.ui.screens.ScreenConfig
 
@@ -25,9 +26,12 @@ fun TopBar(screenConfig: ScreenConfig,
     if(screenConfig.enableTopAppBar) {
         TopAppBar(
             // Provide Title
+
             title = {
-                Text(text = screenConfig.topAppBarTitle, color = Color.Black)
-            },
+                Text(text = screenConfig.topAppBarTitle, color = Color.Black,
+                modifier = Modifier.padding(start = 35.dp)
+            )},
+           // backgroundColor = Color(0xFFC0E8D5),
             // Provide the navigation Icon (Icon on the left to toggle drawer)
 
             navigationIcon = {
@@ -58,7 +62,6 @@ fun TopBar(screenConfig: ScreenConfig,
                         tint = Black
                     )
                 }
-
             },
             // background color of topAppBar
             backgroundColor = Color.White
