@@ -90,6 +90,14 @@ fun setupMainScreen() {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
         screenConfig = when (navBackStackEntry?.destination?.route) {
+            "login" -> {
+                Log.e("MainActivity"," Login ->screen config")
+                getScreenConfig4Login()
+            }
+            "signUp" -> {
+                Log.e("MainActivity"," SignUp ->screen config")
+                getScreenConfig4SignUpScrean()
+            }
             "home" -> {
                 Log.e("MainActivity"," Home ->screen config")
                 getScreenConfig4Home()
@@ -117,6 +125,17 @@ fun setupMainScreen() {
         ScaffoldImpl(navController = navController,
             viewModel,screenConfig)
     }
+}
+
+fun getDefaultScreenConfig():ScreenConfig {
+    Log.e("MainScreen","getDefaultScreenConfig");
+    return ScreenConfig(false,
+        false,
+        false,
+        false,
+        "","",
+        "",
+    )
 }
 
 

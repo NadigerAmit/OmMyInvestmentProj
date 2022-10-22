@@ -36,6 +36,7 @@ fun ScaffoldImpl(navController: NavHostController,viewModel: FinProductViewModel
         // pass the topbar we created
         topBar = {
 
+            //CenterAlignedTopBar(
             TopBar(
                 screenConfig,
                 // When menu is clicked open the

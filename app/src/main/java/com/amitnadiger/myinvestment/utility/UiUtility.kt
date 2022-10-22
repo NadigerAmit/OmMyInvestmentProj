@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -17,8 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.ui.NavRoutes
@@ -206,6 +213,47 @@ fun DropDownBox(searchFieldList:List<String>,label:String,width: Dp=0.dp,preSele
         }
     }
     return selectedText
+}
+
+@Composable
+fun CustomTextField(
+    modifier: Modifier = Modifier,
+    text: String,
+    placeholder: String,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    onChange: (String) -> Unit = {},
+    imeAction: ImeAction = ImeAction.Next,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    keyBoardActions: KeyboardActions = KeyboardActions(),
+    isEnabled: Boolean = true,
+    visualTransformationParam: VisualTransformation = VisualTransformation.None
+) {
+    OutlinedTextField(
+        modifier = modifier,
+        value = text,
+        label = { Text(placeholder) },
+        onValueChange = onChange,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        textStyle = TextStyle(fontSize = 18.sp),
+        keyboardOptions = KeyboardOptions(imeAction = imeAction, keyboardType = keyboardType),
+        keyboardActions = keyBoardActions,
+        enabled = isEnabled,
+        visualTransformation = visualTransformationParam,
+
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Color.Black,
+            unfocusedBorderColor = Color.Gray,
+            disabledBorderColor = Color.Gray,
+            disabledTextColor = Color.Black
+        ),
+        /*
+             placeholder = {
+                 Text(text = placeholder, style = TextStyle(fontSize = 18.sp, color = Color.LightGray))
+             }
+         */
+    )
 }
 
 private val DropdownMenuVerticalPadding = 1.dp
