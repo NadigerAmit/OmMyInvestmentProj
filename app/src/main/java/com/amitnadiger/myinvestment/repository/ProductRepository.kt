@@ -32,9 +32,17 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
         coroutineScope.launch(Dispatchers.IO) {
             try {
                 productStoreDao.insertProduct(newProduct)
-            } catch (e: android.database.sqlite.SQLiteConstraintException) {
-                Log.e(TAG, "Exception is caught " + e.message)
-                Log.e(TAG, "Exception Type is  " + e.toString())
+            } catch (e: Exception) {
+                when(e) {
+                    is net.sqlcipher.database.SQLiteConstraintException -> {
+                        Log.e(TAG, "Exception is caught " + e.message)
+                        Log.e(TAG, "Exception Type is  $e")
+                    }
+                    is android.database.sqlite.SQLiteConstraintException ->{
+                        Log.e(TAG, "Exception is caught " + e.message)
+                        Log.e(TAG, "Exception Type is  $e")
+                    }
+                }
             }
         }
     }
@@ -44,9 +52,17 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
         coroutineScope.launch(Dispatchers.IO) {
             try {
                 productStoreDao.update(newProduct)
-            } catch (e: android.database.sqlite.SQLiteConstraintException) {
-                Log.e(TAG, "Exception is caught " + e.message)
-                Log.e(TAG, "Exception Type is  " + e.toString())
+            } catch (e: Exception) {
+                when(e) {
+                    is net.sqlcipher.database.SQLiteConstraintException -> {
+                        Log.e(TAG, "Exception is caught " + e.message)
+                        Log.e(TAG, "Exception Type is  $e")
+                    }
+                    is android.database.sqlite.SQLiteConstraintException ->{
+                        Log.e(TAG, "Exception is caught " + e.message)
+                        Log.e(TAG, "Exception Type is  $e")
+                    }
+                }
             }
         }
     }

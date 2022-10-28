@@ -1,14 +1,12 @@
 package com.amitnadiger.myinvestment.ui.screens
 
-import android.graphics.fonts.FontFamily
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 
@@ -17,9 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Image
+import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -33,12 +29,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.ui.theme.Purple700
-import com.amitnadiger.myinvestment.utility.DataStoreManager
+import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
+import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.PASSWORD
+import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.SECURE_DATASTORE
+import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.UNSECURE_DATASTORE
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 @Composable
 fun LoginPage(navController: NavHostController,paddingValues: PaddingValues) {
+    val context = LocalContext.current
     Box(modifier = Modifier.fillMaxSize()) {
         ClickableText(
             text = AnnotatedString("Sign up here"),
@@ -86,7 +86,7 @@ fun LoginPage(navController: NavHostController,paddingValues: PaddingValues) {
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
                 onClick = {
-                    if(isLoginAllowed(password.value.text)) {
+                    if(isLoginAllowed(password.value.text,context)) {
                         navController.navigate(NavRoutes.Home.route)
                     }
                 },
@@ -111,13 +111,16 @@ fun LoginPage(navController: NavHostController,paddingValues: PaddingValues) {
     }
 }
 
-fun isLoginAllowed(passwd:String):Boolean {
-    val dataStorageManager = DataStoreManager.getLocalDataStoreManagerInstance()
+fun isLoginAllowed(passwd:String,context: Context):Boolean {
+    val dataStorageManager = DataStoreHolder.getDataStoreProvider(context,
+        SECURE_DATASTORE,true)
+    val dataStorageManagerUnSecure = DataStoreHolder.getDataStoreProvider(context,
+        UNSECURE_DATASTORE,false)
     var isLoginOk = false
     runBlocking {
         Log.e("LogIn","passwd from user = $passwd")
-        Log.e("LogIn","passwd from DataStore = ${dataStorageManager.password.first()}")
-        if(dataStorageManager.password.first() == passwd)
+        Log.e("LogIn","passwd from DataStore = ${dataStorageManager.getString(PASSWORD).first()}")
+        if(dataStorageManager.getString(PASSWORD).first() == passwd)
             isLoginOk = true
     }
     return isLoginOk

@@ -1,23 +1,21 @@
 package com.amitnadiger.myinvestment.ui.scaffold
 
 import android.util.Log
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.ui.screens.ScreenConfig
+import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun ScaffoldImpl(navController: NavHostController,viewModel: FinProductViewModel,screenConfig: ScreenConfig) {
+fun ScaffoldImpl(navController: NavHostController,
+                 finProductViewModel: FinProductViewModel,
+                 finHistoryViewModel: FinHistoryViewModel,
+                 screenConfig: ScreenConfig) {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     // Create a coroutine scope. Opening of Drawer snackbar should happen in background
     // thread without blocking main thread
@@ -57,7 +55,7 @@ fun ScaffoldImpl(navController: NavHostController,viewModel: FinProductViewModel
 
         },
         content = { padding ->
-            Body(navController,viewModel,padding)
+            Body(navController,finProductViewModel,finHistoryViewModel,padding)
         },
 
         bottomBar = {
@@ -67,10 +65,8 @@ fun ScaffoldImpl(navController: NavHostController,viewModel: FinProductViewModel
         },
 
     floatingActionButton = {
-        Fab(navController,screenConfig,coroutineScope,viewModel)
+        Fab(navController,screenConfig,coroutineScope,finProductViewModel)
     },floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true)
-
-
 }
 

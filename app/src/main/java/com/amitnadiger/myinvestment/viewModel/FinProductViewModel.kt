@@ -1,6 +1,7 @@
 package com.amitnadiger.myinvestment.viewModel
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,8 +10,17 @@ import com.amitnadiger.myinvestment.repository.ProductRepository
 import com.amitnadiger.myinvestment.room.Product
 import com.amitnadiger.myinvestment.room.ProductRoomDatabase
 import com.amitnadiger.myinvestment.room.ProductUpdate
+import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
 import com.amitnadiger.myinvestment.ui.screens.dateFormat
+import com.amitnadiger.myinvestment.utility.DataStoreConst
 import com.amitnadiger.myinvestment.utility.DateUtility
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.*
+import kotlin.math.abs
 
 /*
 Within the FinProductViewModel.kt file, modify the class declaration to accept an application
@@ -25,15 +35,37 @@ context instance together with some properties and an initializer block as outli
 class FinProductViewModel(application: Application): ViewModel() {
 
    // val allAccounts:kotlinx.coroutines.flow.Flow<List<Product>>
+   private val TAG = "FinProductViewModel"
     val allAccounts: LiveData<List<Product>>
     private val repository: ProductRepository
     val searchResults: MutableLiveData<List<Product>>
+
     init {
-        val finProductDb = ProductRoomDatabase.getInstance(application)
+        val passCode = getPassCode(application.applicationContext)
+        val finProductDb = ProductRoomDatabase.getInstance(application,passCode)
         val finProductStoreDao = finProductDb.accountProductStoreDao()
         repository = ProductRepository(finProductStoreDao)
         allAccounts = finProductStoreDao.all()
         searchResults = repository.searchResults
+    }
+
+    private fun getPassCode(context: Context):String {
+        val dataStoreProvider = DataStoreHolder.getDataStoreProvider(context,
+            DataStoreConst.SECURE_DATASTORE,true)
+        var passCode:String? = null
+        runBlocking {
+            passCode = dataStoreProvider.getString(DataStoreConst.DB_PASSCODE).first()
+            Log.i(TAG,"Retrived passcode from data store  = $passCode")
+        }
+        if(passCode == null) {
+            passCode = UUID.randomUUID().toString()+abs((0..999999999999).random()).toString()
+            Log.i(TAG,"Generated passcode = $passCode")
+        }
+
+        runBlocking {
+            dataStoreProvider.putString(DataStoreConst.DB_PASSCODE,passCode!!)
+        }
+        return passCode!!
     }
 
     fun insertFinProduct(product: Product) {
