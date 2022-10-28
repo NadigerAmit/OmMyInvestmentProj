@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
@@ -24,21 +23,25 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.amitnadiger.myinvestment.room.Product
-import com.amitnadiger.myinvestment.room.ProductUpdate
 import com.amitnadiger.myinvestment.ui.NavRoutes
+import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
 import com.amitnadiger.myinvestment.utility.CustomTextField
-import com.amitnadiger.myinvestment.utility.DataStoreManager
+import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.DOB
+import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.FULL_NAME
+import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.IS_PASS_PROTECTION_REQ
+import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.IS_REG_COMPLETE
+import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.PASSWORD
+import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.PASSWORD_HINT1
+import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.PASSWORD_HINT2
+import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.SECURE_DATASTORE
+import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.UNSECURE_DATASTORE
 import com.amitnadiger.myinvestment.utility.DateUtility
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.*
 
 @Composable
@@ -131,7 +134,18 @@ fun SignUpScreen(navController: NavHostController,
                                     "BirthDate Cant be future date",context)) {
                                 // Toast will be shown in the validate**
                             } else {
-                                saveSingUpInfoInDataStore(fullName, DateUtility.getPickedDateAsString(
+                                saveSingUpInfoInDataStore(context,fullName, DateUtility.getPickedDateAsString(
+                                    birthDate.get(Calendar.YEAR),
+                                    birthDate.get(Calendar.MONTH),
+                                    birthDate.get(Calendar.DAY_OF_MONTH),
+                                    com.amitnadiger.myinvestment.ui.screens.dateFormat
+                                ),isPasswordProtectRequired,
+                                    password,
+                                    passwordHint1,
+                                    passwordHint2,
+                                    isAlreadyRegistered)
+
+                                saveSingUpInfoInDataStoreInUnSecureDataStore(context,fullName, DateUtility.getPickedDateAsString(
                                     birthDate.get(Calendar.YEAR),
                                     birthDate.get(Calendar.MONTH),
                                     birthDate.get(Calendar.DAY_OF_MONTH),
@@ -144,7 +158,7 @@ fun SignUpScreen(navController: NavHostController,
                                 navController.navigate(NavRoutes.Login.route)
                             }
                         } else {
-                            saveSingUpInfoInDataStore(fullName, DateUtility.getPickedDateAsString(
+                            saveSingUpInfoInDataStore(context,fullName, DateUtility.getPickedDateAsString(
                                 birthDate.get(Calendar.YEAR),
                                 birthDate.get(Calendar.MONTH),
                                 birthDate.get(Calendar.DAY_OF_MONTH),
@@ -251,28 +265,52 @@ data class SignUpData(val fullName:String,
                       val passwordHint2:String = "",
                       val isRegistrationComplete:Boolean = true)
 
-fun saveSingUpInfoInDataStore(fullName:String,
+fun saveSingUpInfoInDataStore(context:Context,fullName:String,
                                 dob:String,isPasswordProtectionReq:Boolean,
                                 password:String,passwordHint1:String,
                               passwordHint2:String,
                                 isRegistrationComplete:Boolean) {
-    val dataStorageManager = DataStoreManager.getLocalDataStoreManagerInstance()
+
+    val dataStoreProvider = DataStoreHolder.getDataStoreProvider(context,SECURE_DATASTORE,true)
     val coroutineScope = CoroutineScope(Dispatchers.IO)
+
     coroutineScope.launch {
-        dataStorageManager.saveRegistrationDataToDataStore(
-            SignUpData(fullName,
-                        dob,
-                        isPasswordProtectionReq,
-                        password,passwordHint1,
-                        passwordHint2,
-                        isRegistrationComplete)
-                    )
+        dataStoreProvider.putString(FULL_NAME,fullName)
+        dataStoreProvider.putString(DOB,dob)
+        dataStoreProvider.putString(PASSWORD,password)
+        dataStoreProvider.putString(PASSWORD_HINT1,passwordHint1)
+        dataStoreProvider.putString(PASSWORD_HINT2,passwordHint2)
+        dataStoreProvider.putBool(IS_PASS_PROTECTION_REQ,isPasswordProtectionReq)
+        dataStoreProvider.putBool(IS_REG_COMPLETE,isRegistrationComplete)
+
+    }
+}
+
+fun saveSingUpInfoInDataStoreInUnSecureDataStore(context:Context,
+                                                 fullName:String,
+                              dob:String,isPasswordProtectionReq:Boolean,
+                              password:String,passwordHint1:String,
+                              passwordHint2:String,
+                              isRegistrationComplete:Boolean) {
+
+    val dataStoreProvider = DataStoreHolder.getDataStoreProvider(context,UNSECURE_DATASTORE,false)
+    val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+    coroutineScope.launch {
+        dataStoreProvider.putString(FULL_NAME,fullName)
+        dataStoreProvider.putString(DOB,dob)
+        dataStoreProvider.putString(PASSWORD,password)
+        dataStoreProvider.putString(PASSWORD_HINT1,passwordHint1)
+        dataStoreProvider.putString(PASSWORD_HINT2,passwordHint2)
+        dataStoreProvider.putBool(IS_PASS_PROTECTION_REQ,isPasswordProtectionReq)
+        dataStoreProvider.putBool(IS_REG_COMPLETE,isRegistrationComplete)
+
     }
 }
 
 
 
-fun getScreenConfig4SignUpScrean():ScreenConfig {
+fun getScreenConfig4SignUpScreen():ScreenConfig {
     Log.e("Login","getScreenConfig4SignUpScrean");
     return ScreenConfig(true,
         false,

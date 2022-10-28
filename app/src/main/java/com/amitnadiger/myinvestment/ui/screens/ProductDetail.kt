@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.annotation.UiThread
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,17 +12,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.DeleteAllCommand
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
@@ -31,9 +28,9 @@ import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.room.Product
 import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.utility.DateUtility
-import com.amitnadiger.myinvestment.utility.DateUtility.Companion.getDateInCalendar
 import com.amitnadiger.myinvestment.utility.DateUtility.Companion.getPeriodBetween2Dates
 import com.amitnadiger.myinvestment.utility.DateUtility.Companion.localDateToCalendar
+import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -42,20 +39,38 @@ import java.time.LocalDateTime
 import java.util.*
 
 var showDeleteAlertDialogGlobal =  mutableStateOf(false)
+var deletedRecord =  mutableStateOf(Product("",
+    "","","",0, Calendar.getInstance(), Calendar.getInstance(),1.1,
+    0.0f,0))
+private val TAG = "ProductDetail"
+val dateFormat = "yyyy-MM-dd"
+
 @Composable
 @UiThread
-fun ProductDetail(navController: NavHostController,viewModel: FinProductViewModel,accountNumber:String) {
+fun ProductDetail(navController: NavHostController,
+                  productViewModel: FinProductViewModel,
+                  finHistoryViewModel: FinHistoryViewModel,
+                  accountNumber:String) {
 
-    Log.e("Home","Jai shree Ram Row is clicked ,ProductDetail  AccountNumber = $accountNumber ")
+    Log.e(TAG,"Jai shree Ram Row is clicked ,ProductDetail  AccountNumber = $accountNumber ")
 
-    deleteRecordAlertDialog(showDialog =showDeleteAlertDialogGlobal.value,
+    deleteRecord(showDialog =showDeleteAlertDialogGlobal.value,
         onDismiss ={},// {showDeleteAlertDialogGlobal.value = false },
-        viewModel,accountNumber,navController)
+        productViewModel,finHistoryViewModel,accountNumber,navController)
+    /*
+    if(deletedRecord.value.accountNumber == accountNumber) {
+        addRecordToHistory(finHistoryViewModel)
+    }
 
-    screenSetUpInProductDetail(viewModel,accountNumber,navController)
+     */
+    screenSetUpInProductDetail(productViewModel,accountNumber,navController)
 }
 
-val dateFormat = "yyyy-MM-dd"
+private fun addRecordToHistory(finHistoryViewModel: FinHistoryViewModel) {
+    Log.e(TAG,"Added below record to History  = ${deletedRecord.value.accountNumber} ")
+    printProductDetails(deletedRecord.value)
+    finHistoryViewModel.insertFinProduct(deletedRecord.value)
+}
 
 private fun getListOPropertiesOfProduct(productDetail: Product): List<Pair<String, String>> {
     val mutableList = mutableListOf(
@@ -171,13 +186,28 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,accountNumber:Stri
     }
 }
 
+private fun printProductDetails(productDetail: Product){
+    Log.e("ProductDetail.Kt","Product is retived in Home \n accountNumber = ${productDetail?.accountNumber}" +
+            " \n financialInstitutionName +  ${productDetail?.financialInstitutionName}" +
+            " \n investorName = ${productDetail?.investorName} " +
+            " \ninvestmentAmount = ${productDetail?.investmentAmount}" +
+            " \ninvestmentDate = ${productDetail?.investmentDate}  " +
+            " \n maturityDate = ${productDetail?.maturityDate}  " +
+            " \n interestRate = $ {productDetail?.interestRate}  " +
+            " \n depositPeriod = ${productDetail?.depositPeriod} " +
+            " \n nomineeName = ${productDetail?.nomineeName} ")
+
+}
+
 @Composable
-fun deleteRecordAlertDialog( showDialog: Boolean  ,
-                             onDismiss: () -> Unit,
-    viewModel: FinProductViewModel,
-    accountNumber:String,
-    navController: NavHostController) {
+fun deleteRecord(showDialog: Boolean,
+                 onDismiss: () -> Unit,
+                 productViewModel: FinProductViewModel,
+                 finHistoryViewModel: FinHistoryViewModel,
+                 accountNumber:String,
+                 navController: NavHostController):Product? {
     val context = LocalContext.current
+    var rec :Product?= null
 
     Log.e("DeleteAlert","Called ->showDialog = $showDialog")
     if (showDialog) {
@@ -190,11 +220,14 @@ fun deleteRecordAlertDialog( showDialog: Boolean  ,
             onDismissRequest = onDismiss,
             confirmButton = {
                 TextButton(onClick = {
-                    viewModel.deleteFinProduct(accountNumber)
-                    Toast.makeText(context, "Record with accNum : $accountNumber deleted" , Toast.LENGTH_LONG)
-                        .show()
-                    navController.navigate(NavRoutes.Home.route)
-
+                    rec = productViewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
+                    if(rec!= null) {
+                        productViewModel.deleteFinProduct(accountNumber)
+                        Toast.makeText(context, "Record with accNum : $accountNumber deleted" , Toast.LENGTH_LONG)
+                            .show()
+                        navController.navigate(NavRoutes.Home.route)
+                        deletedRecord.value = rec!!
+                    }
                 })
                 { Text(text = "Continue delete",color = Color.Red) }
             },
@@ -211,7 +244,7 @@ fun deleteRecordAlertDialog( showDialog: Boolean  ,
                 dismissOnClickOutside=true)
         )
     }
-
+    return rec
 }
 
 fun getScreenConfig4ProductDetail():ScreenConfig {

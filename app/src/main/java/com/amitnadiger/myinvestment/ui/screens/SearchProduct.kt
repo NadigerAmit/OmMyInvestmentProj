@@ -3,42 +3,26 @@ package com.amitnadiger.myinvestment.ui.screens
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toSize
-import androidx.datastore.preferences.core.emptyPreferences
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.room.Product
 import com.amitnadiger.myinvestment.utility.*
-import com.amitnadiger.myinvestment.utility.DataStoreManager.Companion.dataStoreManager
-import com.amitnadiger.myinvestment.utility.DateUtility.Companion.getDateInCalendar
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import java.io.IOException
-import java.lang.Exception
 import java.text.NumberFormat
 import java.util.*
 
@@ -52,14 +36,15 @@ data class SearchQuery(val searchByFieldValue: String,
                        val operationFieldValue: String,
                        val valueFieldValue: String)
 
-fun saveToDataStore(query: SearchQuery,dataStorageManager:DataStoreManager) {
+/*
+fun saveToDataStore(query: SearchQuery,dataStorageManager:UnsecureDataStore) {
     val coroutineScope = CoroutineScope(Dispatchers.Main)
     coroutineScope.launch {
         dataStorageManager.saveSearchDataToDataStore(query)
     }
 }
 
-fun getSearchQueryAsync( searchQueryLocal : Flow<SearchQuery>,dataStorageManager:DataStoreManager):SearchQuery? {
+fun getSearchQueryAsync( searchQueryLocal : Flow<SearchQuery>,dataStorageManager:UnsecureDataStore):SearchQuery? {
     val coroutineScope = CoroutineScope(Dispatchers.Main)
     //var TestTrple = dataStorageManager.getSearchDataFromDataStore()
     var query1 :SearchQuery?=null
@@ -82,7 +67,7 @@ fun getSearchQueryAsync( searchQueryLocal : Flow<SearchQuery>,dataStorageManager
 }
 
 
-fun getSearchQuerySync( searchQueryLocal : Flow<SearchQuery>,dataStorageManager:DataStoreManager):SearchQuery {
+fun getSearchQuerySync( searchQueryLocal : Flow<SearchQuery>,dataStorageManager:UnsecureDataStore):SearchQuery {
   //  var TestTrple = dataStorageManager.getSearchDataFromDataStore()
     var query :SearchQuery
     var query1 :SearchQuery
@@ -102,6 +87,8 @@ fun getSearchQuerySync( searchQueryLocal : Flow<SearchQuery>,dataStorageManager:
     return query
 }
 
+ */
+
 @Composable
 fun SearchProduct(navController: NavHostController,viewModel: FinProductViewModel,padding:PaddingValues) {
 
@@ -120,8 +107,9 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
         totalInvestmentAmount +=i.investmentAmount
         totalMaturityAmount +=i.maturityAmount
     }
-///*
-    val dataStorageManager = DataStoreManager.getLocalDataStoreManagerInstance()
+/*
+    val dataStorageManager = UnsecureDataStore.getLocalDataStoreManagerInstance()
+
     val getSearchQuery = getSearchQuerySync(dataStorageManager.searchQueryLocal,dataStorageManager)
     if(getSearchQuery !=null) {
         Log.e("SearchProduct","getSearchQuery.searchByFieldValue = ${getSearchQuery.searchByFieldValue}")
@@ -130,7 +118,7 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
     } else {
         Log.e("SearchProduct","getSearchQuery is null")
     }
-// */
+ */
     var finalList:MutableList<Product> = searchResults.toMutableList()
     finalList.add(
         Product("00000000000",
@@ -168,13 +156,13 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
             searchByFieldValue.value = searchByField
             operationFieldValue.value = operationField
             valueFieldValue.value = valueField
-            ///*
+            /*
             saveToDataStore(SearchQuery(searchByField,
                     operationField,
                     valueField),
                 dataStorageManager)
 
-            // */
+             */
 
 
             if(finalList.size>1) {

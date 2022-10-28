@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.*
 
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 
 import androidx.compose.ui.Modifier
 
@@ -22,17 +21,14 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.amitnadiger.myinvestment.ui.theme.MyInvestmentTheme
 
-import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.ui.scaffold.ScaffoldImpl
 import com.amitnadiger.myinvestment.ui.screens.*
-import com.amitnadiger.myinvestment.utility.DataStoreManager
+import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
+import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModelFactory
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModelFactory
 
@@ -42,11 +38,11 @@ import com.amitnadiger.myinvestment.viewModel.FinProductViewModelFactory
 class MainActivity : ComponentActivity() {
     val TAG = "MainActivity"
 
-    //lateinit var dataStoreManager: DataStoreManager
+    //lateinit var dataStoreProvider: UnsecureDataStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DataStoreManager.initializeDataStoreManager(this@MainActivity)
+        //DataStoreHolder.initializeDataStoreManager(this@MainActivity)
         setContent {
             MyInvestmentTheme {
 
@@ -66,7 +62,7 @@ class MainActivity : ComponentActivity() {
 fun setupMainScreen() {
     val owner = LocalViewModelStoreOwner.current
     owner?.let {
-        val viewModel: FinProductViewModel = viewModel(
+        val productViewModel: FinProductViewModel = viewModel(
             it,
             "FinProductViewModel",
             FinProductViewModelFactory(
@@ -75,18 +71,30 @@ fun setupMainScreen() {
             )
         )
 
+        val historyViewModel: FinHistoryViewModel = viewModel(
+            it,
+            "FinHistoryViewModel",
+            FinHistoryViewModelFactory(
+                LocalContext.current.applicationContext
+                        as Application
+            )
+        )
+
+
         val navController = rememberNavController()
         //ScreenNavigation(navController,viewModel,padding)
         // pass map of configuration of scaffold items
        // var showFabButton by rememberSaveable { mutableStateOf(false) }
         var screenConfig by remember { mutableStateOf(
-            ScreenConfig(true,
-            true,
-                true,
-                true,
-                "",
-                "",
-                "")) }
+            ScreenConfig(
+                enableTopAppBar = true,
+                enableBottomAppBar = true,
+                enableDrawer = true,
+                enableFab = true,
+                topAppBarTitle = "",
+                bottomAppBarTitle = "",
+                fabString = ""
+            )) }
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
         screenConfig = when (navBackStackEntry?.destination?.route) {
@@ -96,7 +104,7 @@ fun setupMainScreen() {
             }
             "signUp" -> {
                 Log.e("MainActivity"," SignUp ->screen config")
-                getScreenConfig4SignUpScrean()
+                getScreenConfig4SignUpScreen()
             }
             "home" -> {
                 Log.e("MainActivity"," Home ->screen config")
@@ -123,18 +131,19 @@ fun setupMainScreen() {
 
         }
         ScaffoldImpl(navController = navController,
-            viewModel,screenConfig)
+            productViewModel,historyViewModel,screenConfig)
     }
 }
 
 fun getDefaultScreenConfig():ScreenConfig {
     Log.e("MainScreen","getDefaultScreenConfig");
-    return ScreenConfig(false,
-        false,
-        false,
-        false,
-        "","",
-        "",
+    return ScreenConfig(
+        enableTopAppBar = false,
+        enableBottomAppBar = false,
+        enableDrawer = false,
+        enableFab = false,
+        topAppBarTitle = "", bottomAppBarTitle = "",
+        fabString = "",
     )
 }
 
