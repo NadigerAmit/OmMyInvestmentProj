@@ -66,6 +66,9 @@ interface ProductStoreDao {
     @Query("DELETE FROM productTable WHERE accountNumber = :accountNumber")
     fun deleteProduct(accountNumber: Long)
 
+    @Query("DELETE FROM productTable")
+    fun deleteAllProduct()
+
     // InvestmentDateRelated  related queries
     @Query("SELECT * FROM productTable WHERE investmentDate = :investmentDateInCal")
     fun findProductsHavingInvestmentDateEqualTo(investmentDateInCal: Calendar): List<Product>

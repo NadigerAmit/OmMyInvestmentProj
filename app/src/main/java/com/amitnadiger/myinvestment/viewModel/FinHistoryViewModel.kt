@@ -71,6 +71,10 @@ class FinHistoryViewModel(application: Application): ViewModel() {
         repository.deleteProduct(accountNum.toLong())
     }
 
+    fun deleteAllFromHistory() {
+        repository.deleteAllProduct()
+    }
+
     fun findProductBasedOnAccountNumberFromLocalCache(accountNum: String):Product? {
         if(allAccounts.value == null) return null
         for(i in allAccounts.value!!) {

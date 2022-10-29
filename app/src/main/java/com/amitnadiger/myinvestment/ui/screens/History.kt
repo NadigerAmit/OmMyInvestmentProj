@@ -26,7 +26,7 @@ fun getScreenConfig4History():ScreenConfig {
         true,
         true,
         true,
-        "My-Investments","",
-        "add",
+        "History","",
+        "Clear all",
     )
 }

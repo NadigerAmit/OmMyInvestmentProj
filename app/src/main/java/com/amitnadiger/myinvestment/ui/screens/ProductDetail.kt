@@ -50,20 +50,17 @@ val dateFormat = "yyyy-MM-dd"
 fun ProductDetail(navController: NavHostController,
                   productViewModel: FinProductViewModel,
                   finHistoryViewModel: FinHistoryViewModel,
-                  accountNumber:String) {
+                  accountNumber:String,padding: PaddingValues) {
 
     Log.e(TAG,"Jai shree Ram Row is clicked ,ProductDetail  AccountNumber = $accountNumber ")
 
     deleteRecord(showDialog =showDeleteAlertDialogGlobal.value,
         onDismiss ={},// {showDeleteAlertDialogGlobal.value = false },
         productViewModel,finHistoryViewModel,accountNumber,navController)
-    /*
     if(deletedRecord.value.accountNumber == accountNumber) {
         addRecordToHistory(finHistoryViewModel)
     }
-
-     */
-    screenSetUpInProductDetail(productViewModel,accountNumber,navController)
+    screenSetUpInProductDetail(productViewModel,accountNumber,navController,padding)
 }
 
 private fun addRecordToHistory(finHistoryViewModel: FinHistoryViewModel) {
@@ -93,7 +90,8 @@ private fun getListOPropertiesOfProduct(productDetail: Product): List<Pair<Strin
         Pair("Maturity amount", NumberFormat.getInstance().format(productDetail.maturityAmount)),
         Pair("Interest rate", productDetail.interestRate.toString()),
 
-        Pair("Nominee name", productDetail.nomineeName)
+        Pair("Nominee name", productDetail.nomineeName),
+        Pair("DeleteAndEditButton", "")
     )
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
     {
@@ -111,7 +109,10 @@ private fun getListOPropertiesOfProduct(productDetail: Product): List<Pair<Strin
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 @UiThread
-fun screenSetUpInProductDetail(viewModel: FinProductViewModel,accountNumber:String,navController: NavHostController)  {
+fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
+                               accountNumber:String,
+                               navController: NavHostController,
+                               padding: PaddingValues)  {
     GlobalScope.launch {
         viewModel.findProductsBasedOnAccountNumber(accountNumber)
     }
@@ -138,13 +139,15 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,accountNumber:Stri
             " \n depositPeriod = ${productDetail?.depositPeriod} " +
             " \n nomineeName = ${productDetail?.nomineeName} ")
  */
-    val productFieldList = getListOPropertiesOfProduct(productDetail!!)
+    if(productDetail == null) return
+    val productFieldList = getListOPropertiesOfProduct(productDetail)
 
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
+            .padding(padding)
     ) {
         //TitleRowProductDetails("\n  Account Details\n")
         LazyColumn(
@@ -155,32 +158,37 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,accountNumber:Stri
 
         ) {
             items(productFieldList) { productFeild ->
-                ProductDetailsRow(productFeild.first,productFeild.second)
-            }
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-               // .padding(50.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Button(onClick = {
-                showDeleteAlertDialogGlobal.value = true
-                Log.e("DeleteAlert","Button clicked showDeleteAlertDialog.value - " +
-                        "${showDeleteAlertDialogGlobal.value}")
-            },modifier = Modifier
-                .padding(10.dp)) {
-                Icon(Icons.Filled.Delete, "Delete")
-                Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Delete")
-            }
-            Button(onClick = {
-                navController.navigate(NavRoutes.AddProduct.route + "/$accountNumber")
-            },modifier = Modifier
-                .padding(10.dp)) {
-                Icon(Icons.Filled.Edit, "Edit")
-                Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Edit")
+                when(productFeild.first) {
+                    "DeleteAndEditButton" -> {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            // .padding(50.dp),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            Button(onClick = {
+                                showDeleteAlertDialogGlobal.value = true
+                                Log.e("DeleteAlert","Button clicked showDeleteAlertDialog.value - " +
+                                        "${showDeleteAlertDialogGlobal.value}")
+                            },modifier = Modifier
+                                .padding(10.dp)) {
+                                Icon(Icons.Filled.Delete, "Delete")
+                                Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                                Text("Delete")
+                            }
+                            Button(onClick = {
+                                navController.navigate(NavRoutes.AddProduct.route + "/$accountNumber")
+                            },modifier = Modifier
+                                .padding(10.dp)) {
+                                Icon(Icons.Filled.Edit, "Edit")
+                                Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                                Text("Edit")
+                            }
+                        }
+                    } else -> {
+                        ProductDetailsRow(productFeild.first,productFeild.second)
+                    }
+                }
             }
         }
     }

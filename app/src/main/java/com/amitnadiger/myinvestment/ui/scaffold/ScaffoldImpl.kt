@@ -61,11 +61,11 @@ fun ScaffoldImpl(navController: NavHostController,
         bottomBar = {
             BottomBar(screenConfig) },
         drawerContent = {
-            Drawer(screenConfig)
+            Drawer(screenConfig,navController)
         },
 
     floatingActionButton = {
-        Fab(navController,screenConfig,coroutineScope,finProductViewModel)
+        Fab(navController,screenConfig,coroutineScope,finProductViewModel,finHistoryViewModel)
     },floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true)
 }
