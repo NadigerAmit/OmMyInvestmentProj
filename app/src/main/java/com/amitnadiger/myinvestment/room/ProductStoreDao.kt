@@ -64,7 +64,7 @@ interface ProductStoreDao {
      */
 
     @Query("DELETE FROM productTable WHERE accountNumber = :accountNumber")
-    fun deleteProduct(accountNumber: Long)
+    fun deleteProduct(accountNumber: String)
 
     @Query("DELETE FROM productTable")
     fun deleteAllProduct()

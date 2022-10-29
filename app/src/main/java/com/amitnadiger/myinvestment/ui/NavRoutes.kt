@@ -26,6 +26,7 @@ sealed class NavRoutes(val route:String) {
      object SearchProduct : NavRoutes("searchProduct")
      object ProductDetail : NavRoutes("productDetail")
      object History : NavRoutes("history")
+     object HistoryProductDetail : NavRoutes("historyDetail")
 }
 
 fun getLaunchScreen(context:Context):String {
@@ -88,6 +89,17 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
                 finProductViewModel,
                 finHistoryViewModel,
                 accountNumber = accountId!!,padding)
+        }
+
+        composable(NavRoutes.HistoryProductDetail.route + "/{id}") { navBackStack ->
+            // Extracting the argument
+            val accountId = navBackStack.arguments?.getString("id")
+            Log.e("MainActvity", "In ScreenNavigation fun , accountId = $accountId ")
+            HistoryProductDetail(navController = navController,
+                finProductViewModel,
+                finHistoryViewModel,
+                accountNumber = accountId!!,
+                padding)
         }
 
         composable(NavRoutes.SearchProduct.route) {

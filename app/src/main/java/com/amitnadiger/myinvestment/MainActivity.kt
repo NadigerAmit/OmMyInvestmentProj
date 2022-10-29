@@ -126,6 +126,10 @@ fun setupMainScreen() {
                 Log.e("MainActivity"," productDetail ->screen config")
                 getScreenConfig4ProductDetail()
             }
+            "historyDetail/{id}" -> {
+                Log.e("MainActivity"," productDetail ->screen config")
+                getScreenConfig4HistoryProductDetail()
+            }
             //"searchProduct" -> getScreenConfig4Sea() todo
             else -> {
                 Log.e("MainActivity"," Else  ->screen config")

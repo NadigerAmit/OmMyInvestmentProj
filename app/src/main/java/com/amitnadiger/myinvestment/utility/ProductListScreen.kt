@@ -19,11 +19,13 @@ import com.amitnadiger.myinvestment.ui.screens.dateFormat
 import java.text.NumberFormat
 import java.util.*
 
+private val TAG = "SecDtaStrProvider"
 @Composable
 fun ProductListScreen(
     navController: NavHostController,
     allProducts: List<Product>,
-    padding: PaddingValues
+    padding: PaddingValues,
+    parentScreen:String
 ) {
     //
     //var searching by remember { mutableStateOf(false) }
@@ -46,7 +48,7 @@ fun ProductListScreen(
 
             items(allProducts) { product ->
 
-                Log.e("Home.Kt","Product is retived in Home \n accountNumber = ${product.accountNumber}" +
+                Log.e(TAG,"Product is retived in $parentScreen \n accountNumber = ${product.accountNumber}" +
                         // " \n financialInstitutionName +  ${product.financialInstitutionName}" +
                         //  " \n investorName = ${product.investorName} " +
                         //  " \ninvestmentAmount = ${product.investmentAmount}" +
@@ -96,7 +98,8 @@ fun ProductListScreen(
                                 )
                             ) + "\n" +
                             truncateString(product.investorName),
-                    navController, color
+                    navController, color,
+                    parentScreen
                 )
             }
         }

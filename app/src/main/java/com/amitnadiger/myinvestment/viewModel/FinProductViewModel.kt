@@ -80,7 +80,7 @@ class FinProductViewModel(application: Application): ViewModel() {
     }
 
     fun deleteFinProduct(accountNum: String) {
-        repository.deleteProduct(accountNum.toLong())
+        repository.deleteProduct(accountNum)
     }
 
     fun findProductBasedOnAccountNumberFromLocalCache(accountNum: String):Product? {
@@ -324,7 +324,7 @@ class FinProductViewModel(application: Application): ViewModel() {
 
 
 
-    fun deleteProduct(accountNum: Long) {
+    fun deleteProduct(accountNum: String) {
         repository.deleteProduct(accountNum)
     }
 }

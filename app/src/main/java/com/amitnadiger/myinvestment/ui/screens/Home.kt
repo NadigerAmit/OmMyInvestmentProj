@@ -29,7 +29,8 @@ fun Home(navController: NavHostController,viewModel: FinProductViewModel,padding
           navController,
         allProducts = allProducts,
        // searchResults = searchResults,
-          padding)
+          padding,
+      "ProductDetail")
 
 }
 
