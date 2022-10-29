@@ -87,7 +87,7 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
             ProductDetail(navController = navController,
                 finProductViewModel,
                 finHistoryViewModel,
-                accountNumber = accountId!!)
+                accountNumber = accountId!!,padding)
         }
 
         composable(NavRoutes.SearchProduct.route) {

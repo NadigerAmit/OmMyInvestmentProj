@@ -23,8 +23,21 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
     //var searchResults1 = MutableLiveData<List<Product>>()
     // var accountNumberList = MutableLiveData<List<String>>()
     //var allProducts:kotlinx.coroutines.flow.Flow<List<Product>> = productStoreDao.all()
-    val allProducts: LiveData<List<Product>> = productStoreDao.all()
+   // val allProducts: LiveData<List<Product>> ?= getAllFromProduct()
 
+    private fun getAllFromProduct():LiveData<List<Product>>? {
+        var allProducts1: LiveData<List<Product>>? = null
+        try {
+            allProducts1 = productStoreDao.all()
+        } catch(e:Exception) {
+            when(e) {
+                is net.sqlcipher.database.SQLiteException -> {
+                    Log.e(TAG,"net.sqlcipher.database.SQLiteException is found")
+                }
+            }
+        }
+        return allProducts1
+    }
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
 
@@ -70,6 +83,12 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
     fun deleteProduct(accountNum: Long) {
         coroutineScope.launch(Dispatchers.IO) {
             productStoreDao.deleteProduct(accountNum)
+        }
+    }
+
+    fun deleteAllProduct() {
+        coroutineScope.launch(Dispatchers.IO) {
+            productStoreDao.deleteAllProduct()
         }
     }
 

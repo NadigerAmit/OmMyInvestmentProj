@@ -1,5 +1,7 @@
 package com.amitnadiger.myinvestment.ui.screens
 
+import androidx.compose.ui.graphics.Color
+
 data class ScreenConfig(
     val enableTopAppBar:Boolean,
     val enableBottomAppBar:Boolean,
@@ -7,5 +9,6 @@ data class ScreenConfig(
     val enableFab:Boolean,
     val topAppBarTitle:String,
     val bottomAppBarTitle:String,
-    val fabString:String) {
+    val fabString:String,
+    val fabColor: Color = Color.Red) {
 }

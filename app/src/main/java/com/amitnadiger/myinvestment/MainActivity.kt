@@ -110,6 +110,10 @@ fun setupMainScreen() {
                 Log.e("MainActivity"," Home ->screen config")
                 getScreenConfig4Home()
             }
+            "history" -> {
+                Log.e("MainActivity"," History ->screen config")
+                getScreenConfig4History()
+            }
             "addProduct/{id}" -> {
                 Log.e("MainActivity"," addProduct ->screen config")
                 getScreenConfig4AddProduct()

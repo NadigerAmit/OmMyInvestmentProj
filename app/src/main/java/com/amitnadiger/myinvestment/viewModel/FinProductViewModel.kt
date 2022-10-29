@@ -42,7 +42,9 @@ class FinProductViewModel(application: Application): ViewModel() {
 
     init {
         val passCode = getPassCode(application.applicationContext)
+
         val finProductDb = ProductRoomDatabase.getInstance(application,passCode)
+        Log.i(TAG,"ProductRoomDatabase.getInstance done  = ")
         val finProductStoreDao = finProductDb.accountProductStoreDao()
         repository = ProductRepository(finProductStoreDao)
         allAccounts = finProductStoreDao.all()

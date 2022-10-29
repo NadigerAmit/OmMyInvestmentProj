@@ -35,12 +35,14 @@ fun Home(navController: NavHostController,viewModel: FinProductViewModel,padding
 
 fun getScreenConfig4Home():ScreenConfig {
     //Log.e("HomeScvreen","getScreenConfig4Home");
-    return ScreenConfig(true,
-        true,
-        true,
-        true,
-        "My-Investments","",
-        "add",
+    return ScreenConfig(
+        enableTopAppBar = true,
+        enableBottomAppBar = true,
+        enableDrawer = true,
+        enableFab = true,
+        topAppBarTitle = "My-Investments", bottomAppBarTitle = "",
+        fabString = "add",
+        fabColor = Color.Green
     )
 }
 

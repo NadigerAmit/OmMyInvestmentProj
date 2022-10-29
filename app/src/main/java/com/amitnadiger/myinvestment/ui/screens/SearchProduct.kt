@@ -193,8 +193,8 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
 
                         if(product.accountNumber == "00000000000"
                             && totalInvestmentAmount != 0 ) {
-                            SummaryRow("\n  TotalInvestAmount\n\n"+
-                                    "  TotalMaturityAmount\n\n","\n  "+totalInvestmentAmount.toString()
+                            SummaryRow("\n   Σ InvestAmount\n\n"+
+                                    "  Σ MaturityAmount\n\n","\n  "+totalInvestmentAmount.toString()
                                     + "\n\n"+"  "+
                                     NumberFormat.getInstance().format(totalMaturityAmount)+ "\n\n")
                         } else {
