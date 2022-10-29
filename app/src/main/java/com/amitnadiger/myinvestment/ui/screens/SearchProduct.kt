@@ -223,7 +223,7 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
                                             )
                                         ) + "\n" +
                                         truncateString(product.investorName),
-                                navController, color
+                                navController, color,"ProductDetail"
                             )
                         }
                     }

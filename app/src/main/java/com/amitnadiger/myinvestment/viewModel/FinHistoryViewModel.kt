@@ -68,7 +68,7 @@ class FinHistoryViewModel(application: Application): ViewModel() {
     }
 
     fun deleteFinProduct(accountNum: String) {
-        repository.deleteProduct(accountNum.toLong())
+        repository.deleteProduct(accountNum)
     }
 
     fun deleteAllFromHistory() {

@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.ui.NavRoutes
 
-
+private val TAG = "ProductDetail"
 fun truncateString(input:String):String {
     // Log.e("Truncate","inputString - $input")
     val allowedStringLen  = 10
@@ -97,15 +97,25 @@ fun ProductRow(accountNumber:String,
                SecondColumn: String,
                ThirdColumn: String,
                navController: NavHostController,
-               textColor: Color = Color.Black
+               textColor: Color = Color.Black,
+               parentScreen:String
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(3.dp)
             .clickable {
-               // Log.e("Home", "Jai shree Ram Row is clicked , AccountNumber = $accountNumber ")
-                navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber")
+                Log.e(TAG, "Jai shree Ram Row is clicked , parentScreen = $parentScreen  " +
+                        "and accountNumber = $accountNumber")
+                when(parentScreen) {
+                    "HistoryProductDetail" -> {
+                        navController.navigate(NavRoutes.HistoryProductDetail.route + "/$accountNumber")
+                    }
+                    "ProductDetail" ->{
+                        navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber")
+                    }
+                }
+
             }
     ) {
         Text(FirstColumn,color = textColor ,modifier = Modifier
