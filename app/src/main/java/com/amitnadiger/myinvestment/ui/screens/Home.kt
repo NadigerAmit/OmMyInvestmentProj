@@ -43,7 +43,7 @@ fun getScreenConfig4Home():ScreenConfig {
         enableFab = true,
         topAppBarTitle = "My-Investments", bottomAppBarTitle = "",
         fabString = "add",
-        fabColor = Color.Green
+        fabColor = Color.Red
     )
 }
 

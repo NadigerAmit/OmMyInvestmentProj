@@ -62,8 +62,6 @@ fun Fab(navController: NavHostController,
                 }
                 "Clear all" -> {
                     Icon(Icons.Filled.Delete, "delete")
-                    Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                    Text(text = "all", color = Color.Black)
                 }
             }
         }
