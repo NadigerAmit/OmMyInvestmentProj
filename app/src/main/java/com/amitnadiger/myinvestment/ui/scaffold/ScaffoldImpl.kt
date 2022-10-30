@@ -17,6 +17,8 @@ fun ScaffoldImpl(navController: NavHostController,
                  finHistoryViewModel: FinHistoryViewModel,
                  screenConfig: ScreenConfig) {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
+    val scope = rememberCoroutineScope()
+
     // Create a coroutine scope. Opening of Drawer snackbar should happen in background
     // thread without blocking main thread
 
@@ -61,7 +63,9 @@ fun ScaffoldImpl(navController: NavHostController,
         bottomBar = {
             BottomBar(screenConfig) },
         drawerContent = {
-            Drawer(screenConfig,navController)
+            //Drawer(screenConfig,navController)
+            //RischDrawer()
+            RichDrawer(scope = scope, scaffoldState = scaffoldState, navController = navController)
         },
 
     floatingActionButton = {

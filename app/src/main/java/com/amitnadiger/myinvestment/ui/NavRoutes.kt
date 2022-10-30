@@ -27,6 +27,11 @@ sealed class NavRoutes(val route:String) {
      object ProductDetail : NavRoutes("productDetail")
      object History : NavRoutes("history")
      object HistoryProductDetail : NavRoutes("historyDetail")
+     object Setting : NavRoutes("setting")
+     object TC : NavRoutes("tc")
+     object License : NavRoutes("license")
+     object Profile : NavRoutes("profile")
+     object Tutorial : NavRoutes("tutorial")
 }
 
 fun getLaunchScreen(context:Context):String {
@@ -103,6 +108,36 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
         }
 
         composable(NavRoutes.SearchProduct.route) {
+            SearchProduct(navController = navController,
+                finProductViewModel,
+                padding)
+        }
+
+        composable(NavRoutes.Setting.route) {
+            SearchProduct(navController = navController,
+                finProductViewModel,
+                padding)
+        }
+
+        composable(NavRoutes.Profile.route) {
+            SearchProduct(navController = navController,
+                finProductViewModel,
+                padding)
+        }
+
+        composable(NavRoutes.TC.route) {
+            SearchProduct(navController = navController,
+                finProductViewModel,
+                padding)
+        }
+
+        composable(NavRoutes.License.route) {
+            SearchProduct(navController = navController,
+                finProductViewModel,
+                padding)
+        }
+
+        composable(NavRoutes.Tutorial.route) {
             SearchProduct(navController = navController,
                 finProductViewModel,
                 padding)
