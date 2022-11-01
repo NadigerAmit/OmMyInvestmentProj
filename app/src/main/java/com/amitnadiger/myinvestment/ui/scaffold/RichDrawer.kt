@@ -133,37 +133,8 @@ fun DrawerItem(item: NavDrawerItem, selected: Boolean, onItemClick: (NavDrawerIt
         Spacer(modifier = Modifier.width(7.dp))
         Text(
             text = item.title,
-            fontSize = 30.sp,
+            fontSize = 20.sp,
             color = Color.White
         )
     }
 }
-/*
-@Composable
-fun Navigation(navController: NavHostController) {
-    NavHost(navController, startDestination = NavDrawerItem.Home.route) {
-        composable(NavDrawerItem.Home.route) {
-            navController.navigate(NavRoutes.Home.route)
-        }
-        composable(NavDrawerItem.History.route) {
-            navController.navigate(NavRoutes.History.route)
-        }
-        composable(NavDrawerItem.Tc.route) {
-            navController.navigate(NavRoutes.Home.route)
-        }
-        composable(NavDrawerItem.License.route) {
-            navController.navigate(NavRoutes.Home.route)
-        }
-        composable(NavDrawerItem.Profile.route) {
-            navController.navigate(NavRoutes.Home.route)
-        }
-        composable(NavDrawerItem.Settings.route) {
-            navController.navigate(NavRoutes.Home.route)
-        }
-        composable(NavDrawerItem.Tutorial.route) {
-            navController.navigate(NavRoutes.Home.route)
-        }
-    }
-}
-
- */
