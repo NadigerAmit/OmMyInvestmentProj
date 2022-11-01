@@ -50,7 +50,7 @@ fun AddProduct(navController: NavHostController,viewModel: FinProductViewModel,p
         navController.navigate(NavRoutes.Home.route )
     }
      */
-    screenSetUpInAddProductScreen(viewModel,padding,accountNumber)
+    screenSetUpInAddProductScreen(navController,viewModel,padding,accountNumber)
 }
 
 fun getScreenConfig4AddProduct():ScreenConfig {
@@ -74,7 +74,7 @@ fun getScreenConfig4AddProduct():ScreenConfig {
 
 
 @Composable
-fun screenSetUpInAddProductScreen(viewModel: FinProductViewModel,
+fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: FinProductViewModel,
                                   padding:PaddingValues,
                                   accountNumber:String)  {
 
@@ -199,9 +199,9 @@ fun screenSetUpInAddProductScreen(viewModel: FinProductViewModel,
                                 !validateInvestorName(investorName,context) ||
                                 !validateInvestmentAmount(investmentAmount,context) ||
                                 !validateMaturityAmount(maturityAmount,context) ||
-                                !validateInterestRate(interestRate,context)
-                            )
+                                !validateInterestRate(interestRate,context)) {
                                 return false
+                            }
                             return true
                         }
                         if(validateInputs()) {
@@ -243,6 +243,21 @@ fun screenSetUpInAddProductScreen(viewModel: FinProductViewModel,
                             isRecordInUpdateMode.value = false
                             Toast.makeText(context, "Saving to DB", Toast.LENGTH_LONG)
                                 .show()
+                            navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber") {
+                                // Pop up to the start destination of the graph to
+                                // avoid building up a large stack of destinations
+                                // on the back stack as users select items
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                        saveState = true
+                                    }
+                                }
+                                // Avoid multiple copies of the same destination when
+                                // reselecting the same item
+                                launchSingleTop = true
+                                // Restore state when reselecting a previously selected item
+                                restoreState = true
+                            }
                         }
                     }) {
                         Text("Save")
