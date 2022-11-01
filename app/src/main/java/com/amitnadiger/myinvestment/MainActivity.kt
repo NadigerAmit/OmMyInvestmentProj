@@ -2,6 +2,7 @@ package com.amitnadiger.myinvestment
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 
@@ -31,6 +32,7 @@ import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModelFactory
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModelFactory
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 
 @SuppressLint("StaticFieldLeak")
 
@@ -130,6 +132,26 @@ fun setupMainScreen() {
                 Log.e("MainActivity"," productDetail ->screen config")
                 getScreenConfig4HistoryProductDetail()
             }
+            "setting" -> {
+                Log.e("MainActivity"," productDetail ->screen config")
+                getScreenConfig4Setting()
+            }
+            "tc" -> {
+                Log.e("MainActivity"," productDetail ->screen config")
+                getScreenConfig4TAndC()
+            }
+            "license" -> {
+                Log.e("MainActivity"," productDetail ->screen config")
+                getScreenConfig4License()
+            }
+            "profile" -> {
+                Log.e("MainActivity"," productDetail ->screen config")
+                getScreenConfig4Profile()
+            }
+            "tutorial" -> {
+                Log.e("MainActivity"," productDetail ->screen config")
+                getScreenConfig4Tutorial()
+            }
             //"searchProduct" -> getScreenConfig4Sea() todo
             else -> {
                 Log.e("MainActivity"," Else  ->screen config")
@@ -142,6 +164,14 @@ fun setupMainScreen() {
             productViewModel,historyViewModel,screenConfig)
     }
 }
+/*
+     object HistoryProductDetail : NavRoutes("historyDetail")
+     object Setting : NavRoutes("setting")
+     object TC : NavRoutes("tc")
+     object License : NavRoutes("license")
+     object Profile : NavRoutes("profile")
+     object Tutorial : NavRoutes("tutorial")
+ */
 
 fun getDefaultScreenConfig():ScreenConfig {
     Log.e("MainScreen","getDefaultScreenConfig");

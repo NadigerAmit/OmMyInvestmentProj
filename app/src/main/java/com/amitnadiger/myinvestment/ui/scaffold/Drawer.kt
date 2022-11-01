@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,7 +61,7 @@ fun Drawer(screenConfig: ScreenConfig,navController: NavHostController) {
                         },
                         style = TextStyle(
                             fontSize = 14.sp,
-                            //fontFamily = FontFamily.Default,
+                            fontFamily = FontFamily.Default,
                             //textDecoration = TextDecoration.Underline,
                             color = Purple700
                         )

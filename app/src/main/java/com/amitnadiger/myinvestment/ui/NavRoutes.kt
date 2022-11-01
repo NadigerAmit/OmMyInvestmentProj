@@ -114,33 +114,23 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
         }
 
         composable(NavRoutes.Setting.route) {
-            SearchProduct(navController = navController,
-                finProductViewModel,
-                padding)
+            SettingPage(navController = navController,padding)
         }
 
         composable(NavRoutes.Profile.route) {
-            SearchProduct(navController = navController,
-                finProductViewModel,
-                padding)
+            ProfilePage(navController = navController,padding)
         }
 
         composable(NavRoutes.TC.route) {
-            SearchProduct(navController = navController,
-                finProductViewModel,
-                padding)
+            TAndC(navController = navController,padding)
         }
 
         composable(NavRoutes.License.route) {
-            SearchProduct(navController = navController,
-                finProductViewModel,
-                padding)
+            LicensePage(navController = navController,padding)
         }
 
         composable(NavRoutes.Tutorial.route) {
-            SearchProduct(navController = navController,
-                finProductViewModel,
-                padding)
+            Tutorial(navController = navController,padding)
         }
     }
 }

@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt' //Kapt is the "Kotlin Annotation Processing Tool" you need this, to generate annotated code in compile time
     id 'kotlin-parcelize'
+    id 'com.google.android.gms.oss-licenses-plugin'
+   // id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
 }
 
 android {
@@ -27,6 +29,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -80,6 +83,13 @@ dependencies {
     // For encrypting the room data base
     implementation "net.zetetic:android-database-sqlcipher:4.5.2"
     implementation "androidx.sqlite:sqlite:2.0.1"
+
+
+    // For License displaying
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
+    implementation("androidx.appcompat:appcompat:1.4.2")
+    // For loading and tinting drawables on older versions of the platform
+    implementation("androidx.appcompat:appcompat-resources:1.4.2")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

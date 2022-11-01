@@ -20,13 +20,12 @@ fun History(navController: NavHostController, viewModel: FinHistoryViewModel, pa
 
 }
 
-fun getScreenConfig4History():ScreenConfig {
-    //Log.e("HomeScvreen","getScreenConfig4Home");
-    return ScreenConfig(true,
-        true,
-        true,
-        true,
-        "History","",
-        "Clear all",
+fun getScreenConfig4History():ScreenConfig = //Log.e("HomeScvreen","getScreenConfig4Home");
+    ScreenConfig(
+        enableTopAppBar = true,
+        enableBottomAppBar = true,
+        enableDrawer = true,
+        enableFab = true,
+        topAppBarTitle = "   Deleted History", bottomAppBarTitle = "",
+        fabString = "Clear all",
     )
-}
