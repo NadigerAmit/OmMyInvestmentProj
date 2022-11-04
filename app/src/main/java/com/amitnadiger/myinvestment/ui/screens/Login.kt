@@ -46,7 +46,9 @@ fun LoginPage(navController: NavHostController,paddingValues: PaddingValues) {
                 .align(Alignment.BottomCenter)
                 .padding(20.dp),
             onClick = {
-                navController.navigate(NavRoutes.SignUp.route)
+                var triggeringScreen:String? = null
+                var launchScreen = NavRoutes.SignUp.route+ "/$triggeringScreen"
+                navController.navigate(launchScreen)
             },
             style = TextStyle(
                 fontSize = 14.sp,
@@ -62,7 +64,6 @@ fun LoginPage(navController: NavHostController,paddingValues: PaddingValues) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        val username = remember { mutableStateOf(TextFieldValue()) }
         val password = remember { mutableStateOf(TextFieldValue()) }
 
         //Text(text = "Login", style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive))
@@ -114,8 +115,6 @@ fun LoginPage(navController: NavHostController,paddingValues: PaddingValues) {
 fun isLoginAllowed(passwd:String,context: Context):Boolean {
     val dataStorageManager = DataStoreHolder.getDataStoreProvider(context,
         SECURE_DATASTORE,true)
-    val dataStorageManagerUnSecure = DataStoreHolder.getDataStoreProvider(context,
-        UNSECURE_DATASTORE,false)
     var isLoginOk = false
     runBlocking {
         Log.e("LogIn","passwd from user = $passwd")

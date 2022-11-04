@@ -12,7 +12,7 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 
 class EncrypterDecrypter(val context: Context, private val transformation: String) {
-    val TRANSFORMATION_SYMMETRIC = "AES/CBC/PKCS7Padding"
+    
 
     /**
      * This class wraps [Java Cipher] class apis with some additional possibilities.

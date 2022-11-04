@@ -37,12 +37,6 @@ data class SearchQuery(val searchByFieldValue: String,
                        val valueFieldValue: String)
 
 /*
-fun saveToDataStore(query: SearchQuery,dataStorageManager:UnsecureDataStore) {
-    val coroutineScope = CoroutineScope(Dispatchers.Main)
-    coroutineScope.launch {
-        dataStorageManager.saveSearchDataToDataStore(query)
-    }
-}
 
 fun getSearchQueryAsync( searchQueryLocal : Flow<SearchQuery>,dataStorageManager:UnsecureDataStore):SearchQuery? {
     val coroutineScope = CoroutineScope(Dispatchers.Main)

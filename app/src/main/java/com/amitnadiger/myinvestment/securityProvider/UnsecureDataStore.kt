@@ -60,6 +60,31 @@ class UnsecureDataStore(val context:Context, dataStoreName:String): IDataStore {
 
     }
 
+    override suspend fun removeKey(key: String,type:String) {
+        context.dataStore.edit {
+            when(type) {
+                "Bool" -> {
+                    it.remove(booleanPreferencesKey(key))
+                }
+                "Float" -> {
+                    it.remove(floatPreferencesKey(key))
+                }
+                "Int"-> {
+                    it.remove(intPreferencesKey(key))
+                }
+                "String"-> {
+                    it.remove(stringPreferencesKey(key))
+                }
+                "Double"-> {
+                    it.remove(doublePreferencesKey(key))
+                }
+                "Long"-> {
+                    it.remove(longPreferencesKey(key))
+                }
+            }
+        }
+    }
+
     override suspend fun putBool(key:String,value:Boolean) {
         context.dataStore.edit {
             it[booleanPreferencesKey(key)] = value
