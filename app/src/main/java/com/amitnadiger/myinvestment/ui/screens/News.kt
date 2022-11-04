@@ -7,7 +7,7 @@ import androidx.navigation.NavHostController
 
 
 @Composable
-fun TAndC(navController: NavHostController, paddingValues: PaddingValues) {
+fun News(navController: NavHostController, paddingValues: PaddingValues) {
 
 }
 

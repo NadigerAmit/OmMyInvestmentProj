@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.amitnadiger.myinvestment.ui.screens.*
 import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
 import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.SECURE_DATASTORE
@@ -16,7 +17,7 @@ import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
-private const val TAG = "SecDtaStrProvider"
+private const val TAG = "NavRoutes"
 sealed class NavRoutes(val route:String) {
 
      object Login : NavRoutes("login")
@@ -32,11 +33,14 @@ sealed class NavRoutes(val route:String) {
      object License : NavRoutes("license")
      object Profile : NavRoutes("profile")
      object Tutorial : NavRoutes("tutorial")
+     object UserSetting : NavRoutes("userSetting")
 }
+private var launchScreenCache:String? = null
 
 fun getLaunchScreen(context:Context):String {
     Log.i(TAG,"==>  getLaunchScreen ")
     val dataStorageManager = DataStoreHolder.getDataStoreProvider(context,SECURE_DATASTORE,true)
+
     var launchScreen = NavRoutes.SignUp.route
     runBlocking {
         val isRegistrationComplete = dataStorageManager.getBool("IS_REG_COMPLETE").first()
@@ -53,7 +57,8 @@ fun getLaunchScreen(context:Context):String {
         }
     }
     Log.i(TAG,"getLaunchScreen ==>")
-    return launchScreen
+   return launchScreen
+    //return NavRoutes.SignUp.route
 }
 
 @Composable
@@ -61,8 +66,16 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
                      finHistoryViewModel: FinHistoryViewModel,
                      padding: PaddingValues) {
     val context = LocalContext.current
-    val launchScreen = getLaunchScreen(context)
-    NavHost(navController = navController, startDestination = launchScreen) {
+
+
+   // Log.e(TAG,"ScreenNavigation -> navController.graph.route = ${navController.graph.route}")
+ //   Log.e(TAG,"ScreenNavigation -> navController.graph.startDestinationRoute = ${navController.graph.startDestinationRoute}")
+    if(launchScreenCache == null || launchScreenCache == NavRoutes.SignUp.route) {
+        launchScreenCache = getLaunchScreen(context)
+    }
+
+    Log.e(TAG,"Launch screen = $launchScreenCache")
+    NavHost(navController = navController, startDestination = launchScreenCache!!) {
         composable(NavRoutes.Login.route) {
             LoginPage(navController = navController,padding)
         }
@@ -122,7 +135,7 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
         }
 
         composable(NavRoutes.TC.route) {
-            TAndC(navController = navController,padding)
+            News(navController = navController,padding)
         }
 
         composable(NavRoutes.License.route) {
@@ -131,6 +144,10 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
 
         composable(NavRoutes.Tutorial.route) {
             Tutorial(navController = navController,padding)
+        }
+
+        composable(NavRoutes.UserSetting.route) {
+            UserSetting(navController = navController,padding)
         }
     }
 }

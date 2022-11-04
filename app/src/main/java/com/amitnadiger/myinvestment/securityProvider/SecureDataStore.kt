@@ -172,5 +172,38 @@ class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
         }
         decryptedStr
     }
+
+    override suspend fun removeKey(key: String,type:String) {
+        Log.e(TAG,"Key($key) is removed")
+        context.dataStore.edit {
+            when(type) {
+                "Bool" -> {
+                    it.remove(booleanPreferencesKey(key))
+                    boolMap.remove(key)
+                }
+                "Float" -> {
+                    it.remove(floatPreferencesKey(key))
+                    floatMap.remove(key)
+                }
+                "Int"-> {
+                    it.remove(intPreferencesKey(key))
+                    intMap.remove(key)
+                }
+                "String"-> {
+                    it.remove(stringPreferencesKey(key))
+                    stringMap.remove(key)
+                }
+                "Double"-> {
+                    it.remove(doublePreferencesKey(key))
+                    doubleMap.remove(key)
+                }
+                "Long"-> {
+                    it.remove(longPreferencesKey(key))
+                    longMap.remove(key)
+                }
+            }
+            it.remove(stringPreferencesKey("$key-IV"))
+        }
+    }
 }
 

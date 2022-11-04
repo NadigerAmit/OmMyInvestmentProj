@@ -16,4 +16,6 @@ interface IDataStore {
      suspend fun putBool(key:String,value:Boolean)
      suspend fun putDouble(key:String,value:Double)
      suspend fun putFloat(key:String,value:Float)
+
+     suspend fun removeKey(key:String,type:String)
 }

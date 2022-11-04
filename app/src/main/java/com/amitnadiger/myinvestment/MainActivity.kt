@@ -108,6 +108,10 @@ fun setupMainScreen() {
                 Log.e("MainActivity"," SignUp ->screen config")
                 getScreenConfig4SignUpScreen()
             }
+            "signUp/{id}" -> {
+                Log.e("MainActivity"," SignUp ->screen config")
+                getScreenConfig4SignUpScreen()
+            }
             "home" -> {
                 Log.e("MainActivity"," Home ->screen config")
                 getScreenConfig4Home()
@@ -125,31 +129,31 @@ fun setupMainScreen() {
                 getScreenConfig4SearchScreen()
             }
             "productDetail/{id}" -> {
-                Log.e("MainActivity"," productDetail ->screen config")
+                Log.e("MainActivity"," productDetail/{id} ->screen config")
                 getScreenConfig4ProductDetail()
             }
             "historyDetail/{id}" -> {
-                Log.e("MainActivity"," productDetail ->screen config")
+                Log.e("MainActivity"," historyDetail/{id} ->screen config")
                 getScreenConfig4HistoryProductDetail()
             }
             "setting" -> {
-                Log.e("MainActivity"," productDetail ->screen config")
+                Log.e("MainActivity"," setting ->screen config")
                 getScreenConfig4Setting()
             }
             "tc" -> {
-                Log.e("MainActivity"," productDetail ->screen config")
+                Log.e("MainActivity"," tc ->screen config")
                 getScreenConfig4TAndC()
             }
             "license" -> {
-                Log.e("MainActivity"," productDetail ->screen config")
+                Log.e("MainActivity","license ->screen config")
                 getScreenConfig4License()
             }
             "profile" -> {
-                Log.e("MainActivity"," productDetail ->screen config")
+                Log.e("MainActivity"," profile ->screen config")
                 getScreenConfig4Profile()
             }
             "tutorial" -> {
-                Log.e("MainActivity"," productDetail ->screen config")
+                Log.e("MainActivity"," tutorial ->screen config")
                 getScreenConfig4Tutorial()
             }
             //"searchProduct" -> getScreenConfig4Sea() todo

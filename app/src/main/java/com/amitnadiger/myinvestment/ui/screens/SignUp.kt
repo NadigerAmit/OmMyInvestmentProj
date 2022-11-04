@@ -4,10 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
@@ -41,14 +38,19 @@ import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.UNSECURE_DA
 import com.amitnadiger.myinvestment.utility.DateUtility
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
+
+
+private val TAG = "SignUpScreen"
 
 @Composable
 fun SignUpScreen(navController: NavHostController,
                  padding: PaddingValues) {
     val dateFormat = "yyyy-MM-dd"
-
+    Log.e(TAG,"SignUpScreen entered")
     var fullName by remember { mutableStateOf("") }
     var birthDate by remember { mutableStateOf( Calendar.getInstance()) }
     var isPasswordProtectRequired by remember { mutableStateOf(false) }
@@ -57,6 +59,8 @@ fun SignUpScreen(navController: NavHostController,
     var passwordHint1 by remember { mutableStateOf("") }
     var passwordHint2 by remember { mutableStateOf("") }
     var isAlreadyRegistered by remember { mutableStateOf(false) }
+    var isShowProfileUpdateScreenAllowed by remember { mutableStateOf(false) }
+
 
     val onFullNameTextChange = { text : String ->
         fullName = text
@@ -91,6 +95,15 @@ fun SignUpScreen(navController: NavHostController,
         isAlreadyRegistered = text
     }
 
+    val onExistingPasswordConfirm = { confirmPwd : Boolean ->
+        isShowProfileUpdateScreenAllowed = confirmPwd
+       // Log.e(TAG,"onExistingPasswordConfirm => confirmPwd - $confirmPwd")
+    }
+    Log.e(TAG,"onExistingPasswordConfirm => confirmPwd - $isShowProfileUpdateScreenAllowed")
+   // Log.e(TAG,"isTriggerFrom => confirmPwd - $isTriggerFrom")
+
+    val context = LocalContext.current
+
 
     val registerItemList = listOf(
        // Pair("Heading",Pair("") { _: String -> }),
@@ -112,104 +125,131 @@ fun SignUpScreen(navController: NavHostController,
         //Pair("Password Hint2",Pair(isAlreadyRegistered,onIsAlreadyRegisteredStateChange)),
     )
 
-    val context = LocalContext.current
+    val dataStorageManager = DataStoreHolder.getDataStoreProvider(context,SECURE_DATASTORE,true)
+    var isRegistrationComplete:Boolean? = null
+    var passwd:String? = null
+    runBlocking {
+        isRegistrationComplete = dataStorageManager.getBool("IS_REG_COMPLETE").first()
+        if(isRegistrationComplete == true) {
+            passwd = dataStorageManager.getString(PASSWORD).first()
+        }
 
-    LazyColumn(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(padding)
-    ) {
-        items(registerItemList) { items ->
-            when(items.first) {
-                "Heading" ->{
-                    Text(text = "Register Details ", style = TextStyle(fontSize = 30.sp))
-                }
-                "Save" ->{
-                    Button(onClick = {
-                        isAlreadyRegistered = true
-                        if(isPasswordProtectRequired) {
-                            if(!validatePassword(password,confirmPassword,context)
+    }
+    /*
+    if(isRegistrationComplete == true
+        && passwd != null
+        //&& isTriggerFrom == "UserProfileUpdate"
+        && !isShowProfileUpdateScreenAllowed ) {
+        //confirmPasswordScreen(passwd!!, onExistingPasswordConfirm)
+    } else {
+         isShowProfileUpdateScreenAllowed = true
+    }
+    //userDetailUpdateFragment(navController,registerItemList, padding,)
+
+     */
+
+
+ //   if(isShowProfileUpdateScreenAllowed) {
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(padding)
+        ) {
+            items(registerItemList) { items ->
+                when(items.first) {
+                    "Heading" -> {
+                        Text(text = "Register Details ", style = TextStyle(fontSize = 30.sp))
+                    }
+                    "Save" -> {
+                        Button(onClick = {
+                            isAlreadyRegistered = true
+                            when {
+                                isPasswordProtectRequired -> {
+                                    if(!validatePassword(password,confirmPassword,context)
                                         ||!validateBirtDate(birthDate,
-                                    "BirthDate Cant be future date",context)) {
-                                // Toast will be shown in the validate**
-                            } else {
-                                saveSingUpInfoInDataStore(context,fullName, DateUtility.getPickedDateAsString(
-                                    birthDate.get(Calendar.YEAR),
-                                    birthDate.get(Calendar.MONTH),
-                                    birthDate.get(Calendar.DAY_OF_MONTH),
-                                    com.amitnadiger.myinvestment.ui.screens.dateFormat
-                                ),isPasswordProtectRequired,
-                                    password,
-                                    passwordHint1,
-                                    passwordHint2,
-                                    isAlreadyRegistered)
+                                            "BirthDate Cant be future date",context)) {
+                                        // Toast will be shown in the validate**
+                                    } else {
+                                        saveSingUpInfoInDataStore(context,
+                                            fullName,
+                                            DateUtility.getPickedDateAsString(
+                                            birthDate.get(Calendar.YEAR),
+                                            birthDate.get(Calendar.MONTH),
+                                            birthDate.get(Calendar.DAY_OF_MONTH),
+                                            com.amitnadiger.myinvestment.ui.screens.dateFormat
+                                        ),isPasswordProtectRequired,
+                                            password,
+                                            passwordHint1,
+                                            passwordHint2)
 
-                                saveSingUpInfoInDataStoreInUnSecureDataStore(context,fullName, DateUtility.getPickedDateAsString(
-                                    birthDate.get(Calendar.YEAR),
-                                    birthDate.get(Calendar.MONTH),
-                                    birthDate.get(Calendar.DAY_OF_MONTH),
-                                    com.amitnadiger.myinvestment.ui.screens.dateFormat
-                                ),isPasswordProtectRequired,
-                                    password,
-                                    passwordHint1,
-                                    passwordHint2,
-                                    isAlreadyRegistered)
-                                navController.navigate(NavRoutes.Login.route)
+                                        navController.navigate(NavRoutes.Login.route)
+                                    }
+                                }
+                                else -> {
+                                    saveSingUpInfoInDataStore(context,fullName, DateUtility.getPickedDateAsString(
+                                        birthDate.get(Calendar.YEAR),
+                                        birthDate.get(Calendar.MONTH),
+                                        birthDate.get(Calendar.DAY_OF_MONTH),
+                                        com.amitnadiger.myinvestment.ui.screens.dateFormat
+                                    ),isPasswordProtectRequired,
+                                        password,
+                                        passwordHint1,
+                                        passwordHint2)
+                                    isShowProfileUpdateScreenAllowed = false
+                                    navController.navigate(NavRoutes.Home.route)
+                                }
                             }
-                        } else {
-                            saveSingUpInfoInDataStore(context,fullName, DateUtility.getPickedDateAsString(
-                                birthDate.get(Calendar.YEAR),
-                                birthDate.get(Calendar.MONTH),
-                                birthDate.get(Calendar.DAY_OF_MONTH),
-                                com.amitnadiger.myinvestment.ui.screens.dateFormat
-                            ),isPasswordProtectRequired,
-                                password,
-                                passwordHint1,
-                                passwordHint2,
-                                isAlreadyRegistered)
-                            navController.navigate(NavRoutes.Home.route)
+                        }) {
+                            Text("Save")
                         }
-                    }) {
-                        Text("Save")
                     }
-                }
-                "BirthDate"->
-                    CustomTextField(
-                        modifier = Modifier.clickable {
-                            DateUtility.showDatePickerDialog(context,items.second.first,dateFormat,items.second.second)
-                        },
-                        text = items.second.first,
-                        placeholder = items.first,
-                        onChange = {
-                                    if(validateBirtDate(birthDate,
-                                    "BirthDate Cant be future date",context)){
-                                        items.second.second
-                                    } },
-                        isEnabled = false,
-                        imeAction = ImeAction.Next
-                    )
-                "Password",
-                "Confirm Password" -> {
-                    if(isPasswordProtectRequired) {
+                    "BirthDate"->
                         CustomTextField(
-                            placeholder = items.first,
+                            modifier = Modifier.clickable {
+                                DateUtility.showDatePickerDialog(context,items.second.first,dateFormat,items.second.second)
+                            },
                             text = items.second.first,
-                            onChange = items.second.second,
-                            keyboardType = KeyboardType.Password,
-                            imeAction = ImeAction.Next,
-                            visualTransformationParam = PasswordVisualTransformation()
-
+                            placeholder = items.first,
+                            onChange = {
+                                if(validateBirtDate(birthDate,
+                                        "BirthDate Cant be future date",context)){
+                                    items.second.second
+                                } },
+                            isEnabled = false,
+                            imeAction = ImeAction.Next
                         )
-                    }
+                    "Password",
+                    "Confirm Password" -> {
+                        if(isPasswordProtectRequired) {
+                            CustomTextField(
+                                placeholder = items.first,
+                                text = items.second.first,
+                                onChange = items.second.second,
+                                keyboardType = KeyboardType.Password,
+                                imeAction = ImeAction.Next,
+                                visualTransformationParam = PasswordVisualTransformation()
 
-                }
-                "PasswordProtectionOnAppRestart" -> {
-                    LabelledCheckbox("PasswordProtectionForAppStart",onPasswordProtectRequiredFieldChange)
-                }
-                "Password Hint1",
-                "Password Hint2"-> {
-                    if(isPasswordProtectRequired){
+                            )
+                        }
+
+                    }
+                    "PasswordProtectionOnAppRestart" -> {
+                        LabelledCheckbox("PasswordProtectionForAppStart",isPasswordProtectRequired,onPasswordProtectRequiredFieldChange)
+                    }
+                    "Password Hint1",
+                    "Password Hint2"-> {
+                        if(isPasswordProtectRequired){
+                            CustomTextField(
+                                placeholder = items.first,
+                                text = items.second.first,
+                                onChange = items.second.second,
+                                keyboardType = KeyboardType.Text,
+                                imeAction = ImeAction.Next
+                            )
+                        }
+                    }
+                    else ->{
                         CustomTextField(
                             placeholder = items.first,
                             text = items.second.first,
@@ -219,21 +259,13 @@ fun SignUpScreen(navController: NavHostController,
                         )
                     }
                 }
-                else ->{
-                    CustomTextField(
-                        placeholder = items.first,
-                        text = items.second.first,
-                        onChange = items.second.second,
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next
-                    )
-                }
             }
         }
-    }
+   // }
+
 }
 
-private fun validateBirtDate(investmentDate: Calendar, toastMessage:String,context:Context):Boolean {
+ fun validateBirtDate(investmentDate: Calendar, toastMessage:String,context:Context):Boolean {
     val currentDate = Calendar.getInstance()
     if(investmentDate.timeInMillis > currentDate.timeInMillis) {
         Toast.makeText(context, toastMessage, Toast.LENGTH_LONG)
@@ -243,7 +275,8 @@ private fun validateBirtDate(investmentDate: Calendar, toastMessage:String,conte
     return true
 }
 
-private fun validatePassword(password: String,confirmPassword:String,context:Context):Boolean {
+ fun validatePassword(password: String,confirmPassword:String,context:Context):Boolean {
+     Log.e("validatePassword","password = $password and confirmPassword = $confirmPassword")
     if(password != confirmPassword) {
         Toast.makeText(context, "Mismatch between Password and Confirm Password field ", Toast.LENGTH_LONG)
             .show()
@@ -268,22 +301,33 @@ data class SignUpData(val fullName:String,
 fun saveSingUpInfoInDataStore(context:Context,fullName:String,
                                 dob:String,isPasswordProtectionReq:Boolean,
                                 password:String,passwordHint1:String,
-                              passwordHint2:String,
-                                isRegistrationComplete:Boolean) {
+                              passwordHint2:String) {
 
     val dataStoreProvider = DataStoreHolder.getDataStoreProvider(context,SECURE_DATASTORE,true)
     val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     coroutineScope.launch {
+        dataStoreProvider.putBool(IS_PASS_PROTECTION_REQ,isPasswordProtectionReq)
         dataStoreProvider.putString(FULL_NAME,fullName)
         dataStoreProvider.putString(DOB,dob)
-        dataStoreProvider.putString(PASSWORD,password)
-        dataStoreProvider.putString(PASSWORD_HINT1,passwordHint1)
-        dataStoreProvider.putString(PASSWORD_HINT2,passwordHint2)
-        dataStoreProvider.putBool(IS_PASS_PROTECTION_REQ,isPasswordProtectionReq)
-        dataStoreProvider.putBool(IS_REG_COMPLETE,isRegistrationComplete)
+        dataStoreProvider.putBool(IS_REG_COMPLETE,true)
+    }
+
+    if(isPasswordProtectionReq) {
+        coroutineScope.launch {
+            dataStoreProvider.putString(PASSWORD,password)
+            dataStoreProvider.putString(PASSWORD_HINT1,passwordHint1)
+            dataStoreProvider.putString(PASSWORD_HINT2,passwordHint2)
+        }
+    } else {
+        coroutineScope.launch {
+            dataStoreProvider.removeKey(PASSWORD,"String")
+            dataStoreProvider.removeKey(PASSWORD_HINT1,"String")
+            dataStoreProvider.removeKey(PASSWORD_HINT2,"String")
+        }
 
     }
+
 }
 
 fun saveSingUpInfoInDataStoreInUnSecureDataStore(context:Context,
@@ -312,19 +356,21 @@ fun saveSingUpInfoInDataStoreInUnSecureDataStore(context:Context,
 
 fun getScreenConfig4SignUpScreen():ScreenConfig {
     Log.e("Login","getScreenConfig4SignUpScrean");
-    return ScreenConfig(true,
-        false,
-        false,
-        false,
-        "Register Details","",
-        "",
+    return ScreenConfig(
+        enableTopAppBar = true,
+        enableBottomAppBar = false,
+        enableDrawer = false,
+        enableFab = false,
+        topAppBarTitle = "UserProfileSetting",
+        bottomAppBarTitle = "",
+        fabString = "",
     )
 }
 
 @Composable
-fun LabelledCheckbox(textString:String,onChange: (Boolean) -> Unit = {},) {
+fun LabelledCheckbox(textString:String,ischecked:Boolean,onChange: (Boolean) -> Unit = {},) {
     Row(modifier = Modifier.padding(8.dp)) {
-        val isChecked = remember { mutableStateOf(false) }
+        val isChecked = remember { mutableStateOf(ischecked?:false) }
 
         Checkbox(
             checked = isChecked.value,

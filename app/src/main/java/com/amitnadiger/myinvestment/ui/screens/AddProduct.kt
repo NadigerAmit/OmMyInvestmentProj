@@ -56,20 +56,22 @@ fun AddProduct(navController: NavHostController,viewModel: FinProductViewModel,p
 fun getScreenConfig4AddProduct():ScreenConfig {
     Log.e("AddProduct","getScreenConfig4AddProduct");
     if(!isRecordInUpdateMode.value) {
-        return ScreenConfig(true,
-            true,
-            true,
-            false,
-            "Add Investment","",
-            "",
+        return ScreenConfig(
+            enableTopAppBar = true,
+            enableBottomAppBar = true,
+            enableDrawer = true,
+            enableFab = false,
+            topAppBarTitle = "Add Investment", bottomAppBarTitle = "",
+            fabString = "",
         )
     }
-    return ScreenConfig(true,
-        true,
-        true,
-        false,
-        "Update Investment","",
-        "",)
+    return ScreenConfig(
+        enableTopAppBar = true,
+        enableBottomAppBar = true,
+        enableDrawer = true,
+        enableFab = false,
+        topAppBarTitle = "Update Investment", bottomAppBarTitle = "",
+        fabString = "",)
 }
 
 
@@ -239,25 +241,25 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                                         nomineeName
                                     )
                                 )
+                                navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber") {
+                                    // Pop up to the start destination of the graph to
+                                    // avoid building up a large stack of destinations
+                                    // on the back stack as users select items
+                                    navController.graph.startDestinationRoute?.let { route ->
+                                        popUpTo(route) {
+                                            saveState = true
+                                        }
+                                    }
+                                    // Avoid multiple copies of the same destination when
+                                    // reselecting the same item
+                                    launchSingleTop = true
+                                    // Restore state when reselecting a previously selected item
+                                    restoreState = true
+                                }
                             }
                             isRecordInUpdateMode.value = false
                             Toast.makeText(context, "Saving to DB", Toast.LENGTH_LONG)
                                 .show()
-                            navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber") {
-                                // Pop up to the start destination of the graph to
-                                // avoid building up a large stack of destinations
-                                // on the back stack as users select items
-                                navController.graph.startDestinationRoute?.let { route ->
-                                    popUpTo(route) {
-                                        saveState = true
-                                    }
-                                }
-                                // Avoid multiple copies of the same destination when
-                                // reselecting the same item
-                                launchSingleTop = true
-                                // Restore state when reselecting a previously selected item
-                                restoreState = true
-                            }
                         }
                     }) {
                         Text("Save")
@@ -412,52 +414,3 @@ fun CustomTextField1(
             fontSize = 20.sp)
     )
 }
-/*
-@Composable
-private fun CustomTextFieldWithBasicText(
-    leadingIcon: (@Composable () -> Unit)? = null,
-    trailingIcon: (@Composable () -> Unit)? = null,
-    modifier: Modifier = Modifier,
-    placeholderText: String = "Placeholder",
-    fontSize: TextUnit = MaterialTheme.typography.body2.fontSize
-) {
-    var text by rememberSaveable { mutableStateOf("") }
-    BasicTextField(modifier = modifier
-        .background(
-            MaterialTheme.colors.surface,
-            MaterialTheme.shapes.small,
-        )
-        .fillMaxWidth(),
-        value = text,
-        onValueChange = {
-            text = it
-        },
-        singleLine = true,
-        cursorBrush = SolidColor(MaterialTheme.colors.primary),
-        textStyle = LocalTextStyle.current.copy(
-            color = MaterialTheme.colors.onSurface,
-            fontSize = fontSize
-        ),
-        decorationBox = { innerTextField ->
-            Row(
-                modifier,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if (leadingIcon != null) leadingIcon()
-                Box(Modifier.weight(1f)) {
-                    if (text.isEmpty()) Text(
-                        placeholderText,
-                        style = LocalTextStyle.current.copy(
-                            color = MaterialTheme.colors.onSurface.copy(alpha = 0.3f),
-                            fontSize = fontSize
-                        )
-                    )
-                    innerTextField()
-                }
-                if (trailingIcon != null) trailingIcon()
-            }
-        }
-    )
-}
-
- */

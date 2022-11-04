@@ -15,9 +15,12 @@ import com.amitnadiger.myinvestment.R
 import kotlinx.coroutines.CoroutineScope
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 
 import androidx.compose.runtime.getValue
@@ -39,14 +42,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navController: NavController) {
-    val items = listOf(
+    val settingItems = listOf(
         NavDrawerItem.Home,
         NavDrawerItem.History,
-        NavDrawerItem.License,
-        NavDrawerItem.Tc,
-        NavDrawerItem.Profile,
         NavDrawerItem.Settings,
-        NavDrawerItem.Tutorial
+        NavDrawerItem.News,
+        NavDrawerItem.Tutorial,
+        NavDrawerItem.License,
+        NavDrawerItem.Faq,
     )
     Column(
         modifier = Modifier
@@ -70,29 +73,35 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
         // List of navigation items
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-        items.forEach { item ->
-            DrawerItem(item = item, selected = currentRoute == item.route, onItemClick = {
-                navController.navigate(item.route) {
-                    // Pop up to the start destination of the graph to
-                    // avoid building up a large stack of destinations
-                    // on the back stack as users select items
-                    navController.graph.startDestinationRoute?.let { route ->
-                        popUpTo(route) {
-                            saveState = true
+
+        LazyColumn(
+            Modifier
+                .fillMaxWidth()
+        ) {
+            items(settingItems) { items ->
+                DrawerItem(item = items, selected = currentRoute == items.route, onItemClick = {
+                    navController.navigate(items.route) {
+                        // Pop up to the start destination of the graph to
+                        // avoid building up a large stack of destinations
+                        // on the back stack as users select items
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route) {
+                                saveState = true
+                            }
                         }
+                        // Avoid multiple copies of the same destination when
+                        // reselecting the same item
+                        launchSingleTop = true
+                        // Restore state when reselecting a previously selected item
+                        restoreState = true
                     }
-                    // Avoid multiple copies of the same destination when
-                    // reselecting the same item
-                    launchSingleTop = true
-                    // Restore state when reselecting a previously selected item
-                    restoreState = true
-                }
-                // Close drawer
-                scope.launch {
-                    scaffoldState.drawerState.close()
-                }
-            })
+                    scope.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                })
+            }
         }
+
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = "Nadiger Ventures ",
