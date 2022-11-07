@@ -1,10 +1,12 @@
 package com.amitnadiger.myinvestment.ui.scaffold
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
+import com.amitnadiger.myinvestment.BaseApplication
 import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.ui.screens.ScreenConfig
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
@@ -15,7 +17,8 @@ import kotlinx.coroutines.launch
 fun ScaffoldImpl(navController: NavHostController,
                  finProductViewModel: FinProductViewModel,
                  finHistoryViewModel: FinHistoryViewModel,
-                 screenConfig: ScreenConfig) {
+                 screenConfig: ScreenConfig,context: Context
+) {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     val scope = rememberCoroutineScope()
 
@@ -61,7 +64,7 @@ fun ScaffoldImpl(navController: NavHostController,
         },
 
         bottomBar = {
-            BottomBar(screenConfig) },
+            BottomBar(screenConfig,context) },
         drawerContent = {
             //Drawer(screenConfig,navController)
             //RischDrawer()

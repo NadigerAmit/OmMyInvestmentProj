@@ -37,7 +37,7 @@ fun Drawer(screenConfig: ScreenConfig,navController: NavHostController) {
     if (screenConfig.enableDrawer) {
         Column(
             Modifier
-                .background(Color.White)
+                //.background(Color.White)
                 .fillMaxSize()
         ) {
             // Repeat is a loop which
@@ -63,7 +63,7 @@ fun Drawer(screenConfig: ScreenConfig,navController: NavHostController) {
                             fontSize = 14.sp,
                             fontFamily = FontFamily.Default,
                             //textDecoration = TextDecoration.Underline,
-                            color = Purple700
+                           // color = Purple700
                         )
                     )
                 }

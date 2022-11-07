@@ -24,15 +24,21 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
 import com.amitnadiger.myinvestment.ui.theme.MyInvestmentTheme
 
 import com.amitnadiger.myinvestment.ui.scaffold.ScaffoldImpl
 import com.amitnadiger.myinvestment.ui.screens.*
+import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4DisplaySetting
+import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4Setting
+import com.amitnadiger.myinvestment.utility.DataStoreConst
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModelFactory
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModelFactory
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 @SuppressLint("StaticFieldLeak")
 
@@ -40,13 +46,13 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 class MainActivity : ComponentActivity() {
     val TAG = "MainActivity"
 
-    //lateinit var dataStoreProvider: UnsecureDataStore
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //DataStoreHolder.initializeDataStoreManager(this@MainActivity)
         setContent {
-            MyInvestmentTheme {
+            MyInvestmentTheme(darkTheme = BaseApplication.isDark.value) {
 
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -156,6 +162,13 @@ fun setupMainScreen() {
                 Log.e("MainActivity"," tutorial ->screen config")
                 getScreenConfig4Tutorial()
             }
+            "userSetting" ->{
+                getScreenConfig4UserSetting()
+            }
+            "displaySetting" ->{
+                getScreenConfig4DisplaySetting()
+            }
+
             //"searchProduct" -> getScreenConfig4Sea() todo
             else -> {
                 Log.e("MainActivity"," Else  ->screen config")
@@ -165,7 +178,8 @@ fun setupMainScreen() {
 
         }
         ScaffoldImpl(navController = navController,
-            productViewModel,historyViewModel,screenConfig)
+            productViewModel,historyViewModel,
+            screenConfig,LocalContext.current.applicationContext)
     }
 }
 /*

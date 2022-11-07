@@ -18,5 +18,6 @@ class DataStoreConst {
         const val PASSWORD_HINT1 = "PASSWORD_HINT1"
         const val PASSWORD_HINT2 = "PASSWORD_HINT2"
         const val DB_PASSCODE = "DB_PASSCODE"
+        const val IS_DARK_MODE = "IS_DARK_MODE"
     }
 }

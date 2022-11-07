@@ -127,11 +127,13 @@ fun isLoginAllowed(passwd:String,context: Context):Boolean {
 
 fun getScreenConfig4Login():ScreenConfig {
     Log.e("Login","getScreenConfig4Login");
-    return ScreenConfig(false,
-        false,
-        false,
-        false,
-        "","",
-        "",
+    return ScreenConfig(
+        enableTopAppBar = false,
+        enableBottomAppBar = false,
+        enableDrawer = false,
+        enableFab = false,
+        enableAction = false,
+        topAppBarTitle = "", bottomAppBarTitle = "",
+        fabString = "",
     )
 }
