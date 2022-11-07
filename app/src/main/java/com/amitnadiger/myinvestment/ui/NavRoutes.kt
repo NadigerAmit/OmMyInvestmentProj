@@ -10,7 +10,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.amitnadiger.myinvestment.ui.screens.*
+import com.amitnadiger.myinvestment.ui.screens.setting.SettingPage
 import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
+import com.amitnadiger.myinvestment.ui.screens.setting.DisplaySetting
 import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.SECURE_DATASTORE
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
@@ -34,6 +36,8 @@ sealed class NavRoutes(val route:String) {
      object Profile : NavRoutes("profile")
      object Tutorial : NavRoutes("tutorial")
      object UserSetting : NavRoutes("userSetting")
+     object DisplaySetting : NavRoutes("displaySetting")
+
 }
 private var launchScreenCache:String? = null
 
@@ -148,6 +152,10 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
 
         composable(NavRoutes.UserSetting.route) {
             UserSetting(navController = navController,padding)
+        }
+
+        composable(NavRoutes.DisplaySetting.route) {
+            DisplaySetting(navController = navController,padding)
         }
     }
 }

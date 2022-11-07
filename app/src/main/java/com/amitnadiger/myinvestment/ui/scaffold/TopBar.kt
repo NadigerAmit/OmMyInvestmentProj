@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.amitnadiger.myinvestment.ui.screens.ScreenConfig
 
 @Composable
@@ -28,8 +30,9 @@ fun TopBar(screenConfig: ScreenConfig,
             // Provide Title
 
             title = {
-                Text(text = screenConfig.topAppBarTitle, color = Color.Black,
-                modifier = Modifier.padding(start = 35.dp)
+                Text(text = screenConfig.topAppBarTitle, color = MaterialTheme.colors.primary,
+                    fontSize = 30.sp,
+                modifier = Modifier.padding(start = 30.dp)
             )},
            // backgroundColor = Color(0xFFC0E8D5),
             // Provide the navigation Icon (Icon on the left to toggle drawer)
@@ -43,13 +46,15 @@ fun TopBar(screenConfig: ScreenConfig,
                         // When clicked trigger onClick
                         // Callback to trigger drawer open
                         modifier = Modifier.clickable(onClick = onMenuClicked),
-                        tint = Black
+                        tint = MaterialTheme.colors.primary
                     )
                 }
             },
 
             actions = {
-                if(screenConfig.enableDrawer){
+
+                if(screenConfig.enableDrawer &&
+                   screenConfig.enableAction) {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "search",
@@ -59,12 +64,12 @@ fun TopBar(screenConfig: ScreenConfig,
                         modifier = Modifier.
                         clickable(onClick = onSearchClicked)
                             .wrapContentWidth(Alignment.Start),
-                        tint = Black
+                        tint = MaterialTheme.colors.primary
                     )
                 }
             },
             // background color of topAppBar
-            backgroundColor = Color.White
+            backgroundColor = MaterialTheme.colors.background
         )
     }
 

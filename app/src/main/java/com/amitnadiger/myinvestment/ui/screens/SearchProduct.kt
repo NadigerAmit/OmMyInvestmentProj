@@ -144,7 +144,7 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
                 .padding(padding)
         ) {
             searchByField = DropDownBox(searchFieldList,"Search by",280.dp,searchByFieldValue.value)
-            operationField = DropDownBox(getOperationList(searchByField),"Operation",130.dp,operationFieldValue.value)
+            operationField = DropDownBox(getOperationList(searchByField),"Operation",150.dp,operationFieldValue.value)
             valueField = DropDownBox(getValuesList(searchByField,allProducts),"Value",280.dp,valueFieldValue.value)
 
             searchByFieldValue.value = searchByField
@@ -351,28 +351,29 @@ fun getValuesList(fieldName:String,allProducts: List<Product>,):List<String> {
 }
 
 fun getOperationList(searchFieldList:String):List<String> {
-    val operationFieldList = listOf("=",
-        "!=",
+    val operationFieldList = listOf("=", "!=",
         ">=",
         ">", "<",
         "<="
     )
-        when(searchFieldList) {
-            "accountNumber",
-            "financialInstitutionName",
-            "productType",
-            "investorName",
-            "nomineeName" -> return listOf("=","!=")
-        }
+    when(searchFieldList) {
+        "accountNumber",
+        "financialInstitutionName",
+        "productType",
+        "investorName",
+        "nomineeName" -> return listOf("=","!=")
+    }
     return operationFieldList
 }
 fun getScreenConfig4SearchScreen():ScreenConfig {
     Log.e("SearchScreen","getScreenConfig4SearchScreen");
-    return ScreenConfig(true,
-        true,
-        false,
-        true,
-        "Search Investment","",
-        "search",
+    return ScreenConfig(
+        enableTopAppBar = true,
+        enableBottomAppBar = true,
+        enableDrawer = false,
+        enableFab = true,
+        enableAction = false,
+        topAppBarTitle = "SearchInvestment", bottomAppBarTitle = "",
+        fabString = "search",
     )
 }

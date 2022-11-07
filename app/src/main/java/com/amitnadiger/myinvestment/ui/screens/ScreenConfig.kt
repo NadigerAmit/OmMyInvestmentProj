@@ -7,6 +7,7 @@ data class ScreenConfig(
     val enableBottomAppBar:Boolean,
     val enableDrawer:Boolean,
     val enableFab:Boolean,
+    val enableAction:Boolean = false,
     val topAppBarTitle:String,
     val bottomAppBarTitle:String,
     val fabString:String,

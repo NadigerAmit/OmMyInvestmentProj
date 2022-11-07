@@ -105,7 +105,7 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = "Nadiger Ventures ",
-            color = Color.White,
+           // color = Color.White,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
@@ -125,7 +125,7 @@ fun DrawerItem(item: NavDrawerItem, selected: Boolean, onItemClick: (NavDrawerIt
             .fillMaxWidth()
             .clickable(onClick = { onItemClick(item) })
             .height(45.dp)
-            .background(colorResource(id = background))
+           // .background(colorResource(id = background))
             .padding(start = 10.dp)
     ) {
 
@@ -143,7 +143,7 @@ fun DrawerItem(item: NavDrawerItem, selected: Boolean, onItemClick: (NavDrawerIt
         Text(
             text = item.title,
             fontSize = 20.sp,
-            color = Color.White
+          //  color = Color.White
         )
     }
 }

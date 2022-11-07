@@ -13,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -294,184 +295,16 @@ fun confirmPasswordScreen(existingPasswd:String,onPasswdConfirm: (Boolean) -> Un
     }
 }
 
-@Composable
-fun userDetailUpdateFragment(navController: NavHostController,
-                             registerItemList: List<Pair<String, Pair<String, (String) -> Unit>>>,
-                             padding: PaddingValues) {
-    var fullName by remember { mutableStateOf("") }
-    var birthDate by remember { mutableStateOf( Calendar.getInstance()) }
-    var isPasswordProtectRequired by remember { mutableStateOf(false) }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-    var passwordHint1 by remember { mutableStateOf("") }
-    var passwordHint2 by remember { mutableStateOf("") }
-
-    val onPasswordProtectRequiredFieldChange = { isEnable : Boolean ->
-        isPasswordProtectRequired = isEnable
-    }
-    val regMap = registerItemList.toMap()
-/*
-    LaunchedEffect(Unit) {
-        fullName = regMap["Full Name"]!!.first
-        //birthDate = regMap["BirthDate"]!!.first
-        password = regMap["Password"]!!.first
-        confirmPassword = regMap["Password"]!!.first
-        passwordHint1 = regMap["Password Hint1"]!!.first
-        passwordHint2 = regMap["Password Hint2"]!!.first
-    }
-
- */
-
-    val context = LocalContext.current
-    LazyColumn(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(padding)
-    ) {
-        val dataStorageManager = DataStoreHolder.getDataStoreProvider(context,
-            DataStoreConst.SECURE_DATASTORE,true)
-        var isAlreadyRegistered:Boolean = false
-        items(registerItemList) { items ->
-            when(items.first) {
-                "Heading" -> {
-                    Text(text = "Register Details ", style = TextStyle(fontSize = 30.sp))
-                }
-                "Save" -> {
-                    Button(onClick = {
-                        isAlreadyRegistered = true
-                        when {
-                            isPasswordProtectRequired -> {
-                                if(!validatePassword(password,confirmPassword,context)
-                                    ||!validateBirtDate(birthDate,
-                                        "BirthDate Cant be future date",context)) {
-                                    // Toast will be shown in the validate**
-                                    navController.navigate(NavRoutes.Setting.route)
-                                } else {
-                                    saveSingUpInfoInDataStore(context,
-                                        fullName,
-                                        DateUtility.getPickedDateAsString(
-                                            birthDate.get(Calendar.YEAR),
-                                            birthDate.get(Calendar.MONTH),
-                                            birthDate.get(Calendar.DAY_OF_MONTH),
-                                            dateFormat
-                                        ),isPasswordProtectRequired,
-                                        password,
-                                        passwordHint1,
-                                        passwordHint2)
-                                    navController.navigate(NavRoutes.Setting.route)
-
-                                }
-                            }
-                            else -> {
-                                saveSingUpInfoInDataStore(context,fullName, DateUtility.getPickedDateAsString(
-                                    birthDate.get(Calendar.YEAR),
-                                    birthDate.get(Calendar.MONTH),
-                                    birthDate.get(Calendar.DAY_OF_MONTH),
-                                    dateFormat
-                                ),isPasswordProtectRequired,
-                                    password,
-                                    passwordHint1,
-                                    passwordHint2)
-                               // isShowProfileUpdateScreenAllowed = false
-                                navController.navigate(NavRoutes.Setting.route)
-                            }
-                        }
-                    }) {
-                        Text("Save")
-                    }
-                }
-                "BirthDate"->
-                    CustomTextField(
-                        modifier = Modifier.clickable {
-                            DateUtility.showDatePickerDialog(context,items.second.first,dateFormat,items.second.second)
-                        },
-                        text = items.second.first,
-                        placeholder = items.first,
-                        onChange = {
-                            if(validateBirtDate(birthDate,
-                                    "BirthDate Cant be future date",context)){
-                                items.second.second
-                            } },
-                        isEnabled = false,
-                        imeAction = ImeAction.Next
-                    )
-                "Password",
-                "Confirm Password" -> {
-                    if(isPasswordProtectRequired) {
-
-                        CustomTextField(
-                            placeholder = items.first,
-                            text = items.second.first,
-                            onChange = items.second.second,
-                            keyboardType = KeyboardType.Password,
-                            imeAction = ImeAction.Next,
-                            visualTransformationParam = PasswordVisualTransformation()
-
-                        )
-                    }
-
-                }
-                "PasswordProtectionOnAppRestart" -> {
-                    LabelledCheckbox("PasswordProtectionForAppStart",isPasswordProtectRequired,onPasswordProtectRequiredFieldChange)
-                }
-                "Password Hint1",
-                "Password Hint2"-> {
-                    if(isPasswordProtectRequired){
-                        CustomTextField(
-                            placeholder = items.first,
-                            text = items.second.first,
-                            onChange = items.second.second,
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Next
-                        )
-                    }
-                }
-                else ->{
-                    CustomTextField(
-                        placeholder = items.first,
-                        text = items.second.first,
-                        onChange = items.second.second,
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next
-                    )
-                }
-            }
-        }
-    }
+fun getScreenConfig4UserSetting():ScreenConfig {
+    //Log.e("HomeScvreen","getScreenConfig4Home");
+    return ScreenConfig(
+        enableTopAppBar = true,
+        enableBottomAppBar = false,
+        enableDrawer = true,
+        enableFab = false,
+        topAppBarTitle = "UserSettings", bottomAppBarTitle = "",
+        fabString = "add",
+        fabColor = Color.Red
+    )
 }
 
-@Composable
-fun confirmPasswordScreen1(existingPasswd:String,onPasswdConfirm: (Boolean) -> Unit = {}, ) {
-    var password by remember { mutableStateOf("") }
-    val onPasswordTextChange = { text : String ->
-        password = text
-    }
-    Log.e("ConfirmPasswd","existingPasswd = $existingPasswd")
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-        //.padding(padding)
-    ) {
-        CustomTextField(
-            placeholder = "Enter current password",
-            text = password,
-            onChange = onPasswordTextChange ,
-            keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Next,
-            visualTransformationParam = PasswordVisualTransformation()
-
-        )
-        Button(onClick = {
-            if(existingPasswd.isEmpty()) {
-                onPasswdConfirm(true)
-            }
-            if(existingPasswd == password) {
-                onPasswdConfirm(true)
-            }
-        }) {
-            Text("Confirm")
-        }
-    }
-}

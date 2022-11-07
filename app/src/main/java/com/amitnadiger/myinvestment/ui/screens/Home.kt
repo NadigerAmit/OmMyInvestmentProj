@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.room.Product
+import com.amitnadiger.myinvestment.ui.screens.ScreenConfigConst.Companion.DARK_MODE
+import com.amitnadiger.myinvestment.ui.screens.ScreenConfigConst.Companion.LIGHT_MODE
 import com.amitnadiger.myinvestment.utility.*
 import com.amitnadiger.myinvestment.utility.DateUtility.Companion.getNumberOfDaysBetweenTwoDays
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
@@ -30,7 +32,8 @@ fun Home(navController: NavHostController,viewModel: FinProductViewModel,padding
         allProducts = allProducts,
        // searchResults = searchResults,
           padding,
-      "ProductDetail")
+      "ProductDetail"
+      )
 
 }
 fun getScreenConfig4Home():ScreenConfig {
@@ -40,6 +43,7 @@ fun getScreenConfig4Home():ScreenConfig {
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = true,
+        enableAction = true,
         topAppBarTitle = "My-Investments", bottomAppBarTitle = "",
         fabString = "add",
         fabColor = Color.Red

@@ -18,6 +18,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -28,7 +29,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavHostController
+import com.amitnadiger.myinvestment.BaseApplication
+import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
 import com.amitnadiger.myinvestment.ui.NavRoutes
+import com.amitnadiger.myinvestment.ui.screens.ScreenConfigConst.Companion.DARK_MODE
+import com.amitnadiger.myinvestment.ui.screens.ScreenConfigConst.Companion.LIGHT_MODE
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 private val TAG = "ProductDetail"
 fun truncateString(input:String):String {
@@ -57,17 +64,17 @@ fun TitleRow(head1: String, head2: String, head3: String) {
             modifier = Modifier
                 .weight(0.2f)
                 .background(MaterialTheme.colors.primary)
-                .border(width = 1.dp, color = Color.Gray))
+                .border(width = 1.dp, color = Color.Black))
         Text(head2, color = Color.White,
             modifier = Modifier
                 .weight(0.2f)
                 .background(MaterialTheme.colors.primary)
-                .border(width = 1.dp, color = Color.Gray))
+                .border(width = 1.dp, color = Color.Black))
         Text(head3, color = Color.White,
             modifier = Modifier
                 .weight(0.2f)
                 .background(MaterialTheme.colors.primary)
-                .border(width = 1.dp, color = Color.Gray))
+                .border(width = 1.dp, color = Color.Black))
     }
 }
 
@@ -82,12 +89,15 @@ fun SummaryRow(summaryField:String,
             .padding(3.dp)
 
     ) {
-        Text(summaryField,color = textColor ,modifier = Modifier
+        //Text(summaryField,color = textColor ,modifier = Modifier
+        Text(summaryField,modifier = Modifier
             .weight(0.2f)
-            .border(width = 1.dp, color = Color.Black))
-        Text(summaryValue ,color = textColor, modifier = Modifier
+            .border(width = 1.dp, color = MaterialTheme.colors.secondaryVariant))
+        //Text(summaryField,color = textColor ,modifier = Modifier
+        Text(summaryValue , modifier = Modifier
             .weight(0.2f)
-            .border(width = 1.dp, color = Color.Black))
+            .border(width = 1.dp, color = MaterialTheme.colors.secondaryVariant))
+
     }
 }
 
@@ -98,21 +108,52 @@ fun ProductRow(accountNumber:String,
                ThirdColumn: String,
                navController: NavHostController,
                textColor: Color = Color.Black,
-               parentScreen:String
+               parentScreen:String,
 ) {
+
+    var cellBorderWidth:Dp = .4.dp
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(3.dp)
+            .padding(start = 3.dp,end = 3.dp, top = 0.dp, bottom = 0.dp)
             .clickable {
                 Log.e(TAG, "Jai shree Ram Row is clicked , parentScreen = $parentScreen  " +
                         "and accountNumber = $accountNumber")
                 when(parentScreen) {
                     "HistoryProductDetail" -> {
-                        navController.navigate(NavRoutes.HistoryProductDetail.route + "/$accountNumber")
+                        navController.navigate(NavRoutes.HistoryProductDetail.route + "/$accountNumber") {
+                            // Pop up to the start destination of the graph to
+                            // avoid building up a large stack of destinations
+                            // on the back stack as users select items
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
+                            }
+                            // Avoid multiple copies of the same destination when
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            //restoreState = true
+                        }
                     }
                     "ProductDetail" ->{
-                        navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber")
+                        navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber") {
+                            // Pop up to the start destination of the graph to
+                            // avoid building up a large stack of destinations
+                            // on the back stack as users select items
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
+                            }
+                            // Avoid multiple copies of the same destination when
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            //restoreState = true
+                        }
                     }
                 }
 
@@ -120,13 +161,20 @@ fun ProductRow(accountNumber:String,
     ) {
         Text(FirstColumn,color = textColor ,modifier = Modifier
             .weight(0.2f)
-            .border(width = 1.dp, color = Color.LightGray))
+           // .background(backgroundColor)
+            .border(width = cellBorderWidth, color = MaterialTheme.colors.primary)
+        )
         Text(SecondColumn ,color = textColor, modifier = Modifier
             .weight(0.2f)
-            .border(width = 1.dp, color = Color.LightGray))
+            //.background(backgroundColor)
+            //.border(width = cellBorderWidth)
+            .border(width = cellBorderWidth, color = MaterialTheme.colors.primary)
+        )
         Text(ThirdColumn ,color = textColor, modifier = Modifier
             .weight(0.2f)
-            .border(width = 1.dp, color = Color.LightGray))
+            //.background(backgroundColor)
+            .border(width = cellBorderWidth, color = MaterialTheme.colors.primary)
+        )
         //   Text(InvestorDetail, modifier = Modifier.weight(0.2f).border(width = 1.dp, color = Color.Black))
     }
 }

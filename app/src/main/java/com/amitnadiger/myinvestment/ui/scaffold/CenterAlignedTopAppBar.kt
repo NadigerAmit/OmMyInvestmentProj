@@ -27,7 +27,7 @@ fun CenterAlignedTopBar(screenConfig: ScreenConfig,
         .width(72.dp - appBarHorizontalPadding)
 
     TopAppBar(
-        backgroundColor = Color.Transparent,
+        //backgroundColor = Color.Transparent,
         elevation = 0.dp,
         modifier= Modifier.fillMaxWidth()) {
 

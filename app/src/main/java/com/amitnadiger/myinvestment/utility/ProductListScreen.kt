@@ -8,14 +8,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.amitnadiger.myinvestment.BaseApplication
 import com.amitnadiger.myinvestment.room.Product
+import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
+import com.amitnadiger.myinvestment.ui.screens.ScreenConfigConst.Companion.DARK_MODE
+import com.amitnadiger.myinvestment.ui.screens.ScreenConfigConst.Companion.LIGHT_MODE
 import com.amitnadiger.myinvestment.ui.screens.dateFormat
+import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.IS_DARK_MODE
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import java.text.NumberFormat
 import java.util.*
 
@@ -25,11 +33,10 @@ fun ProductListScreen(
     navController: NavHostController,
     allProducts: List<Product>,
     padding: PaddingValues,
-    parentScreen:String
+    parentScreen:String,
 ) {
     //
     //var searching by remember { mutableStateOf(false) }
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -43,7 +50,7 @@ fun ProductListScreen(
         LazyColumn(
             Modifier
                 .fillMaxWidth()
-                .border(width = 1.dp, color = Color.Black)
+               // .border(width = 1.dp, color = Color.Black)
         ) {
 
             items(allProducts) { product ->
@@ -60,13 +67,16 @@ fun ProductListScreen(
                 )
 
 
+
                 var maturityPeriodIsLessThan30Days = false
                 var isAlreadyMatured = false
-                var color: Color = Color.Black
+                var color: Color = Color.Unspecified
+                //if(isDarkMode) color = Color.White
+
                 val numberOfDays =
                     DateUtility.getNumberOfDaysBetweenTwoDays(product.maturityDate, Calendar.getInstance())
 
-                if (numberOfDays < 0) {
+                if (numberOfDays <= 0) {
                     color = Color.Red
                 } else if (numberOfDays <= 30) {
                     maturityPeriodIsLessThan30Days

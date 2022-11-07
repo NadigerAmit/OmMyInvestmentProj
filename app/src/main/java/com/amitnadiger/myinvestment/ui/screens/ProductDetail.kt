@@ -190,7 +190,7 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
                                     // reselecting the same item
                                     launchSingleTop = true
                                     // Restore state when reselecting a previously selected item
-                                    restoreState = true
+                                    //restoreState = true
                                 }
 
                             },modifier = Modifier
@@ -273,12 +273,14 @@ fun deleteRecord(showDialog: Boolean,
 
 fun getScreenConfig4ProductDetail():ScreenConfig {
     Log.e("ProductDetail","getScreenConfig4ProductDetail");
-    return ScreenConfig(true,
-        true,
-        true,
-        false,
-        "Account Detail","",
-        "",
+    return ScreenConfig(
+        enableTopAppBar = true,
+        enableBottomAppBar = true,
+        enableDrawer = true,
+        enableFab = false,
+        enableAction = false,
+        topAppBarTitle = "Account Detail", bottomAppBarTitle = "",
+        fabString = "",
     )
 }
 
