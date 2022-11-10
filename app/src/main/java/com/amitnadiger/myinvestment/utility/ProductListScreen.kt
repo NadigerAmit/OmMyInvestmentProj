@@ -36,7 +36,17 @@ fun ProductListScreen(
     parentScreen:String,
 ) {
     //
-    //var searching by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val dataStoreProvider = DataStoreHolder.getDataStoreProvider(
+        context,
+        DataStoreConst.SECURE_DATASTORE, true
+    )
+    var nod:String="30"
+    runBlocking {
+        nod = dataStoreProvider.getString(DataStoreConst.NOTIFICATION_DAYS).first()?:"30"
+    }
+    var advanceNotifyDays by remember { mutableStateOf(nod.toInt()) }
+    Log.e(TAG,"advanceNotifyDays  $advanceNotifyDays and nod = $nod")
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -78,7 +88,7 @@ fun ProductListScreen(
 
                 if (numberOfDays <= 0) {
                     color = Color.Red
-                } else if (numberOfDays <= 30) {
+                } else if (numberOfDays <= advanceNotifyDays) {
                     maturityPeriodIsLessThan30Days
                     color = Color.Magenta
                 }

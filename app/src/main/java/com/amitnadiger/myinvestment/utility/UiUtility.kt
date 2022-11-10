@@ -301,10 +301,10 @@ fun CustomTextField(
         visualTransformation = visualTransformationParam,
 
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color.Black,
+            focusedBorderColor = MaterialTheme.colors.primary,
             unfocusedBorderColor = Color.Gray,
             disabledBorderColor = Color.Gray,
-            disabledTextColor = Color.Black
+            disabledTextColor = MaterialTheme.colors.primary
         ),
         /*
              placeholder = {

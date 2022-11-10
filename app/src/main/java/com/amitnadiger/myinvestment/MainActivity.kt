@@ -30,6 +30,7 @@ import com.amitnadiger.myinvestment.ui.theme.MyInvestmentTheme
 import com.amitnadiger.myinvestment.ui.scaffold.ScaffoldImpl
 import com.amitnadiger.myinvestment.ui.screens.*
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4DisplaySetting
+import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4NotificationSetting
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4Setting
 import com.amitnadiger.myinvestment.utility.DataStoreConst
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
@@ -167,6 +168,9 @@ fun setupMainScreen() {
             }
             "displaySetting" ->{
                 getScreenConfig4DisplaySetting()
+            }
+            "notificationSetting" ->{
+                getScreenConfig4NotificationSetting()
             }
 
             //"searchProduct" -> getScreenConfig4Sea() todo

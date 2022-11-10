@@ -13,6 +13,7 @@ import com.amitnadiger.myinvestment.ui.screens.*
 import com.amitnadiger.myinvestment.ui.screens.setting.SettingPage
 import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
 import com.amitnadiger.myinvestment.ui.screens.setting.DisplaySetting
+import com.amitnadiger.myinvestment.ui.screens.setting.NotificationSetting
 import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.SECURE_DATASTORE
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
@@ -37,6 +38,8 @@ sealed class NavRoutes(val route:String) {
      object Tutorial : NavRoutes("tutorial")
      object UserSetting : NavRoutes("userSetting")
      object DisplaySetting : NavRoutes("displaySetting")
+     object NotificationSetting : NavRoutes("notificationSetting")
+
 
 }
 private var launchScreenCache:String? = null
@@ -156,6 +159,10 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
 
         composable(NavRoutes.DisplaySetting.route) {
             DisplaySetting(navController = navController,padding)
+        }
+
+        composable(NavRoutes.NotificationSetting.route) {
+            NotificationSetting(navController = navController,padding)
         }
     }
 }

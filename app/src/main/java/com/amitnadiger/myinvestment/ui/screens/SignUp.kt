@@ -20,6 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -135,21 +136,7 @@ fun SignUpScreen(navController: NavHostController,
         }
 
     }
-    /*
-    if(isRegistrationComplete == true
-        && passwd != null
-        //&& isTriggerFrom == "UserProfileUpdate"
-        && !isShowProfileUpdateScreenAllowed ) {
-        //confirmPasswordScreen(passwd!!, onExistingPasswordConfirm)
-    } else {
-         isShowProfileUpdateScreenAllowed = true
-    }
-    //userDetailUpdateFragment(navController,registerItemList, padding,)
 
-     */
-
-
- //   if(isShowProfileUpdateScreenAllowed) {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -203,6 +190,8 @@ fun SignUpScreen(navController: NavHostController,
                         }) {
                             Text("Save")
                         }
+                        Spacer(modifier = Modifier.width(40.dp).height(90.dp))
+
                     }
                     "BirthDate"->
                         CustomTextField(
@@ -235,7 +224,9 @@ fun SignUpScreen(navController: NavHostController,
 
                     }
                     "PasswordProtectionOnAppRestart" -> {
-                        LabelledCheckbox("PasswordProtectionForAppStart",isPasswordProtectRequired,onPasswordProtectRequiredFieldChange)
+                        LabelledCheckbox("PasswordProtectionForAppStart",
+                            isPasswordProtectRequired,
+                            onPasswordProtectRequiredFieldChange)
                     }
                     "Password Hint1",
                     "Password Hint2"-> {
@@ -368,11 +359,15 @@ fun getScreenConfig4SignUpScreen():ScreenConfig {
 }
 
 @Composable
-fun LabelledCheckbox(textString:String,ischecked:Boolean,onChange: (Boolean) -> Unit = {},) {
+fun LabelledCheckbox(textString:String,
+                     isChecked:Boolean,
+                     onChange: (Boolean) -> Unit = {},startPaddingForCheckBox: Dp =0.dp) {
     Row(modifier = Modifier.padding(8.dp)) {
-        val isChecked = remember { mutableStateOf(ischecked?:false) }
+        val isChecked = remember { mutableStateOf(isChecked?:false) }
 
+        Text(text = textString, modifier = Modifier.padding(top = 12.dp))
         Checkbox(
+         //   modifier = Modifier.padding(start = startPaddingForCheckBox),
             checked = isChecked.value,
             onCheckedChange = { isChecked.value = it
                 onChange(it)},
@@ -380,6 +375,6 @@ fun LabelledCheckbox(textString:String,ischecked:Boolean,onChange: (Boolean) -> 
             colors = CheckboxDefaults.colors(Color.Green)
         )
         //Text(text = "Enable Password Protection On AppRestart")
-        Text(text = textString, modifier = Modifier.padding(top = 12.dp))
+
     }
 }

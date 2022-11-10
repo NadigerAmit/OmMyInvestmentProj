@@ -32,48 +32,88 @@ fun ScaffoldImpl(navController: NavHostController,
 
 
 
-    // Scaffold Composable
-    Scaffold(
-        // pass the scaffold state
-        scaffoldState = scaffoldState,
-        // pass the topbar we created
-        topBar = {
+    if(screenConfig.enableDrawer) {
+        // Scaffold Composable
+        Scaffold(
+            // pass the scaffold state
+            scaffoldState = scaffoldState,
+            // pass the topbar we created
+            topBar = {
 
-            //CenterAlignedTopBar(
-            TopBar(
-                screenConfig,
-                // When menu is clicked open the
-                // drawer in coroutine scope
-                onMenuClicked = {
-                    coroutineScope.launch {
-                        // to close use -> scaffoldState.drawerState.close()
-                        scaffoldState.drawerState.open()
+                //CenterAlignedTopBar(
+                TopBar(
+                    screenConfig,
+                    // When menu is clicked open the
+                    // drawer in coroutine scope
+                    onMenuClicked = {
+                        coroutineScope.launch {
+                            // to close use -> scaffoldState.drawerState.close()
+                            scaffoldState.drawerState.open()
+                        }
+                    },
+                    onSearchClicked = {
+                        coroutineScope.launch {
+                            // to close use -> scaffoldState.drawerState.close()
+                            navController.navigate(NavRoutes.SearchProduct.route)
+                        }
                     }
-                },
-                onSearchClicked = {
-                    coroutineScope.launch {
-                        // to close use -> scaffoldState.drawerState.close()
-                        navController.navigate(NavRoutes.SearchProduct.route)
+                )
+
+            },
+            content = { padding ->
+                Body(navController,finProductViewModel,finHistoryViewModel,padding)
+            },
+
+            bottomBar = {
+                BottomBar(screenConfig,context) },
+
+            drawerContent = {
+                RichDrawer(scope = scope, scaffoldState = scaffoldState, navController = navController)
+            },
+
+            floatingActionButton = {
+                Fab(navController,screenConfig,coroutineScope,finProductViewModel,finHistoryViewModel)
+            },floatingActionButtonPosition = FabPosition.Center,
+            isFloatingActionButtonDocked = true)
+    } else {
+        // Scaffold Composable
+        Scaffold(
+            // pass the scaffold state
+            scaffoldState = scaffoldState,
+            // pass the topbar we created
+            topBar = {
+
+                //CenterAlignedTopBar(
+                TopBar(
+                    screenConfig,
+                    // When menu is clicked open the
+                    // drawer in coroutine scope
+                    onMenuClicked = {
+                        coroutineScope.launch {
+                            // to close use -> scaffoldState.drawerState.close()
+                            scaffoldState.drawerState.open()
+                        }
+                    },
+                    onSearchClicked = {
+                        coroutineScope.launch {
+                            // to close use -> scaffoldState.drawerState.close()
+                            navController.navigate(NavRoutes.SearchProduct.route)
+                        }
                     }
-                }
-            )
+                )
 
-        },
-        content = { padding ->
-            Body(navController,finProductViewModel,finHistoryViewModel,padding)
-        },
+            },
+            content = { padding ->
+                Body(navController,finProductViewModel,finHistoryViewModel,padding)
+            },
 
-        bottomBar = {
-            BottomBar(screenConfig,context) },
-        drawerContent = {
-            //Drawer(screenConfig,navController)
-            //RischDrawer()
-            RichDrawer(scope = scope, scaffoldState = scaffoldState, navController = navController)
-        },
+            bottomBar = {
+                BottomBar(screenConfig,context) },
+            floatingActionButton = {
+                Fab(navController,screenConfig,coroutineScope,finProductViewModel,finHistoryViewModel)
+            },floatingActionButtonPosition = FabPosition.Center,
+            isFloatingActionButtonDocked = true)
+    }
 
-    floatingActionButton = {
-        Fab(navController,screenConfig,coroutineScope,finProductViewModel,finHistoryViewModel)
-    },floatingActionButtonPosition = FabPosition.Center,
-        isFloatingActionButtonDocked = true)
 }
 

@@ -5,9 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
@@ -190,7 +188,7 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
     ) {
         items(productDetailItemList) { items ->
             when(items.first) {
-                "Save" ->{
+                "Save" -> {
                     Button(onClick = {
                         fun validateInputs():Boolean {
                             Log.e("AddProduct","In validateInputs ")
@@ -264,6 +262,7 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                     }) {
                         Text("Save")
                     }
+                    Spacer(modifier = Modifier.width(40.dp).height(90.dp))
                 }
                 "InvestmentDate",
                 "MaturityDate"->
