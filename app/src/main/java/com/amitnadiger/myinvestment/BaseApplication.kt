@@ -29,7 +29,7 @@ class BaseApplication() : Application(){
     }
      */
     companion object {
-       var isDark = mutableStateOf(false)
+       var isDark = mutableStateOf(true)
        private var dataStoreProvider: IDataStore? = null
        val coroutineScope = CoroutineScope(Dispatchers.IO)
        fun toggleLightTheme(context: Context){

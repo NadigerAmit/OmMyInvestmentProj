@@ -262,7 +262,8 @@ fun deleteRecord(showDialog: Boolean,
                     showDeleteAlertDialogGlobal.value = false
                     navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber")
                 })
-                { Text(text = "Cancel delete") }
+                { Text(text = "Cancel delete",
+                modifier = Modifier.padding(end = 40.dp)) }
             },
             properties= DialogProperties(dismissOnBackPress = true,
                 dismissOnClickOutside=true)

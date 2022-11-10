@@ -23,7 +23,8 @@ fun getScreenConfig4License():ScreenConfig {
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
-        topAppBarTitle = "Licenses", bottomAppBarTitle = "",
+        topAppBarTitle = "Licenses",
+        bottomAppBarTitle = "",
         fabString = "add",
         fabColor = Color.Red
     )

@@ -1,24 +1,30 @@
 package com.amitnadiger.myinvestment.ui.screens
 
 import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
@@ -26,6 +32,7 @@ import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.utility.CustomTextField
 import com.amitnadiger.myinvestment.utility.DataStoreConst
 import com.amitnadiger.myinvestment.utility.DateUtility
+import com.amitnadiger.myinvestment.utility.DateUtility.Companion.getCalendar
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -63,7 +70,7 @@ fun UserSetting(navController: NavHostController,
     }
 
     var fullName by remember { mutableStateOf(fname?:"") }
-    var birthDate by remember { mutableStateOf( Calendar.getInstance()) }
+    var birthDate by remember { mutableStateOf( getCalendar(dob!!,dateFormat)?:Calendar.getInstance()) }
     var isPasswordProtectRequired by remember { mutableStateOf(isPasswdReq?:false) }
     var password by remember { mutableStateOf(passwd?:"") }
     var confirmPassword by remember { mutableStateOf(passwd?:"") }
@@ -137,103 +144,148 @@ fun UserSetting(navController: NavHostController,
         isShowProfileUpdateScreenAllowed = true
     }
 
-    if(isShowProfileUpdateScreenAllowed) {
-        LazyColumn(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(padding)
-        ) {
-            val dataStorageManager = DataStoreHolder.getDataStoreProvider(context,
-                DataStoreConst.SECURE_DATASTORE,true)
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(padding)
+    ) {
+        if(isShowProfileUpdateScreenAllowed) {
 
-            items(registerItemList) { items ->
-                when(items.first) {
-                    "Heading" -> {
-                        Text(text = "Register Details ", style = TextStyle(fontSize = 30.sp))
-                    }
-                    "Save" -> {
-                        Button(onClick = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+                //.background(colorResource(id = background))
+                // .border(width = 1.dp, color = Color.LightGray)
+            ) {
+                Box(
+                    modifier = Modifier.size(80.dp).clip(CircleShape).background(Color.White)
+                ) {
+                    Spacer(modifier = Modifier.width(30.dp))
+                    Image(
+                        painter = painterResource(id = com.amitnadiger.myinvestment.R.drawable.ic_profile),
+                        contentDescription = "DisplaySetting",
+                        colorFilter = ColorFilter.tint(Color.Black),
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .height(80.dp)
+                            .width(80.dp)
+                    )
+                }
+            }
 
-                            when {
-                                isPasswordProtectRequired -> {
-                                    if(!validatePassword(password,confirmPassword,context)
-                                        ||!validateBirtDate(birthDate,
-                                            "BirthDate Cant be future date",context)) {
-                                        // Toast will be shown in the validate**
-                                        navController.navigate(NavRoutes.Setting.route)
-                                    } else {
-                                        saveSingUpInfoInDataStore(context,
-                                            fullName,
-                                            DateUtility.getPickedDateAsString(
-                                                birthDate.get(Calendar.YEAR),
-                                                birthDate.get(Calendar.MONTH),
-                                                birthDate.get(Calendar.DAY_OF_MONTH),
-                                                com.amitnadiger.myinvestment.ui.screens.dateFormat
-                                            ),isPasswordProtectRequired,
+            Spacer(modifier = Modifier.width(30.dp))
+            LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(padding)
+            ) {
+                val dataStorageManager = DataStoreHolder.getDataStoreProvider(context,
+                    DataStoreConst.SECURE_DATASTORE,true)
+
+                items(registerItemList) { items ->
+                    when(items.first) {
+                        "Heading" -> {
+                            Text(text = "Register Details ", style = TextStyle(fontSize = 30.sp))
+                        }
+                        "Save" -> {
+                            Button(onClick = {
+
+                                when {
+                                    isPasswordProtectRequired -> {
+                                        if(!validatePassword(password,confirmPassword,context)
+                                            ||!validateBirtDate(birthDate,
+                                                "BirthDate Cant be future date",context)) {
+                                            // Toast will be shown in the validate**
+                                            navController.navigate(NavRoutes.Setting.route)
+                                        } else {
+                                            saveSingUpInfoInDataStore(context,
+                                                fullName,
+                                                DateUtility.getPickedDateAsString(
+                                                    birthDate.get(Calendar.YEAR),
+                                                    birthDate.get(Calendar.MONTH),
+                                                    birthDate.get(Calendar.DAY_OF_MONTH),
+                                                    com.amitnadiger.myinvestment.ui.screens.dateFormat
+                                                ),isPasswordProtectRequired,
+                                                password,
+                                                passwordHint1,
+                                                passwordHint2)
+                                            navController.navigate(NavRoutes.Setting.route)
+
+                                        }
+                                    }
+                                    else -> {
+                                        saveSingUpInfoInDataStore(context,fullName, DateUtility.getPickedDateAsString(
+                                            birthDate.get(Calendar.YEAR),
+                                            birthDate.get(Calendar.MONTH),
+                                            birthDate.get(Calendar.DAY_OF_MONTH),
+                                            com.amitnadiger.myinvestment.ui.screens.dateFormat
+                                        ),isPasswordProtectRequired,
                                             password,
                                             passwordHint1,
                                             passwordHint2)
+                                        isShowProfileUpdateScreenAllowed = false
                                         navController.navigate(NavRoutes.Setting.route)
-
                                     }
                                 }
-                                else -> {
-                                    saveSingUpInfoInDataStore(context,fullName, DateUtility.getPickedDateAsString(
-                                        birthDate.get(Calendar.YEAR),
-                                        birthDate.get(Calendar.MONTH),
-                                        birthDate.get(Calendar.DAY_OF_MONTH),
-                                        com.amitnadiger.myinvestment.ui.screens.dateFormat
-                                    ),isPasswordProtectRequired,
-                                        password,
-                                        passwordHint1,
-                                        passwordHint2)
-                                     isShowProfileUpdateScreenAllowed = false
-                                    navController.navigate(NavRoutes.Setting.route)
-                                }
+                            }) {
+                                Text("Save")
                             }
-                        }) {
-                            Text("Save")
+                            Spacer(modifier = Modifier.width(40.dp).height(90.dp))
                         }
-                    }
-                    "BirthDate"->
-                        CustomTextField(
-                            modifier = Modifier.clickable {
-                                DateUtility.showDatePickerDialog(context,items.second.first,
-                                    com.amitnadiger.myinvestment.ui.screens.dateFormat,items.second.second)
-                            },
-                            text = items.second.first,
-                            placeholder = items.first,
-                            onChange = {
-                                if(validateBirtDate(birthDate,
-                                        "BirthDate Cant be future date",context)){
-                                    items.second.second
-                                } },
-                            isEnabled = false,
-                            imeAction = ImeAction.Next
-                        )
-                    "Password",
-                    "Confirm Password" -> {
-                        if(isPasswordProtectRequired) {
-
+                        "BirthDate"->
                             CustomTextField(
-                                placeholder = items.first,
+                                modifier = Modifier.clickable {
+                                    DateUtility.showDatePickerDialog(context,items.second.first,
+                                        dateFormat,items.second.second)
+                                },
                                 text = items.second.first,
-                                onChange = items.second.second,
-                                keyboardType = KeyboardType.Password,
-                                imeAction = ImeAction.Next,
-                                visualTransformationParam = PasswordVisualTransformation()
-
+                                placeholder = items.first,
+                                onChange = {
+                                    if(validateBirtDate(birthDate,
+                                            "BirthDate Cant be future date",context)){
+                                        items.second.second
+                                    } },
+                                isEnabled = false,
+                                imeAction = ImeAction.Next
                             )
-                        }
+                        "Password",
+                        "Confirm Password" -> {
+                            if(isPasswordProtectRequired) {
 
-                    }
-                    "PasswordProtectionOnAppRestart" -> {
-                        LabelledCheckbox("PasswordProtectionForAppStart",isPasswordProtectRequired,onPasswordProtectRequiredFieldChange)
-                    }
-                    "Password Hint1",
-                    "Password Hint2"-> {
-                        if(isPasswordProtectRequired){
+                                CustomTextField(
+                                    placeholder = items.first,
+                                    text = items.second.first,
+                                    onChange = items.second.second,
+                                    keyboardType = KeyboardType.Password,
+                                    imeAction = ImeAction.Next,
+                                    visualTransformationParam = PasswordVisualTransformation()
+
+                                )
+                            }
+
+                        }
+                        "PasswordProtectionOnAppRestart" -> {
+                            LabelledCheckbox("PasswordProtectionForAppStart",isPasswordProtectRequired,
+                                onPasswordProtectRequiredFieldChange)
+                        }
+                        "Password Hint1",
+                        "Password Hint2"-> {
+                            if(isPasswordProtectRequired){
+                                CustomTextField(
+                                    placeholder = items.first,
+                                    text = items.second.first,
+                                    onChange = items.second.second,
+                                    keyboardType = KeyboardType.Text,
+                                    imeAction = ImeAction.Next
+                                )
+                            }
+                        }
+                        else ->{
                             CustomTextField(
                                 placeholder = items.first,
                                 text = items.second.first,
@@ -242,15 +294,6 @@ fun UserSetting(navController: NavHostController,
                                 imeAction = ImeAction.Next
                             )
                         }
-                    }
-                    else ->{
-                        CustomTextField(
-                            placeholder = items.first,
-                            text = items.second.first,
-                            onChange = items.second.second,
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Next
-                        )
                     }
                 }
             }
@@ -299,7 +342,7 @@ fun getScreenConfig4UserSetting():ScreenConfig {
     //Log.e("HomeScvreen","getScreenConfig4Home");
     return ScreenConfig(
         enableTopAppBar = true,
-        enableBottomAppBar = false,
+        enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
         topAppBarTitle = "UserSettings", bottomAppBarTitle = "",

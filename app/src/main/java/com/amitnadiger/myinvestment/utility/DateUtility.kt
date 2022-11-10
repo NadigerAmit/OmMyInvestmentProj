@@ -56,22 +56,35 @@ class DateUtility {
         }
 
         fun getNumberOfDaysBetweenTwoDays(fromDate: Calendar, toDate: Calendar): Long {
-            val fromDateInString = DateUtility.getPickedDateAsString(
+            val fromDateInString = getPickedDateAsString(
                 fromDate.get(Calendar.YEAR),
                 fromDate.get(Calendar.MONTH),
                 fromDate.get(Calendar.DAY_OF_MONTH)
                 , dateFormat
             )
-            val toDateInString = DateUtility.getPickedDateAsString(
+            val toDateInString = getPickedDateAsString(
                 toDate.get(Calendar.YEAR),
                 toDate.get(Calendar.MONTH),
                 toDate.get(Calendar.DAY_OF_MONTH)
                 , dateFormat
             )
-            Log.e("DateUtility","From Date = $fromDateInString  ToDate = $toDateInString" )
-
             val millionSeconds = fromDate.time.time-toDate.time.time
-            return TimeUnit.MILLISECONDS.toDays(millionSeconds)
+            var numberOfDays = TimeUnit.MILLISECONDS.toDays(millionSeconds)
+            val days: Double = millionSeconds / TimeUnit.DAYS.toMillis(1).toDouble()
+
+            if(fromDateInString != toDateInString){
+                if(days >numberOfDays){
+                    numberOfDays += 1
+                }
+            }
+
+            Log.e("DateUtility","FromDate = $fromDateInString  ToDate = $toDateInString ," +
+                    "diffMillionSec = $millionSeconds " + "isBothDatesSame = " +
+                    "${fromDateInString == toDateInString}"+
+                    " days = ${TimeUnit.MILLISECONDS.toDays(millionSeconds)}  " +
+                    "FinalNumOfDays = $numberOfDays " +
+                    "Days = $days" )
+            return numberOfDays
         }
 
         fun getDateInCalendar(milliSeconds: Long, dateFormat: String?): Calendar? {

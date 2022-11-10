@@ -38,7 +38,7 @@ private val TAG = "SettingPage"
 sealed class SettingItem(var route: String , var icon: Int, var title: String) {
     object UserProfileSetting : SettingItem("userSetting",   R.drawable.ic_profile,"User profile settings")
     object DisplaySettings : SettingItem("displaySetting",  R.drawable.ic_displaysetting,"DisplaySettings")
-    object Notification : SettingItem("profile",   R.drawable.ic_notification,"Notifications setting")
+    object Notification : SettingItem("notificationSetting",   R.drawable.ic_notification,"Notifications setting")
     object Language : SettingItem("profile", R.drawable.ic_language,"Language Settings\n")
 
 }
@@ -49,7 +49,7 @@ fun SettingPage(navController: NavHostController, paddingValues: PaddingValues) 
         SettingItem.UserProfileSetting,
         SettingItem.DisplaySettings,
         SettingItem.Notification,
-        SettingItem.Language,
+   //     SettingItem.Language,
     )
     Column(
        // modifier = Modifier
@@ -153,7 +153,7 @@ fun getScreenConfig4Setting(): ScreenConfig {
     //Log.e("HomeScreen","getScreenConfig4Home");
     return ScreenConfig(
         enableTopAppBar = true,
-        enableBottomAppBar = false,
+        enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
         topAppBarTitle = "Settings", bottomAppBarTitle = "",
