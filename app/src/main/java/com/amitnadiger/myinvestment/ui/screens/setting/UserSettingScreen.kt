@@ -201,7 +201,14 @@ fun UserSetting(navController: NavHostController,
                                             ||!validateBirtDate(birthDate,
                                                 "BirthDate Cant be future date",context)) {
                                             // Toast will be shown in the validate**
-                                            navController.navigate(NavRoutes.Setting.route)
+                                            navController.navigate(NavRoutes.Setting.route)  {
+                                                navController.graph.startDestinationRoute?.let { route ->
+                                                    popUpTo(route) {
+                                                        saveState = true
+                                                    }
+                                                }
+                                                launchSingleTop = true
+                                            }
                                         } else {
                                             saveSingUpInfoInDataStore(context,
                                                 fullName,
@@ -214,8 +221,14 @@ fun UserSetting(navController: NavHostController,
                                                 password,
                                                 passwordHint1,
                                                 passwordHint2)
-                                            navController.navigate(NavRoutes.Setting.route)
-
+                                            navController.navigate(NavRoutes.Setting.route)  {
+                                                navController.graph.startDestinationRoute?.let { route ->
+                                                    popUpTo(route) {
+                                                        saveState = true
+                                                    }
+                                                }
+                                                launchSingleTop = true
+                                            }
                                         }
                                     }
                                     else -> {
@@ -229,7 +242,14 @@ fun UserSetting(navController: NavHostController,
                                             passwordHint1,
                                             passwordHint2)
                                         isShowProfileUpdateScreenAllowed = false
-                                        navController.navigate(NavRoutes.Setting.route)
+                                        navController.navigate(NavRoutes.Setting.route)  {
+                                            navController.graph.startDestinationRoute?.let { route ->
+                                                popUpTo(route) {
+                                                    saveState = true
+                                                }
+                                            }
+                                            launchSingleTop = true
+                                        }
                                     }
                                 }
                             }) {

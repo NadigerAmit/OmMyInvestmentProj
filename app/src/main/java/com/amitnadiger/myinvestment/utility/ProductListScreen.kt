@@ -1,7 +1,7 @@
 package com.amitnadiger.myinvestment.utility
 
 import android.util.Log
-import androidx.compose.foundation.border
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,20 +13,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
+
 import androidx.navigation.NavHostController
-import com.amitnadiger.myinvestment.BaseApplication
+
 import com.amitnadiger.myinvestment.room.Product
 import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
-import com.amitnadiger.myinvestment.ui.screens.ScreenConfigConst.Companion.DARK_MODE
-import com.amitnadiger.myinvestment.ui.screens.ScreenConfigConst.Companion.LIGHT_MODE
+
 import com.amitnadiger.myinvestment.ui.screens.dateFormat
-import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.IS_DARK_MODE
+
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import java.text.NumberFormat
 import java.util.*
 
+var nod = mutableStateOf("30")
 private val TAG = "SecDtaStrProvider"
 @Composable
 fun ProductListScreen(
@@ -41,12 +41,12 @@ fun ProductListScreen(
         context,
         DataStoreConst.SECURE_DATASTORE, true
     )
-    var nod:String="30"
+
     runBlocking {
-        nod = dataStoreProvider.getString(DataStoreConst.NOTIFICATION_DAYS).first()?:"30"
+        nod.value = dataStoreProvider.getString(DataStoreConst.NOTIFICATION_DAYS).first()?:"30"
     }
-    var advanceNotifyDays by remember { mutableStateOf(nod.toInt()) }
-    Log.e(TAG,"advanceNotifyDays  $advanceNotifyDays and nod = $nod")
+    var advanceNotifyDays by remember { mutableStateOf(nod.value.toInt()) }
+    Log.e(TAG,"advanceNotifyDays  $advanceNotifyDays and nod = ${nod.value}")
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -81,7 +81,6 @@ fun ProductListScreen(
                 var maturityPeriodIsLessThan30Days = false
                 var isAlreadyMatured = false
                 var color: Color = Color.Unspecified
-                //if(isDarkMode) color = Color.White
 
                 val numberOfDays =
                     DateUtility.getNumberOfDaysBetweenTwoDays(product.maturityDate, Calendar.getInstance())

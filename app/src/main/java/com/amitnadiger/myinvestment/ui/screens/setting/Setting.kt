@@ -156,6 +156,7 @@ fun getScreenConfig4Setting(): ScreenConfig {
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
+        topAppBarStartPadding = 40.dp,
         topAppBarTitle = "Settings", bottomAppBarTitle = "",
         fabString = "add",
         fabColor = Color.Red

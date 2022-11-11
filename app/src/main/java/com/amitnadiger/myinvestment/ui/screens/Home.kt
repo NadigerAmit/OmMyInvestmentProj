@@ -1,27 +1,17 @@
 package com.amitnadiger.myinvestment.ui.screens
 
-import android.util.Log
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+
 import androidx.compose.ui.graphics.Color
 
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.amitnadiger.myinvestment.room.Product
-import com.amitnadiger.myinvestment.ui.screens.ScreenConfigConst.Companion.DARK_MODE
-import com.amitnadiger.myinvestment.ui.screens.ScreenConfigConst.Companion.LIGHT_MODE
-import com.amitnadiger.myinvestment.utility.*
-import com.amitnadiger.myinvestment.utility.DateUtility.Companion.getNumberOfDaysBetweenTwoDays
-import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
-import java.text.NumberFormat
-import java.util.*
 
+import com.amitnadiger.myinvestment.utility.*
+
+import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 
 @Composable
 fun Home(navController: NavHostController,viewModel: FinProductViewModel,padding:PaddingValues) {
@@ -44,7 +34,7 @@ fun getScreenConfig4Home():ScreenConfig {
         enableDrawer = true,
         enableFab = true,
         enableAction = true,
-        topAppBarTitle = "My-Investments", bottomAppBarTitle = "",
+        topAppBarTitle = "MyInvestments", bottomAppBarTitle = "",
         fabString = "add",
         fabColor = Color.Red
     )

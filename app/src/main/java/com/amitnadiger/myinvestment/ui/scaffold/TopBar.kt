@@ -32,7 +32,7 @@ fun TopBar(screenConfig: ScreenConfig,
             title = {
                 Text(text = screenConfig.topAppBarTitle, color = MaterialTheme.colors.primary,
                     fontSize = 30.sp,
-                modifier = Modifier.padding(start = 30.dp)
+                modifier = Modifier.padding(start = screenConfig.topAppBarStartPadding)
             )},
            // backgroundColor = Color(0xFFC0E8D5),
             // Provide the navigation Icon (Icon on the left to toggle drawer)

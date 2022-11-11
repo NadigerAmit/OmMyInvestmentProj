@@ -280,26 +280,9 @@ fun getScreenConfig4ProductDetail():ScreenConfig {
         enableDrawer = true,
         enableFab = false,
         enableAction = false,
-        topAppBarTitle = "Account Detail", bottomAppBarTitle = "",
+        topAppBarTitle = "AccountDetail", bottomAppBarTitle = "",
         fabString = "",
     )
-}
-
-@Composable
-fun TitleRowProductDetails(head: String)  {
-    Row(
-        modifier = Modifier
-            .background(MaterialTheme.colors.background)
-            .fillMaxWidth()
-            .padding(5.dp)
-
-
-    ) {
-        Text(head, color = Color.White,
-            modifier = Modifier
-                .weight(0.2f)
-                .background(MaterialTheme.colors.primary))
-    }
 }
 
 @Composable

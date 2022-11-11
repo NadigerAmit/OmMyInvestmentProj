@@ -54,7 +54,14 @@ fun ScaffoldImpl(navController: NavHostController,
                     onSearchClicked = {
                         coroutineScope.launch {
                             // to close use -> scaffoldState.drawerState.close()
-                            navController.navigate(NavRoutes.SearchProduct.route)
+                            navController.navigate(NavRoutes.SearchProduct.route)  {
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                        saveState = true
+                                    }
+                                }
+                                launchSingleTop = true
+                            }
                         }
                     }
                 )
@@ -97,7 +104,14 @@ fun ScaffoldImpl(navController: NavHostController,
                     onSearchClicked = {
                         coroutineScope.launch {
                             // to close use -> scaffoldState.drawerState.close()
-                            navController.navigate(NavRoutes.SearchProduct.route)
+                            navController.navigate(NavRoutes.SearchProduct.route)  {
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                        saveState = true
+                                    }
+                                }
+                                launchSingleTop = true
+                            }
                         }
                     }
                 )

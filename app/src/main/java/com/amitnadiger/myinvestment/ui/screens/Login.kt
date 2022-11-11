@@ -35,6 +35,7 @@ import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.ui.theme.Purple700
 import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
+import com.amitnadiger.myinvestment.ui.isLogInDone
 import com.amitnadiger.myinvestment.utility.CustomTextField
 import com.amitnadiger.myinvestment.utility.DataStoreConst
 import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.PASSWORD
@@ -101,7 +102,15 @@ fun LoginPage(navController: NavHostController,padding: PaddingValues) {
                         Button(
                             onClick = {
                                 if(isLoginAllowed(password.value.text,context)) {
-                                    navController.navigate(NavRoutes.Home.route)
+                                    navController.navigate(NavRoutes.Home.route)  {
+                                        navController.graph.startDestinationRoute?.let { route ->
+                                            popUpTo(route) {
+                                                saveState = true
+                                            }
+                                        }
+                                        launchSingleTop = true
+                                    }
+                                    isLogInDone = true
                                 }
                             },
                             shape = RoundedCornerShape(50.dp),

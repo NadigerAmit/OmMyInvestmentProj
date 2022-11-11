@@ -170,7 +170,14 @@ fun SignUpScreen(navController: NavHostController,
                                             passwordHint1,
                                             passwordHint2)
 
-                                        navController.navigate(NavRoutes.Login.route)
+                                        navController.navigate(NavRoutes.Login.route)  {
+                                            navController.graph.startDestinationRoute?.let { route ->
+                                                popUpTo(route) {
+                                                    saveState = true
+                                                }
+                                            }
+                                            launchSingleTop = true
+                                        }
                                     }
                                 }
                                 else -> {
@@ -184,7 +191,14 @@ fun SignUpScreen(navController: NavHostController,
                                         passwordHint1,
                                         passwordHint2)
                                     isShowProfileUpdateScreenAllowed = false
-                                    navController.navigate(NavRoutes.Home.route)
+                                    navController.navigate(NavRoutes.Home.route)  {
+                                        navController.graph.startDestinationRoute?.let { route ->
+                                            popUpTo(route) {
+                                                saveState = true
+                                            }
+                                        }
+                                        launchSingleTop = true
+                                    }
                                 }
                             }
                         }) {

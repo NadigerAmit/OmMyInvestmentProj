@@ -42,12 +42,7 @@ var isRecordInUpdateMode =  mutableStateOf(false)
 @Composable
 fun AddProduct(navController: NavHostController,viewModel: FinProductViewModel,padding: PaddingValues,
     accountNumber:String = "") {
-    Log.e("AddProductScreen","Adding the product ");
-    /*
-    BackHandler(enabled = true) {
-        navController.navigate(NavRoutes.Home.route )
-    }
-     */
+    Log.e("AddProductScreen","Adding the product ")
     screenSetUpInAddProductScreen(navController,viewModel,padding,accountNumber)
 }
 
@@ -95,7 +90,6 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
     var interestRate by remember { mutableStateOf(product?.interestRate?.toString()?:"") }
     var productType by remember { mutableStateOf(product?.productType?:"") }
     var nomineeName by remember { mutableStateOf(product?.nomineeName?:"") }
-    var searching by remember { mutableStateOf(false) }
 
 
     val onAccountNumTextChange = { text : String ->
@@ -311,7 +305,6 @@ private fun validateAccountNumber(accountNumber: String,context:Context):Boolean
             .show()
         return false
     }
-
     return true
 }
 
@@ -372,7 +365,6 @@ private fun validateInvestmentDate(investmentDate: Calendar,context:Context):Boo
 }
 
 private fun validateMaturityDate(investmentDate: Calendar,maturityDate: Calendar,context:Context):Boolean {
-    val currentDate = Calendar.getInstance()
     if(investmentDate.timeInMillis > maturityDate.timeInMillis) {
         Toast.makeText(context, "Cant input earlier Maturity date than InvestmentDate  ", Toast.LENGTH_LONG)
             .show()
@@ -388,28 +380,4 @@ private fun validateInterestRate(interestRate: String,context:Context):Boolean {
         return false
     }
     return true
-}
-
-
-//// Below functions are not used anymore
-
-@Composable
-fun CustomTextField1(
-    title: String,
-    textState: String,
-    onTextChange: (String) -> Unit,
-    keyboardType: KeyboardType
-) {
-    OutlinedTextField(
-        value = textState,
-        onValueChange = { onTextChange(it) },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType
-        ),
-        singleLine = true,
-        label = { Text(title) },
-        modifier = Modifier.padding(10.dp),
-        textStyle = TextStyle(fontWeight = FontWeight.Bold,
-            fontSize = 20.sp)
-    )
 }

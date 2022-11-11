@@ -133,20 +133,6 @@ fun screenSetUpInHistoryProductDetail(productViewModel: FinProductViewModel,
     var productDetail: Product? = historyViewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
         ?: return
 
-
-    // Log.e("ProductDetail.Kt","Product is retived and list size = ${viewModel.searchResults.value!!.size}")
-
-/*
-    Log.e("ProductDetail.Kt","Product is retived in Home \n accountNumber = ${productDetail?.accountNumber}" +
-            " \n financialInstitutionName +  ${productDetail?.financialInstitutionName}" +
-            " \n investorName = ${productDetail?.investorName} " +
-            " \ninvestmentAmount = ${productDetail?.investmentAmount}" +
-            " \ninvestmentDate = ${productDetail?.investmentDate}  " +
-            " \n maturityDate = ${productDetail?.maturityDate}  " +
-            " \n interestRate = $ {productDetail?.interestRate}  " +
-            " \n depositPeriod = ${productDetail?.depositPeriod} " +
-            " \n nomineeName = ${productDetail?.nomineeName} ")
- */
     val productFieldList = getListOPropertiesOfProduct(productDetail!!)
 
 
@@ -185,7 +171,14 @@ fun screenSetUpInHistoryProductDetail(productViewModel: FinProductViewModel,
                             }
                             Button(onClick = {
                                 historyViewModel.deleteFinProduct(accountNumber)
-                                navController.navigate(NavRoutes.History.route)
+                                navController.navigate(NavRoutes.History.route)  {
+                                    navController.graph.startDestinationRoute?.let { route ->
+                                        popUpTo(route) {
+                                            saveState = true
+                                        }
+                                    }
+                                    launchSingleTop = true
+                                }
                             },modifier = Modifier
                                 .padding(10.dp)) {
                                 Icon(Icons.Filled.Delete, "Delete")
@@ -242,7 +235,14 @@ fun moveRecord(showDialog: Boolean,
                         finHistoryViewModel.deleteFinProduct(accountNumber)
                         Toast.makeText(context, "Record with accNum : $accountNumber Restored" , Toast.LENGTH_LONG)
                             .show()
-                        navController.navigate(NavRoutes.History.route)
+                        navController.navigate(NavRoutes.History.route) {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
+                            }
+                            launchSingleTop = true
+                        }
                         movedRecord.value = rec!!
                     }
                     showMoveAlertDialogGlobal.value = false
@@ -254,10 +254,18 @@ fun moveRecord(showDialog: Boolean,
                 onDismiss()
                 TextButton(onClick = {
                     showMoveAlertDialogGlobal.value = false
-                    navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber")
+                    navController.navigate(NavRoutes.HistoryProductDetail.route + "/$accountNumber") {
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route) {
+                                saveState = true
+                            }
+                        }
+                        launchSingleTop = true
+                    }
                 })
                 { Text(text = "Cancel Restore",
-                    modifier = Modifier.padding(end = 40.dp)) }
+                    //modifier = Modifier.padding(end = 40.dp)
+                ) }
             },
             properties= DialogProperties(dismissOnBackPress = true,
                 dismissOnClickOutside=true)
@@ -273,7 +281,7 @@ fun getScreenConfig4HistoryProductDetail():ScreenConfig {
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
-        topAppBarTitle = "Account Detail(History)", bottomAppBarTitle = "",
+        topAppBarTitle = "HistoryDetail", bottomAppBarTitle = "",
         fabString = "",
     )
 }
