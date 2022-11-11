@@ -18,7 +18,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalContext
+
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -29,13 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavHostController
-import com.amitnadiger.myinvestment.BaseApplication
-import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
+
 import com.amitnadiger.myinvestment.ui.NavRoutes
-import com.amitnadiger.myinvestment.ui.screens.ScreenConfigConst.Companion.DARK_MODE
-import com.amitnadiger.myinvestment.ui.screens.ScreenConfigConst.Companion.LIGHT_MODE
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+
 
 private val TAG = "ProductDetail"
 fun truncateString(input:String):String {
@@ -123,19 +119,12 @@ fun ProductRow(accountNumber:String,
                 when(parentScreen) {
                     "HistoryProductDetail" -> {
                         navController.navigate(NavRoutes.HistoryProductDetail.route + "/$accountNumber") {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
                             navController.graph.startDestinationRoute?.let { route ->
                                 popUpTo(route) {
                                     saveState = true
                                 }
                             }
-                            // Avoid multiple copies of the same destination when
-                            // reselecting the same item
                             launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            //restoreState = true
                         }
                     }
                     "ProductDetail" ->{
@@ -175,10 +164,10 @@ fun ProductRow(accountNumber:String,
             //.background(backgroundColor)
             .border(width = cellBorderWidth, color = MaterialTheme.colors.primary)
         )
-        //   Text(InvestorDetail, modifier = Modifier.weight(0.2f).border(width = 1.dp, color = Color.Black))
     }
 }
 
+private val DropdownMenuVerticalPadding = 1.dp
 @Composable
 fun DropDownBox(searchFieldList:List<String>,label:String,width: Dp=0.dp,preSelectedText:String = ""):String{
 
@@ -306,41 +295,9 @@ fun CustomTextField(
             disabledBorderColor = Color.Gray,
             disabledTextColor = MaterialTheme.colors.primary
         ),
-        /*
-             placeholder = {
-                 Text(text = placeholder, style = TextStyle(fontSize = 18.sp, color = Color.LightGray))
-             }
-         */
     )
 }
 
-private val DropdownMenuVerticalPadding = 1.dp
-@Composable
-fun getHeightOfDropDown(searchFieldList:List<String>) {
-    var expanded by remember { mutableStateOf(true) }
-    //val items = List(10) { it.toString() }
-    val itemHeights = remember { mutableStateMapOf<Int, Int>() }
-    val baseHeight = 330.dp
-    val density = LocalDensity.current
-    val maxHeight = remember(itemHeights.toMap()) {
-        if (itemHeights.keys.toSet() != searchFieldList.indices.toSet()) {
-            // if we don't have all heights calculated yet, return default value
-            return@remember baseHeight
-        }
-        val baseHeightInt = with(density) { baseHeight.toPx().toInt() }
 
-        // top+bottom system padding
-        var sum = with(density) { DropdownMenuVerticalPadding.toPx().toInt() } * 2
-        for ((i, itemSize) in itemHeights.toSortedMap()) {
-            sum += itemSize
-            if (sum >= baseHeightInt) {
-                return@remember with(density) { (sum - itemSize / 2).toDp() }
-            }
-        }
-        // all items fit into base height
-        baseHeight
-    }
-
-}
 
 

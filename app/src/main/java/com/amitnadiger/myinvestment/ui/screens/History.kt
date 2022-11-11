@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.utility.ProductListScreen
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
@@ -26,6 +27,7 @@ fun getScreenConfig4History():ScreenConfig = //Log.e("HomeScvreen","getScreenCon
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = true,
-        topAppBarTitle = "   Deleted History", bottomAppBarTitle = "",
+        topAppBarStartPadding = 20.dp,
+        topAppBarTitle = "DeletedHistory", bottomAppBarTitle = "",
         fabString = "Clear all",
     )

@@ -34,14 +34,13 @@ import com.amitnadiger.myinvestment.ui.screens.*
 import com.amitnadiger.myinvestment.utility.CustomTextField
 import com.amitnadiger.myinvestment.utility.DataStoreConst
 import com.amitnadiger.myinvestment.utility.DropDownBox
+import com.amitnadiger.myinvestment.utility.nod
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-
-var nod = mutableStateOf("30")
 @Composable
 fun NotificationSetting(navController: NavHostController,
                         padding: PaddingValues) {
@@ -161,7 +160,14 @@ fun NotificationSetting(navController: NavHostController,
                             saveNotificationInfoInDataStore(context,
                                 isNotificationEnabled,
                                 numOfDays)
-                            navController.navigate(NavRoutes.Setting.route)
+                            navController.navigate(NavRoutes.Setting.route)  {
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                        saveState = true
+                                    }
+                                }
+                                launchSingleTop = true
+                            }
                         }) {
                             Text("Save")
                         }
@@ -241,8 +247,9 @@ fun getScreenConfig4NotificationSetting(): ScreenConfig {
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
-        topAppBarTitle = "DisplaySettings", bottomAppBarTitle = "",
-        fabString = "add",
+        topAppBarStartPadding = 10.dp,
+        topAppBarTitle = "NotificationSetting", bottomAppBarTitle = "",
+        fabString = "",
         fabColor = Color.Red
     )
 }

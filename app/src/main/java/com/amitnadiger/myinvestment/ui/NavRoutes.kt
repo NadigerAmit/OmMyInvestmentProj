@@ -43,6 +43,7 @@ sealed class NavRoutes(val route:String) {
 
 }
 private var launchScreenCache:String? = null
+var isLogInDone:Boolean = false
 
 fun getLaunchScreen(context:Context):String {
     Log.i(TAG,"==>  getLaunchScreen ")
@@ -65,7 +66,6 @@ fun getLaunchScreen(context:Context):String {
     }
     Log.i(TAG,"getLaunchScreen ==>")
    return launchScreen
-    //return NavRoutes.SignUp.route
 }
 
 @Composable
@@ -74,10 +74,9 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
                      padding: PaddingValues) {
     val context = LocalContext.current
 
-
-   // Log.e(TAG,"ScreenNavigation -> navController.graph.route = ${navController.graph.route}")
- //   Log.e(TAG,"ScreenNavigation -> navController.graph.startDestinationRoute = ${navController.graph.startDestinationRoute}")
-    if(launchScreenCache == null || launchScreenCache == NavRoutes.SignUp.route) {
+     if(isLogInDone) {
+         launchScreenCache = NavRoutes.Home.route
+     } else if(launchScreenCache == null || launchScreenCache == NavRoutes.SignUp.route) {
         launchScreenCache = getLaunchScreen(context)
     }
 

@@ -30,6 +30,7 @@ import com.amitnadiger.myinvestment.R
 import com.amitnadiger.myinvestment.ui.screens.ScreenConfig
 import com.amitnadiger.myinvestment.utility.CustomTextField
 import com.amitnadiger.myinvestment.utility.TitleRow
+import com.amitnadiger.myinvestment.utility.nod
 
 @Composable
 fun DisplaySetting(navController: NavHostController,
@@ -113,7 +114,6 @@ fun DisplaySetting(navController: NavHostController,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Red)
-                        //Spacer(modifier = Modifier.width(40.dp))
                     }
 
                     "aboutToMaturedItemsText" -> {
