@@ -57,7 +57,7 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
     ) {
         // Header
         Image(
-            painter = painterResource(id = R.drawable.logosample),
+            painter = painterResource(id = R.drawable.ic_app_logo),
             contentDescription = R.drawable.logo.toString(),
             modifier = Modifier
                 .height(100.dp)

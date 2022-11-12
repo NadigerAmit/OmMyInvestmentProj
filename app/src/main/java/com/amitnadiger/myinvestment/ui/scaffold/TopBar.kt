@@ -3,10 +3,7 @@ package com.amitnadiger.myinvestment.ui.scaffold
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
@@ -34,6 +31,7 @@ fun TopBar(screenConfig: ScreenConfig,
                     fontSize = 30.sp,
                 modifier = Modifier.padding(start = screenConfig.topAppBarStartPadding)
             )},
+            elevation = AppBarDefaults.TopAppBarElevation,
            // backgroundColor = Color(0xFFC0E8D5),
             // Provide the navigation Icon (Icon on the left to toggle drawer)
 

@@ -65,7 +65,6 @@ fun ScaffoldImpl(navController: NavHostController,
                         }
                     }
                 )
-
             },
             content = { padding ->
                 Body(navController,finProductViewModel,finHistoryViewModel,padding)
