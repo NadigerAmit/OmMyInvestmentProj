@@ -12,7 +12,7 @@ sealed class OnBoardingPage(
     object First : OnBoardingPage(
         image = R.drawable.onboardingscreen1_home,
         title = "Home",
-        description = "Helps to track investments which have maturityDates." +
+        description = "Helps to track investments which have maturityDates (eg. FD,NSC,etc)." +
                 "Easy to track as records are sorted by maturityDate & color coded.")
 
     object Second : OnBoardingPage(
@@ -24,8 +24,8 @@ sealed class OnBoardingPage(
     object Third : OnBoardingPage(
         image = R.drawable.onboardingscreen3_filter,
         title = "Search/Filter Items",
-        description = "Filter investments based on many criteria." +
-                "Below are search fields  \n" +
+        description = "Filter based on criteria using ." +
+                "below search fields  \n" +
                 "1. Search by ," +
                 "2. Operation ," +
                 "3. Value "
