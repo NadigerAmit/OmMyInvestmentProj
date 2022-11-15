@@ -39,7 +39,7 @@ sealed class SettingItem(var route: String , var icon: Int, var title: String) {
     object UserProfileSetting : SettingItem("userSetting",   R.drawable.ic_profile,"User profile settings")
     object DisplaySettings : SettingItem("displaySetting",  R.drawable.ic_displaysetting,"DisplaySettings")
     object Notification : SettingItem("notificationSetting",   R.drawable.ic_notification,"Notifications setting")
-    object Language : SettingItem("profile", R.drawable.ic_language,"Language Settings\n")
+    //object Language : SettingItem("profile", R.drawable.ic_language,"Language Settings\n")
 
 }
 

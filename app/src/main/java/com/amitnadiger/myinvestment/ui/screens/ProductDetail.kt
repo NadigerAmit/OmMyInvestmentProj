@@ -30,6 +30,8 @@ import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.utility.DateUtility
 import com.amitnadiger.myinvestment.utility.DateUtility.Companion.getPeriodBetween2Dates
 import com.amitnadiger.myinvestment.utility.DateUtility.Companion.localDateToCalendar
+import com.amitnadiger.myinvestment.utility.getProductColor
+import com.amitnadiger.myinvestment.utility.nod
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import kotlinx.coroutines.GlobalScope
@@ -95,207 +97,224 @@ private fun getListOPropertiesOfProduct(productDetail: Product): List<Pair<Strin
     )
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
     {
+   //     /*
         mutableList.add(9,Pair("Investment Duration", getPeriodBetween2Dates(productDetail.investmentDate,productDetail.maturityDate)))
         mutableList.add(10,Pair("Remaining duration",getPeriodBetween2Dates(localDateToCalendar(LocalDateTime.now()),productDetail.maturityDate)))
-    } else {
-        mutableList.add(9,Pair("Investment Duration",
-            DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,productDetail.investmentDate).toString()+" Days"))
-        mutableList.add(10,Pair("Remaining duration",
-            DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,Calendar.getInstance()).toString()+" Days"))
-    }
-    return mutableList
+
+ //        */
+/*
+mutableList.add(9,Pair("Investment Duration",
+    DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,productDetail.investmentDate).toString()+" Days"))
+mutableList.add(10,Pair("Remaining duration",
+    DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,Calendar.getInstance()).toString()+" Days"))
+
+ */
+} else {
+mutableList.add(9,Pair("Investment Duration",
+    DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,productDetail.investmentDate).toString()+" Days"))
+mutableList.add(10,Pair("Remaining duration",
+    DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,Calendar.getInstance()).toString()+" Days"))
+}
+return mutableList
 }
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 @UiThread
 fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
-                               accountNumber:String,
-                               navController: NavHostController,
-                               padding: PaddingValues)  {
-    GlobalScope.launch {
-        viewModel.findProductsBasedOnAccountNumber(accountNumber)
-    }
+                       accountNumber:String,
+                       navController: NavHostController,
+                       padding: PaddingValues)  {
+GlobalScope.launch {
+viewModel.findProductsBasedOnAccountNumber(accountNumber)
+}
 
-    var productDetail:Product? = null
-    if(viewModel.searchResults.value == null || viewModel.searchResults.value!!.isEmpty()) {
-        Log.e("ProductDetail.Kt","Product List is empty returning from screenSetUpInProductDetail !!")
-        productDetail =viewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
-    } else {
-        Log.e("ProductDetail.Kt","Got it from Database ")
-        productDetail = viewModel.searchResults.value?.get(0)
-    }
+var productDetail:Product? = null
+if(viewModel.searchResults.value == null || viewModel.searchResults.value!!.isEmpty()) {
+Log.e("ProductDetail.Kt","Product List is empty returning from screenSetUpInProductDetail !!")
+productDetail =viewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
+} else {
+Log.e("ProductDetail.Kt","Got it from Database ")
+productDetail = viewModel.searchResults.value?.get(0)
+}
 
-   // Log.e("ProductDetail.Kt","Product is retived and list size = ${viewModel.searchResults.value!!.size}")
+// Log.e("ProductDetail.Kt","Product is retived and list size = ${viewModel.searchResults.value!!.size}")
 
 /*
-    Log.e("ProductDetail.Kt","Product is retived in Home \n accountNumber = ${productDetail?.accountNumber}" +
-            " \n financialInstitutionName +  ${productDetail?.financialInstitutionName}" +
-            " \n investorName = ${productDetail?.investorName} " +
-            " \ninvestmentAmount = ${productDetail?.investmentAmount}" +
-            " \ninvestmentDate = ${productDetail?.investmentDate}  " +
-            " \n maturityDate = ${productDetail?.maturityDate}  " +
-            " \n interestRate = $ {productDetail?.interestRate}  " +
-            " \n depositPeriod = ${productDetail?.depositPeriod} " +
-            " \n nomineeName = ${productDetail?.nomineeName} ")
- */
-    if(productDetail == null) return
-    val productFieldList = getListOPropertiesOfProduct(productDetail)
+Log.e("ProductDetail.Kt","Product is retived in Home \n accountNumber = ${productDetail?.accountNumber}" +
+    " \n financialInstitutionName +  ${productDetail?.financialInstitutionName}" +
+    " \n investorName = ${productDetail?.investorName} " +
+    " \ninvestmentAmount = ${productDetail?.investmentAmount}" +
+    " \ninvestmentDate = ${productDetail?.investmentDate}  " +
+    " \n maturityDate = ${productDetail?.maturityDate}  " +
+    " \n interestRate = $ {productDetail?.interestRate}  " +
+    " \n depositPeriod = ${productDetail?.depositPeriod} " +
+    " \n nomineeName = ${productDetail?.nomineeName} ")
+*/
+if(productDetail == null) return
+val productFieldList = getListOPropertiesOfProduct(productDetail)
 
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(padding)
-    ) {
-        //TitleRowProductDetails("\n  Account Details\n")
-        LazyColumn(
-            Modifier
-                .fillMaxWidth()
-                .border(width = 1.dp, color = Color.Black)
-                .padding(3.dp)
+Column(
+horizontalAlignment = Alignment.CenterHorizontally,
+modifier = Modifier
+    .fillMaxWidth()
+    .padding(padding)
+) {
+//TitleRowProductDetails("\n  Account Details\n")
+LazyColumn(
+    Modifier
+        .fillMaxWidth()
+        .border(width = 1.dp, color = Color.Black)
+        .padding(3.dp)
 
-        ) {
-            items(productFieldList) { productFeild ->
-                when(productFeild.first) {
-                    "DeleteAndEditButton" -> {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            // .padding(50.dp),
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            Button(onClick = {
-                                showDeleteAlertDialogGlobal.value = true
-                                Log.e("DeleteAlert","Button clicked showDeleteAlertDialog.value - " +
-                                        "${showDeleteAlertDialogGlobal.value}")
-                            },modifier = Modifier
-                                .padding(10.dp)) {
-                                Icon(Icons.Filled.Delete, "Delete")
-                                Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                                Text("Delete")
-                            }
-                            Button(onClick = {
-                                navController.navigate(NavRoutes.AddProduct.route + "/$accountNumber") {
-                                    // Pop up to the start destination of the graph to
-                                    // avoid building up a large stack of destinations
-                                    // on the back stack as users select items
-                                    navController.graph.startDestinationRoute?.let { route ->
-                                        popUpTo(route) {
-                                            saveState = true
-                                        }
-                                    }
-                                    // Avoid multiple copies of the same destination when
-                                    // reselecting the same item
-                                    launchSingleTop = true
-                                    // Restore state when reselecting a previously selected item
-                                    //restoreState = true
+) {
+    items(productFieldList) { productFeild ->
+        when(productFeild.first) {
+            "DeleteAndEditButton" -> {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    // .padding(50.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(onClick = {
+                        showDeleteAlertDialogGlobal.value = true
+                        Log.e("DeleteAlert","Button clicked showDeleteAlertDialog.value - " +
+                                "${showDeleteAlertDialogGlobal.value}")
+                    },modifier = Modifier
+                        .padding(10.dp)) {
+                        Icon(Icons.Filled.Delete, "Delete")
+                        Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                        Text("Delete")
+                    }
+                    Button(onClick = {
+                        navController.navigate(NavRoutes.AddProduct.route + "/$accountNumber") {
+                            // Pop up to the start destination of the graph to
+                            // avoid building up a large stack of destinations
+                            // on the back stack as users select items
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
                                 }
-
-                            },modifier = Modifier
-                                .padding(10.dp)) {
-                                Icon(Icons.Filled.Edit, "Edit")
-                                Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                                Text("Edit")
                             }
+                            // Avoid multiple copies of the same destination when
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            //restoreState = true
                         }
-                    } else -> {
-                        ProductDetailsRow(productFeild.first,productFeild.second)
+
+                    },modifier = Modifier
+                        .padding(10.dp)) {
+                        Icon(Icons.Filled.Edit, "Edit")
+                        Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                        Text("Edit")
                     }
                 }
+            } else -> {
+                val color = getProductColor(productDetail, nod.value.toInt())
+                ProductDetailsRow(productFeild.first,productFeild.second,color)
             }
         }
     }
 }
+}
+}
 
 private fun printProductDetails(productDetail: Product){
-    Log.e("ProductDetail.Kt","Product is retived in Home \n accountNumber = ${productDetail?.accountNumber}" +
-            " \n financialInstitutionName +  ${productDetail?.financialInstitutionName}" +
-            " \n investorName = ${productDetail?.investorName} " +
-            " \ninvestmentAmount = ${productDetail?.investmentAmount}" +
-            " \ninvestmentDate = ${productDetail?.investmentDate}  " +
-            " \n maturityDate = ${productDetail?.maturityDate}  " +
-            " \n interestRate = $ {productDetail?.interestRate}  " +
-            " \n depositPeriod = ${productDetail?.depositPeriod} " +
-            " \n nomineeName = ${productDetail?.nomineeName} ")
+Log.e("ProductDetail.Kt","Product is retived in Home \n accountNumber = ${productDetail?.accountNumber}" +
+    " \n financialInstitutionName +  ${productDetail?.financialInstitutionName}" +
+    " \n investorName = ${productDetail?.investorName} " +
+    " \ninvestmentAmount = ${productDetail?.investmentAmount}" +
+    " \ninvestmentDate = ${productDetail?.investmentDate}  " +
+    " \n maturityDate = ${productDetail?.maturityDate}  " +
+    " \n interestRate = $ {productDetail?.interestRate}  " +
+    " \n depositPeriod = ${productDetail?.depositPeriod} " +
+    " \n nomineeName = ${productDetail?.nomineeName} ")
 
 }
 
 @Composable
 fun deleteRecord(showDialog: Boolean,
-                 onDismiss: () -> Unit,
-                 productViewModel: FinProductViewModel,
-                 finHistoryViewModel: FinHistoryViewModel,
-                 accountNumber:String,
-                 navController: NavHostController):Product? {
-    val context = LocalContext.current
-    var rec :Product?= null
+         onDismiss: () -> Unit,
+         productViewModel: FinProductViewModel,
+         finHistoryViewModel: FinHistoryViewModel,
+         accountNumber:String,
+         navController: NavHostController):Product? {
+val context = LocalContext.current
+var rec :Product?= null
 
-    Log.e("DeleteAlert","Called ->showDialog = $showDialog")
-    if (showDialog) {
+Log.e("DeleteAlert","Called ->showDialog = $showDialog")
+if (showDialog) {
 
-        Log.e("DeleteAlert","Showing the alert dialog  = $showDialog")
-        AlertDialog(
-            title = { Text(text = "Are you sure to delete this record ?",color = Color.Red) },
-            text = { Text(text = "Deleted items will be moved to history , " +
-                    "Delete from history if permanent deletion is required")},
-            onDismissRequest = onDismiss,
-            confirmButton = {
-                TextButton(onClick = {
-                    rec = productViewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
-                    if(rec!= null) {
-                        productViewModel.deleteFinProduct(accountNumber)
-                        Toast.makeText(context, "Record with accNum : $accountNumber deleted" , Toast.LENGTH_LONG)
-                            .show()
-                        navController.navigate(NavRoutes.Home.route)
-                        deletedRecord.value = rec!!
-                        showDeleteAlertDialogGlobal.value = false
-                    }
-                })
-                { Text(text = "Continue delete",color = Color.Red) }
-            },
-            shape  = MaterialTheme.shapes.medium,
-            dismissButton = {
-                onDismiss()
-                TextButton(onClick = {
-                    showDeleteAlertDialogGlobal.value = false
-                    navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber")
-                })
-                { Text(text = "Cancel delete",
-                modifier = Modifier.padding(end = 40.dp)) }
-            },
-            properties= DialogProperties(dismissOnBackPress = true,
-                dismissOnClickOutside=true)
-        )
-    }
-    return rec
+Log.e("DeleteAlert","Showing the alert dialog  = $showDialog")
+AlertDialog(
+    title = { Text(text = "Are you sure to delete this record ?",color = Color.Red) },
+    text = { Text(text = "Deleted items will be moved to history , " +
+            "Delete from history if permanent deletion is required")},
+    onDismissRequest = onDismiss,
+    confirmButton = {
+        TextButton(onClick = {
+            rec = productViewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
+            if(rec!= null) {
+                productViewModel.deleteFinProduct(accountNumber)
+                Toast.makeText(context, "Record with accNum : $accountNumber deleted" , Toast.LENGTH_LONG)
+                    .show()
+                navController.navigate(NavRoutes.Home.route)
+                deletedRecord.value = rec!!
+                showDeleteAlertDialogGlobal.value = false
+            }
+        })
+        { Text(text = "Continue delete",color = Color.Red) }
+    },
+    shape  = MaterialTheme.shapes.medium,
+    dismissButton = {
+        onDismiss()
+        TextButton(onClick = {
+            showDeleteAlertDialogGlobal.value = false
+            navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber")
+        })
+        { Text(text = "Cancel delete",
+        modifier = Modifier.padding(end = 40.dp)) }
+    },
+    properties= DialogProperties(dismissOnBackPress = true,
+        dismissOnClickOutside=true)
+)
+}
+return rec
 }
 
 fun getScreenConfig4ProductDetail():ScreenConfig {
-    Log.e("ProductDetail","getScreenConfig4ProductDetail");
-    return ScreenConfig(
-        enableTopAppBar = true,
-        enableBottomAppBar = true,
-        enableDrawer = true,
-        enableFab = false,
-        enableAction = false,
-        topAppBarTitle = "AccountDetail", bottomAppBarTitle = "",
-        fabString = "",
-    )
+Log.e("ProductDetail","getScreenConfig4ProductDetail");
+return ScreenConfig(
+enableTopAppBar = true,
+enableBottomAppBar = true,
+enableDrawer = true,
+enableFab = false,
+enableAction = false,
+topAppBarTitle = "AccountDetail", bottomAppBarTitle = "",
+fabString = "",
+)
 }
 
 @Composable
 fun ProductDetailsRow(FirstColumn: String,
-               SecondColumn: String,
+       SecondColumn: String,
+              color:Color = Color.Unspecified
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(7.dp)
-    ) {
-        Text(FirstColumn.toString(), modifier = Modifier
-            .weight(0.2f))
-        Text(SecondColumn , modifier = Modifier.weight(0.2f))
-    }
+Row(
+modifier = Modifier
+    .fillMaxWidth()
+    .padding(7.dp)
+) {
+var textColor: Color = Color.Unspecified
+if(FirstColumn == "Remaining duration") {
+    textColor = color
+}
+Text(FirstColumn.toString(), color = textColor,modifier = Modifier
+    .weight(0.2f))
+Text(SecondColumn ,  color = textColor,modifier = Modifier.weight(0.2f))
+
+}
 }

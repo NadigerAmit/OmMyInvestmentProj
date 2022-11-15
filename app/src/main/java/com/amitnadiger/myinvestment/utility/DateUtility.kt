@@ -121,16 +121,19 @@ class DateUtility {
                     ""+ period.getDays() + " days"
              */
 
-            if(period.getDays()>0) {
-                duration = ""+ period.getDays() + " days"
+            if(period.days <=0) {
+                duration = ""+ period.days + " days"
+            } else {
+                if(period.days >0) {
+                    duration = ""+ period.days + " days"
+                }
+                if(period.months >0) {
+                    duration = ""+period.months + " months "+duration
+                }
+                if(period.years >0) {
+                    duration = ""+period.years +" years, " +duration
+                }
             }
-            if(period.getMonths()>0) {
-                duration = ""+period.getMonths() + " months and "+duration
-            }
-            if(period.getYears()>0) {
-                duration = ""+period.getYears() +" years, " +duration
-            }
-
             println("The difference between " + fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
                     + " and " + today.format(DateTimeFormatter.ISO_LOCAL_DATE) + duration)
             return duration

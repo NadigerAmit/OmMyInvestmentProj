@@ -13,7 +13,7 @@ sealed class NavDrawerItem(var route: String, var icon: Int, var title: String) 
     object Settings : NavDrawerItem("setting",  R.drawable.ic_settings,"Settings")
     object Faq : NavDrawerItem("faq",   R.drawable.ic_faq,"FAQ")
     object License : NavDrawerItem("license", R.drawable.ic_licensenew,"License")
-    object Tutorial : NavDrawerItem("tutorial", R.drawable.ic_tutorils,"Tutorial")
+    //object Tutorial : NavDrawerItem("tutorial", R.drawable.ic_tutorils,"Tutorial")
 
 }
 

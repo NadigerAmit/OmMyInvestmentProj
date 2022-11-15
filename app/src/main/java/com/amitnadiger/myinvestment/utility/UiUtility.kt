@@ -103,7 +103,7 @@ fun ProductRow(accountNumber:String,
                SecondColumn: String,
                ThirdColumn: String,
                navController: NavHostController,
-               textColor: Color = Color.Black,
+               textColor: Color = Color.Unspecified,
                parentScreen:String,
 ) {
 

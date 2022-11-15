@@ -171,19 +171,7 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
                 ) {
 
                     items(finalList) { product ->
-                        var maturityPeriodIsLessThan30Days = false
-                        var isAlreadyMatured = false
-                        var color: Color = Color.Black
-                        val numberOfDays =
-                            DateUtility.getNumberOfDaysBetweenTwoDays(
-                                product.maturityDate, Calendar.getInstance())
-
-                        if (numberOfDays < 0) {
-                            color = Color.Red
-                        } else if (numberOfDays <= 30) {
-                            maturityPeriodIsLessThan30Days
-                            color = Color.Magenta
-                        }
+                        var color: Color = getProductColor(product,nod.value.toInt())
 
                         if(product.accountNumber == "00000000000"
                             && totalInvestmentAmount != 0 ) {

@@ -10,7 +10,7 @@ sealed class OnBoardingPage(
     val description: String
 ) {
     object First : OnBoardingPage(
-        image = R.drawable.ic_notification,
+        image = R.drawable.screen_home,
         title = "Home",
         description = "You can check the list of records which are sorted based on the maturity date " +
                 "Matured items are displayed in Red  " +

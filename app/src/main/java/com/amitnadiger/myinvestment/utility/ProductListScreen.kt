@@ -76,21 +76,7 @@ fun ProductListScreen(
                     //       " \n nomineeName = ${product.nomineeName} "
                 )
 
-
-
-                var maturityPeriodIsLessThan30Days = false
-                var isAlreadyMatured = false
-                var color: Color = Color.Unspecified
-
-                val numberOfDays =
-                    DateUtility.getNumberOfDaysBetweenTwoDays(product.maturityDate, Calendar.getInstance())
-
-                if (numberOfDays <= 0) {
-                    color = Color.Red
-                } else if (numberOfDays <= advanceNotifyDays) {
-                    maturityPeriodIsLessThan30Days
-                    color = Color.Magenta
-                }
+                var color: Color = getProductColor(product,advanceNotifyDays)
 
                 ProductRow(
                     product.accountNumber,

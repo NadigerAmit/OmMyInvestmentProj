@@ -47,7 +47,7 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
         NavDrawerItem.History,
         NavDrawerItem.Settings,
         NavDrawerItem.News,
-        NavDrawerItem.Tutorial,
+        //NavDrawerItem.Tutorial,
         NavDrawerItem.License,
         NavDrawerItem.Faq,
     )

@@ -1,8 +1,8 @@
 package com.amitnadiger.myinvestment.ui.scaffold
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -10,11 +10,8 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.Color.Companion.White
+
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.amitnadiger.myinvestment.ui.screens.ScreenConfig
 
@@ -29,7 +26,9 @@ fun TopBar(screenConfig: ScreenConfig,
             title = {
                 Text(text = screenConfig.topAppBarTitle, color = MaterialTheme.colors.primary,
                     fontSize = 30.sp,
-                modifier = Modifier.padding(start = screenConfig.topAppBarStartPadding)
+                    textAlign = TextAlign.Start,
+                modifier = Modifier.padding(start = screenConfig.topAppBarStartPadding,
+                )
             )},
             elevation = AppBarDefaults.TopAppBarElevation,
            // backgroundColor = Color(0xFFC0E8D5),

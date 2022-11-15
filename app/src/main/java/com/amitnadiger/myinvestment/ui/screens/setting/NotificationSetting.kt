@@ -149,7 +149,8 @@ fun NotificationSetting(navController: NavHostController,
                             onNotificationEnableFieldChange)
                     }
                     "uIForAdvanceDaysBeforeMaturity" -> {
-                        NotificationDaysRow("Set advance notifications for matured records" +
+                        NotificationDaysRow("Set advance notifications \n" +
+                                "for to-be matured records" +
                                 "\nDefault -> 30 days ",numOfDays,onNumberOfDaysFieldChange)
                     }
                     "uIForSave"-> {
@@ -241,14 +242,14 @@ fun LabelledCheckboxForNotificationSetting(textString:String,
 }
 
 fun getScreenConfig4NotificationSetting(): ScreenConfig {
-    //Log.e("HomeScreen","getScreenConfig4Home");
+
     return ScreenConfig(
         enableTopAppBar = true,
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
-        topAppBarStartPadding = 10.dp,
-        topAppBarTitle = "NotificationSetting", bottomAppBarTitle = "",
+        topAppBarStartPadding =0.dp,
+        topAppBarTitle = "NotifySettings", bottomAppBarTitle = "",
         fabString = "",
         fabColor = Color.Red
     )

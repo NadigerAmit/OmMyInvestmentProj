@@ -27,6 +27,8 @@ import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.room.Product
 import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.utility.DateUtility
+import com.amitnadiger.myinvestment.utility.getProductColor
+import com.amitnadiger.myinvestment.utility.nod
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import kotlinx.coroutines.GlobalScope
@@ -187,7 +189,8 @@ fun screenSetUpInHistoryProductDetail(productViewModel: FinProductViewModel,
                             }
                         }
                     } else -> {
-                        ProductDetailsRow(productFeild.first,productFeild.second)
+                        val color = getProductColor(productDetail, nod.value.toInt())
+                        ProductDetailsRow(productFeild.first,productFeild.second,color)
                     }
                 }
             }

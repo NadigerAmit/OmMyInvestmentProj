@@ -34,7 +34,7 @@ fun getScreenConfig4Home():ScreenConfig {
         enableDrawer = true,
         enableFab = true,
         enableAction = true,
-        topAppBarTitle = "MyInvestments", bottomAppBarTitle = "",
+        topAppBarTitle = "Investments", bottomAppBarTitle = "",
         fabString = "add",
         fabColor = Color.Red
     )

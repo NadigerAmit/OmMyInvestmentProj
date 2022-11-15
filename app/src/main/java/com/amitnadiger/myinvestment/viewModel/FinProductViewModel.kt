@@ -54,18 +54,20 @@ class FinProductViewModel(application: Application): ViewModel() {
     private fun getPassCode(context: Context):String {
         val dataStoreProvider = DataStoreHolder.getDataStoreProvider(context,
             DataStoreConst.SECURE_DATASTORE,true)
+        var isRegistrationComplete:Boolean? = null
         var passCode:String? = null
         runBlocking {
             passCode = dataStoreProvider.getString(DataStoreConst.DB_PASSCODE).first()
             Log.i(TAG,"Retrived passcode from data store  = $passCode")
         }
-        if(passCode == null) {
-            passCode = UUID.randomUUID().toString()+abs((0..999999999999).random()).toString()
-            Log.i(TAG,"Generated passcode = $passCode")
-        }
 
-        runBlocking {
-            dataStoreProvider.putString(DataStoreConst.DB_PASSCODE,passCode!!)
+        if(passCode == null) {
+            // is registration Done
+            passCode = UUID.randomUUID().toString()+abs((0..999999999999).random()).toString()
+            Log.i(TAG,"Generated new passcode = $passCode")
+            runBlocking {
+                dataStoreProvider.putString(DataStoreConst.DB_PASSCODE,passCode!!)
+            }
         }
         return passCode!!
     }
