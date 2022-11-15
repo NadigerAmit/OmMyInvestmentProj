@@ -12,7 +12,7 @@ sealed class OnBoardingPage(
     object First : OnBoardingPage(
         image = R.drawable.onboardingscreen1_home,
         title = "Home",
-        description = "Helps to track investments which have maturityDates (eg. FD,NSC,etc)." +
+        description = "App helps to track investments which have maturityDates." +
                 "Easy to track as records are sorted by maturityDate & color coded.")
 
     object Second : OnBoardingPage(
