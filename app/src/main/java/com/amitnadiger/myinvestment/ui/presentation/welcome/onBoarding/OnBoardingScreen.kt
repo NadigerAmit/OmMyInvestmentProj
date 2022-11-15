@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.amitnadiger.myinvestment.MainActivity
 
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -95,19 +96,19 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
             modifier = Modifier
                 .fillMaxWidth(),
             text = onBoardingPage.title,
-           // fontSize = JetRortyTypography.h2.fontSize,
+            fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 40.dp)
-                .padding(top = 20.dp),
+                .padding(horizontal = 15.dp)
+                .padding(top = 8.dp),
             text = onBoardingPage.description,
-            //fontSize = JetRortyTypography.h4.fontSize,
+            fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Start
         )
     }
 }
@@ -121,7 +122,7 @@ fun FinishButton(
 ) {
     Row(
         modifier = modifier
-            .padding(horizontal = 40.dp),
+            .padding(horizontal = 60.dp),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -138,7 +139,7 @@ fun FinishButton(
             ) {
                 Text(
                     //text = stringResource(id = R.string.text_finish),
-                    text = "Finish",
+                    text = "Lets Go",
                     color = White,
                     modifier = Modifier.padding(4.dp)
                 )
