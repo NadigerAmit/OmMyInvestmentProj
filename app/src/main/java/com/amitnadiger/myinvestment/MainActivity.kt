@@ -2,7 +2,6 @@ package com.amitnadiger.myinvestment
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 
@@ -24,7 +23,7 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
+import com.amitnadiger.myinvestment.componentFactory.ComponentInitializer
 import com.amitnadiger.myinvestment.ui.theme.MyInvestmentTheme
 
 import com.amitnadiger.myinvestment.ui.scaffold.ScaffoldImpl
@@ -32,14 +31,10 @@ import com.amitnadiger.myinvestment.ui.screens.*
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4DisplaySetting
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4NotificationSetting
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4Setting
-import com.amitnadiger.myinvestment.utility.DataStoreConst
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModelFactory
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModelFactory
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 
 @SuppressLint("StaticFieldLeak")
 
@@ -47,13 +42,14 @@ import kotlinx.coroutines.runBlocking
 class MainActivity : ComponentActivity() {
     val TAG = "MainActivity"
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //DataStoreHolder.initializeDataStoreManager(this@MainActivity)
         setContent {
-            MyInvestmentTheme(darkTheme = BaseApplication.isDark.value) {
+
+            val resourceProvider = ComponentInitializer(this)
+            val themeViewModel = resourceProvider.geThemeViewModel()
+            MyInvestmentTheme(darkTheme = themeViewModel.isDarkMode.value) {
 
                 // A surface container using the 'background' color from the theme
                 Surface(

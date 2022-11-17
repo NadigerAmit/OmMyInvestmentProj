@@ -24,10 +24,9 @@ sealed class OnBoardingPage(
     object Third : OnBoardingPage(
         image = R.drawable.onboardingscreen3_filter,
         title = "Search/Filter Items",
-        description = "Filter based on criteria using ." +
-                "below search fields  \n" +
-                "1. Search by ," +
-                "2. Operation ," +
+        description = "Filter by below  \n" +
+                "1. Search by \n" +
+                "2. Operation \n" +
                 "3. Value "
     )
 }

@@ -1,6 +1,7 @@
 
 package com.amitnadiger.myinvestment.ui.presentation.welcome
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 
 import androidx.fragment.app.FragmentActivity
 import com.amitnadiger.myinvestment.BaseApplication
+import com.amitnadiger.myinvestment.componentFactory.ComponentInitializer
 
 
 import com.amitnadiger.myinvestment.ui.theme.MyInvestmentTheme
@@ -28,7 +30,7 @@ class WelcomeActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         Log.e(TAG,"onCreate() ")
         setContent {
-            WelcomeRoot()
+            WelcomeRoot(this)
         }
     }
 }
@@ -44,8 +46,11 @@ fun SetupSystemUi(
 }
 
 @Composable
-private fun WelcomeRoot() {
-    MyInvestmentTheme(darkTheme = BaseApplication.isDark.value) {
+private fun WelcomeRoot(context: Context) {
+    val resourceProvider = ComponentInitializer(context)
+    val themeViewModel = resourceProvider.geThemeViewModel()
+
+    MyInvestmentTheme(darkTheme = themeViewModel.isDarkMode.value) {
         SetupSystemUi(rememberSystemUiController(), MaterialTheme.colors.primary)
         Surface(
             modifier = Modifier.fillMaxSize(),
