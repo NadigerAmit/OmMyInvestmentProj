@@ -13,15 +13,18 @@ import androidx.lifecycle.lifecycleScope
 
 
 import com.amitnadiger.myinvestment.MainActivity
+import com.amitnadiger.myinvestment.componentFactory.ComponentInitializer
+import com.amitnadiger.myinvestment.repository.WelcomeRepository
 import com.amitnadiger.myinvestment.ui.presentation.welcome.WelcomeActivity
+import com.amitnadiger.myinvestment.ui.presentation.welcome.onBoarding.ReadOnBoarding
+import com.amitnadiger.myinvestment.viewModel.StartViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 
 private val TAG = "StartActivity"
 
 class StartActivity : FragmentActivity() {
 
-    // private val viewModel by viewModels<StartViewModel>()
-    private var isOnBoardingCompleted = false
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.e(TAG,"StartActivity called ")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -30,10 +33,13 @@ class StartActivity : FragmentActivity() {
             splashScreen.setKeepOnScreenCondition { true }
         }
         super.onCreate(savedInstanceState)
+        val resourceProvider = ComponentInitializer(this)
+        val startViewModel = resourceProvider.getStartViewModel()
         lifecycleScope.launchWhenCreated {
-            Log.e(TAG,"StartActivity more than S calling below code ")
-            delay(3000)
+            var isOnBoardingCompleted = startViewModel.readOnBoardingState()
+            Log.e(TAG,"isOnBoardingCompleted  $isOnBoardingCompleted")
             if (isOnBoardingCompleted) navigateMainActivity() else navigateWelcomeActivity()
+
         }
     }
 

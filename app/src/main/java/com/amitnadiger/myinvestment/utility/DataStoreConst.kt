@@ -21,5 +21,7 @@ class DataStoreConst {
         const val IS_DARK_MODE = "IS_DARK_MODE"
         const val IS_NOTIFICATION_ENABLED ="IS_NOTIFICATION_ENABLED"
         const val NOTIFICATION_DAYS = "NOTIFICATION_DAYS"
+
+        const val IS_ON_BOARDING_COMPLETED ="IS_ON_BOARDING_COMPLETED"
     }
 }

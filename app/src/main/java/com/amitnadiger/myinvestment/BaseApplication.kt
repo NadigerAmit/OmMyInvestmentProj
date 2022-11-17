@@ -28,18 +28,5 @@ class BaseApplication() : Application(){
         }
     }
      */
-    companion object {
-       var isDark = mutableStateOf(true)
-       private var dataStoreProvider: IDataStore? = null
-       val coroutineScope = CoroutineScope(Dispatchers.IO)
-       fun toggleLightTheme(context: Context){
-           dataStoreProvider = DataStoreHolder.getDataStoreProvider(context,
-               DataStoreConst.UNSECURE_DATASTORE,false)
-           isDark.value = !isDark.value
-           coroutineScope.launch {
-               dataStoreProvider!!.putBool(IS_DARK_MODE,isDark.value)
-           }
-       }
 
-    }
 }

@@ -27,13 +27,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.amitnadiger.myinvestment.MainActivity
+import com.amitnadiger.myinvestment.componentFactory.ComponentInitializer
 
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.*
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun OnBoardingScreen(/*viewModel: OnBoardingViewModel = hiltViewModel()*/) {
+fun OnBoardingScreen() {
     val context = LocalContext.current
     val pages = listOf(
         OnBoardingPage.First,
@@ -66,7 +67,9 @@ fun OnBoardingScreen(/*viewModel: OnBoardingViewModel = hiltViewModel()*/) {
             modifier = Modifier.weight(1f),
             pagerState = pagerState
         ) {
-           // viewModel.saveOnBoardingState(completed = true)
+            val resourceProvider = ComponentInitializer(context)
+            val onBoardingViewModel = resourceProvider.geOnBoardingViewModel()
+            onBoardingViewModel.saveOnBoardingState(completed = true)
             navigateMainActivity(context)
         }
     }
