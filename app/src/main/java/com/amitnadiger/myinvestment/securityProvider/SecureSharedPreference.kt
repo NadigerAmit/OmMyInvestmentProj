@@ -51,7 +51,7 @@ class SecureSharedPreference {
 
     fun putString(key: String, value: String) {
         val encryptedValue: EncryptedData? = cryptoProvider?.encrypt(value) // This is for Value
-        Log.e(TAG, "Encrypted Value of  $value = $encryptedValue")
+        Log.d(TAG, "Encrypted Value of  $value = $encryptedValue")
         if (encryptedValue == null) {
             Log.e(TAG, "Encrypted data is null ")
             return

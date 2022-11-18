@@ -31,6 +31,7 @@ class WelcomeActivity : FragmentActivity() {
         Log.e(TAG,"onCreate() ")
         setContent {
             WelcomeRoot(this)
+            //finish()
         }
     }
 }
@@ -57,6 +58,7 @@ private fun WelcomeRoot(context: Context) {
             color = MaterialTheme.colors.background
         ) {
             WelcomeNavGraph()
+
         }
     }
 }

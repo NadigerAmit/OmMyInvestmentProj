@@ -27,12 +27,12 @@ class EncrypterDecrypter(val context: Context, private val transformation: Strin
     fun encrypt(data: String, key: Key): EncryptedData? {
         try {
             cipher.init(Cipher.ENCRYPT_MODE, key)
-            Log.e(TAG, "Key in encryptor = $key")
+           // Log.d(TAG, "Key in encryptor = $key")
             val ivParams: IvParameterSpec =
                 cipher.parameters.getParameterSpec(IvParameterSpec::class.java)
             mIv = ivParams.iv
             val bytes: ByteArray = cipher.doFinal(data.toByteArray())
-            Log.e(TAG, "In Encryptor IV = " + Arrays.toString(ivParams.iv))
+           // Log.d(TAG, "In Encryptor IV = " + Arrays.toString(ivParams.iv))
             return EncryptedData(encodeToString(bytes, DEFAULT),
                 Arrays.toString(ivParams.iv)
             )
@@ -44,7 +44,7 @@ class EncrypterDecrypter(val context: Context, private val transformation: Strin
 
     fun decrypt(data: String, key: Key, Iv: String?): String? {
         val array: ByteArray
-        Log.e(TAG, "Key in decrypter = $key")
+       // Log.d(TAG, "Key in decrypter = $key")
         var ivParams: IvParameterSpec? = null // This class specifies an initialization vector (IV).
         if (Iv != null) {
             val split = Iv.substring(1, Iv.length - 1).split(", ").toTypedArray()
@@ -56,24 +56,24 @@ class EncrypterDecrypter(val context: Context, private val transformation: Strin
             }
         }
         try {
-            Log.e(TAG, " EncryptedString : $data")
-            Log.e(TAG, "In Decrypt IV = $Iv")
+          //  Log.d(TAG, " EncryptedString : $data")
+         //   Log.d(TAG, "In Decrypt IV = $Iv")
             cipher.init(Cipher.DECRYPT_MODE, key, ivParams)
             val encryptedData: ByteArray = decode(data, DEFAULT)
             val decodedData: ByteArray = cipher.doFinal(encryptedData) // Actual Decryption
             val str = String(decodedData, StandardCharsets.UTF_8)
-            Log.e(TAG, " Plan Text : $str")
+          //  Log.d(TAG, " Plan Text : $str")
             return str
         } catch (e: Exception) {
             when (e) {
                 is InvalidAlgorithmParameterException,
                 is InvalidKeyException -> {
-                    Log.e(TAG, " InvalidAlgorithmParameterException, :InvalidKeyException e=  " + e.message)
+                    Log.d(TAG, " InvalidAlgorithmParameterException, :InvalidKeyException e=  " + e.message)
                 }
                 else -> throw e
             }
             e.printStackTrace()
-            Log.e(TAG, " Plan Text : e=  " + e.message)
+          //  Log.d(TAG, " Plan Text : e=  " + e.message)
         }
         return null
     }

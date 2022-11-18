@@ -20,15 +20,15 @@ class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
     private val floatMap = HashMap<String, Float?>()
 
     override suspend fun getBool(key: String) = context.dataStore.data.map {
-        Log.i(TAG, "getBool --> Key = $key")
+       // Log.i(TAG, "getBool --> Key = $key")
         var ret: Boolean? = null
         if (boolMap.containsKey(key)) {
             ret = boolMap[key]
-            Log.i(TAG, "Found Key in boolMap value = $ret")
+           // Log.i(TAG, "Found Key in boolMap value = $ret")
         } else {
             ret =  getStringValue(key).first()?.toBoolean()
             if (ret != null) {
-                Log.i(TAG, "Decrypted str after decryption = $ret")
+               // Log.i(TAG, "Decrypted str after decryption = $ret")
             }
             boolMap[key] = ret
         }
@@ -40,11 +40,11 @@ class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
         var decryptedStr: String? = null
         if (stringMap.containsKey(key)) {
             decryptedStr = stringMap[key]
-            Log.i(TAG, "Found Key in stringMap value = $decryptedStr")
+           // Log.i(TAG, "Found Key in stringMap value = $decryptedStr")
         } else {
             decryptedStr =  getStringValue(key).first()
             if (decryptedStr != null) {
-                Log.i(TAG, "Decrypted str after decryption = $decryptedStr")
+             //   Log.i(TAG, "Decrypted str after decryption = $decryptedStr")
             }
             stringMap[key] = decryptedStr
         }
@@ -56,11 +56,11 @@ class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
         var intRet: Int? = null
         if (intMap.containsKey(key)) {
             intRet = intMap[key]
-            Log.i(TAG, "Found Key in intMap value = $intRet")
+           // Log.i(TAG, "Found Key in intMap value = $intRet")
         } else {
             intRet =  getStringValue(key).first()?.toInt()
             if (intRet != null) {
-                Log.i(TAG, "Decrypted str after decryption = $intRet")
+          //      Log.i(TAG, "Decrypted str after decryption = $intRet")
             }
             intMap[key] = intRet
         }
@@ -71,11 +71,11 @@ class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
         var longRet: Long? = null
         if (longMap.containsKey(key)) {
             longRet = longMap[key]
-            Log.i(TAG, "Found Key in longMap value = $longRet")
+        //    Log.i(TAG, "Found Key in longMap value = $longRet")
         } else {
             longRet =  getStringValue(key).first()?.toLong()
             if (longRet != null) {
-                Log.i(TAG, "Decrypted str after decryption = $longRet")
+         //       Log.i(TAG, "Decrypted str after decryption = $longRet")
             }
             longMap[key] = longRet
         }
@@ -86,11 +86,11 @@ class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
         var doubleRet: Double? = null
         if (doubleMap.containsKey(key)) {
             doubleRet = doubleMap[key]
-            Log.i(TAG, "Found Key in doubleMap value = $doubleRet")
+         //   Log.i(TAG, "Found Key in doubleMap value = $doubleRet")
         } else {
             doubleRet = getStringValue(key).first()?.toDouble()
             if (doubleRet != null) {
-                Log.i(TAG, "Decrypted str after decryption = $doubleRet")
+          //      Log.i(TAG, "Decrypted str after decryption = $doubleRet")
             }
             doubleMap[key] = doubleRet
         }
@@ -101,11 +101,11 @@ class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
         var floatRet: Float? = null
         if (floatMap.containsKey(key)) {
             floatRet = floatMap[key]
-            Log.i(TAG, "Found Key in floatMap value = $floatRet")
+         //   Log.i(TAG, "Found Key in floatMap value = $floatRet")
         } else {
             floatRet = getStringValue(key).first()?.toFloat()
             if (floatRet != null) {
-                Log.i(TAG, "Decrypted str after decryption = $floatRet")
+            //    Log.i(TAG, "Decrypted str after decryption = $floatRet")
             }
             floatMap[key] = floatRet
         }
@@ -146,11 +146,11 @@ class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
         val encryptedData: EncryptedData? =
             cryptProvider.encrypt(value) // This is for Value
         if (encryptedData == null) {
-            Log.e(TAG, "Encrypted data is null ")
+     //       Log.d(TAG, "Encrypted data is null ")
             return
         }
-        Log.i(TAG, "encryptedValue.encryptedStr = ${encryptedData.encryptedStr}")
-        Log.i(TAG, " encryptedValue.iVStr = ${encryptedData.iVStr}")
+     //   Log.i(TAG, "encryptedValue.encryptedStr = ${encryptedData.encryptedStr}")
+     //   Log.i(TAG, " encryptedValue.iVStr = ${encryptedData.iVStr}")
 
         context.dataStore.edit {
             it[stringPreferencesKey(key)] = encryptedData.encryptedStr
@@ -162,8 +162,8 @@ class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
         var decryptedStr:String ?= null
         val encryptedStr = it[stringPreferencesKey(key)]
         val iv = it[stringPreferencesKey("$key-IV")]
-        Log.i(TAG, "From Data store encryptedStr = $encryptedStr")
-        Log.i(TAG, " From Data store iVStr = $iv")
+     //   Log.i(TAG, "From Data store encryptedStr = $encryptedStr")
+    //    Log.i(TAG, " From Data store iVStr = $iv")
         if(encryptedStr !== null && iv != null) {
             val encryptedData = EncryptedData(
                 encryptedStr, iv
@@ -174,7 +174,7 @@ class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
     }
 
     override suspend fun removeKey(key: String,type:String) {
-        Log.e(TAG,"Key($key) is removed")
+   //     Log.d(TAG,"Key($key) is removed")
         context.dataStore.edit {
             when(type) {
                 "Bool" -> {
