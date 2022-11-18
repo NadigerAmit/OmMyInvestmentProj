@@ -364,6 +364,7 @@ fun getScreenConfig4UserSetting():ScreenConfig {
         enableTopAppBar = true,
         enableBottomAppBar = true,
         enableDrawer = true,
+        screenOnBackPress = NavRoutes.Setting.route,
         enableFab = false,
         topAppBarTitle = "UserSettings", bottomAppBarTitle = "",
         fabString = "add",

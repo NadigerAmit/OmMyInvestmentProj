@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.room.Product
 import com.amitnadiger.myinvestment.room.ProductUpdate
@@ -53,6 +54,7 @@ fun getScreenConfig4AddProduct():ScreenConfig {
             enableTopAppBar = true,
             enableBottomAppBar = true,
             enableDrawer = true,
+            screenOnBackPress = NavRoutes.Home.route,
             enableFab = false,
             topAppBarTitle = "Add Investment", bottomAppBarTitle = "",
             fabString = "",

@@ -71,7 +71,7 @@ fun ScaffoldImpl(navController: NavHostController,
             },
 
             bottomBar = {
-                BottomBar(screenConfig,context) },
+                BottomBar(screenConfig,context,navController) },
 
             drawerContent = {
                 RichDrawer(scope = scope, scaffoldState = scaffoldState, navController = navController)
@@ -121,7 +121,7 @@ fun ScaffoldImpl(navController: NavHostController,
             },
 
             bottomBar = {
-                BottomBar(screenConfig,context) },
+                BottomBar(screenConfig,context,navController) },
             floatingActionButton = {
                 Fab(navController,screenConfig,coroutineScope,finProductViewModel,finHistoryViewModel)
             },floatingActionButtonPosition = FabPosition.Center,

@@ -1,5 +1,6 @@
 package com.amitnadiger.myinvestment.ui.scaffold
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,10 +38,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.amitnadiger.myinvestment.base.launchActivity
 import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.ui.screens.Home
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import kotlinx.coroutines.launch
 
+private val TAG = "RichDrawer"
 @Composable
 fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navController: NavController) {
     val settingItems = listOf(
@@ -74,26 +79,39 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
 
+
         LazyColumn(
             Modifier
                 .fillMaxWidth()
         ) {
             items(settingItems) { items ->
+                val context = LocalContext.current
                 DrawerItem(item = items, selected = currentRoute == items.route, onItemClick = {
-                    navController.navigate(items.route) {
-                        // Pop up to the start destination of the graph to
-                        // avoid building up a large stack of destinations
-                        // on the back stack as users select items
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route) {
-                                saveState = true
+                    when(items.route) {
+                        "license" -> {
+                            Log.e(TAG, "license is triggerred ")
+
+                            // val intent = Intent(context, OssLicensesMenuActivity::class.java)
+                            // context.startActivity(intent)
+                            context.launchActivity<OssLicensesMenuActivity> { }
+                        }
+                        else -> {
+                            navController.navigate(items.route) {
+                                // Pop up to the start destination of the graph to
+                                // avoid building up a large stack of destinations
+                                // on the back stack as users select items
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                        saveState = true
+                                    }
+                                }
+                                // Avoid multiple copies of the same destination when
+                                // reselecting the same item
+                                launchSingleTop = true
+                                // Restore state when reselecting a previously selected item
+                                restoreState = true
                             }
                         }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
-                        launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
-                        restoreState = true
                     }
                     scope.launch {
                         scaffoldState.drawerState.close()

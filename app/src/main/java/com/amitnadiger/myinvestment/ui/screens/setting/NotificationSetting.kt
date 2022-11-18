@@ -248,6 +248,7 @@ fun getScreenConfig4NotificationSetting(): ScreenConfig {
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
+        screenOnBackPress = NavRoutes.Setting.route,
         topAppBarStartPadding =0.dp,
         topAppBarTitle = "NotifySettings", bottomAppBarTitle = "",
         fabString = "",

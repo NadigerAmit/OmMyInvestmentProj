@@ -111,6 +111,7 @@ fun setupMainScreen(finish: () -> Unit) {
                 enableBottomAppBar = true,
                 enableDrawer = true,
                 enableFab = true,
+                screenOnBackPress = "Home",
                 topAppBarTitle = "",
                 bottomAppBarTitle = "",
                 fabString = ""
@@ -169,10 +170,13 @@ fun setupMainScreen(finish: () -> Unit) {
                 Log.e("MainActivity"," tc ->screen config")
                 getScreenConfig4TAndC()
             }
+            /*
             "license" -> {
                 Log.e("MainActivity","license ->screen config")
                 getScreenConfig4License()
             }
+
+             */
             "profile" -> {
                 Log.e("MainActivity"," profile ->screen config")
                 getScreenConfig4Profile()
@@ -201,7 +205,7 @@ fun setupMainScreen(finish: () -> Unit) {
         }
         ScaffoldImpl(navController = navController,
             productViewModel,historyViewModel,
-            screenConfig,LocalContext.current.applicationContext)
+            screenConfig,LocalContext.current)
     }
 }
 /*

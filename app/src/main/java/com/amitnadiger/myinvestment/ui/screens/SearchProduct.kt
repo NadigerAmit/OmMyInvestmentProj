@@ -14,8 +14,10 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.room.Product
+import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.utility.*
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import kotlinx.coroutines.*
@@ -359,6 +361,7 @@ fun getScreenConfig4SearchScreen():ScreenConfig {
         enableTopAppBar = true,
         enableBottomAppBar = true,
         enableDrawer = false,
+        screenOnBackPress = NavRoutes.Home.route,
         enableFab = true,
         enableAction = false,
         topAppBarTitle = "SearchInvestment", bottomAppBarTitle = "",

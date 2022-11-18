@@ -5,7 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.utility.ProductListScreen
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 
@@ -26,6 +28,7 @@ fun getScreenConfig4History():ScreenConfig = //Log.e("HomeScvreen","getScreenCon
         enableTopAppBar = true,
         enableBottomAppBar = true,
         enableDrawer = true,
+        screenOnBackPress = NavRoutes.Home.route,
         enableFab = true,
         topAppBarStartPadding = 20.dp,
         topAppBarTitle = "DeletedHistory", bottomAppBarTitle = "",

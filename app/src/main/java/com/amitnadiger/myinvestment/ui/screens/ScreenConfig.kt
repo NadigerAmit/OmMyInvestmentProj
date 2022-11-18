@@ -3,6 +3,7 @@ package com.amitnadiger.myinvestment.ui.screens
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.amitnadiger.myinvestment.ui.NavRoutes
 
 data class ScreenConfig(
     val enableTopAppBar:Boolean,
@@ -11,6 +12,7 @@ data class ScreenConfig(
     val enableFab:Boolean,
     val enableAction:Boolean = false,
     val topAppBarTitle:String,
+    val screenOnBackPress:String = NavRoutes.Home.route,
     val topAppBarStartPadding: Dp = 20.dp,
     val bottomAppBarTitle:String,
     val fabString:String,

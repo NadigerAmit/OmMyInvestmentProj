@@ -283,6 +283,7 @@ fun getScreenConfig4HistoryProductDetail():ScreenConfig {
         enableTopAppBar = true,
         enableBottomAppBar = true,
         enableDrawer = true,
+        screenOnBackPress = NavRoutes.History.route,
         enableFab = false,
         topAppBarTitle = "HistoryDetail", bottomAppBarTitle = "",
         fabString = "",
