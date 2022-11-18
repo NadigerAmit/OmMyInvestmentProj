@@ -4,14 +4,17 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.R
 
 import androidx.compose.ui.Modifier
 
@@ -38,9 +41,21 @@ import com.amitnadiger.myinvestment.viewModel.FinProductViewModelFactory
 
 @SuppressLint("StaticFieldLeak")
 
-
+private val TAG = "MainActivity"
 class MainActivity : ComponentActivity() {
     val TAG = "MainActivity"
+
+    private var backPressed = 0L
+    private val finish: () -> Unit = {
+        Log.e(TAG,"finish called")
+        if (backPressed + 3000 > System.currentTimeMillis()) {
+            Log.e(TAG,"finishAndRemoveTask called")
+            finishAndRemoveTask()
+        } else {
+            Toast.makeText(this, "Press BACK again to exit", Toast.LENGTH_SHORT).show()
+        }
+        backPressed = System.currentTimeMillis()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +71,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    setupMainScreen()
+                    setupMainScreen(finish = finish)
                 }
             }
         }
@@ -64,7 +79,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun setupMainScreen() {
+fun setupMainScreen(finish: () -> Unit) {
     val owner = LocalViewModelStoreOwner.current
     owner?.let {
         val productViewModel: FinProductViewModel = viewModel(
@@ -100,9 +115,16 @@ fun setupMainScreen() {
                 bottomAppBarTitle = "",
                 fabString = ""
             )) }
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentBackStackEntryAsState by navController.currentBackStackEntryAsState()
 
-        screenConfig = when (navBackStackEntry?.destination?.route) {
+        val destination = currentBackStackEntryAsState?.destination?.route
+            ?: "home"
+         Log.e(TAG,"destination = $destination")
+        if (destination == "home") {
+            BackHandler { finish() }
+        }
+
+        screenConfig = when (currentBackStackEntryAsState?.destination?.route) {
             "login" -> {
                 Log.e("MainActivity"," Login ->screen config")
                 getScreenConfig4Login()
@@ -172,7 +194,7 @@ fun setupMainScreen() {
             //"searchProduct" -> getScreenConfig4Sea() todo
             else -> {
                 Log.e("MainActivity"," Else  ->screen config")
-                Log.e("MainActivity"," screen config${navBackStackEntry?.destination?.route}")
+                Log.e("MainActivity"," screen config${currentBackStackEntryAsState?.destination?.route}")
                 getScreenConfig4Home()
             }
 

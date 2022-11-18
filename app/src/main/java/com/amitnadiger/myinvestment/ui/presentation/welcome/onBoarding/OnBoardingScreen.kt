@@ -1,7 +1,9 @@
 package com.amitnadiger.myinvestment.ui.presentation.welcome.onBoarding
 
+import android.content.ClipData.newIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -27,7 +29,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.amitnadiger.myinvestment.MainActivity
+import com.amitnadiger.myinvestment.base.getActivity
+import com.amitnadiger.myinvestment.base.launchActivity
 import com.amitnadiger.myinvestment.componentFactory.ComponentInitializer
+import com.amitnadiger.myinvestment.ui.presentation.welcome.WelcomeActivity
 
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.*
@@ -70,15 +75,13 @@ fun OnBoardingScreen() {
             val resourceProvider = ComponentInitializer(context)
             val onBoardingViewModel = resourceProvider.geOnBoardingViewModel()
             onBoardingViewModel.saveOnBoardingState(completed = true)
-            navigateMainActivity(context)
+            context.launchActivity<MainActivity> { }
+            //(context as WelcomeActivity).finish()
+            context.getActivity()?.finish()
         }
     }
 }
 
-private fun navigateMainActivity(context: Context) {
-    val intent = Intent(context, MainActivity::class.java)
-    context.startActivity(intent)
-}
 
 @Composable
 fun PagerScreen(onBoardingPage: OnBoardingPage) {

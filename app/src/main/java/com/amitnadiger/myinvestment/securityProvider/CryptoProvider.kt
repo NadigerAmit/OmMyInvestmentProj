@@ -33,12 +33,12 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
        false)
 
     init {
-        Log.e(TAG, "CryptoService Cons")
+        Log.d(TAG, "CryptoService Cons")
         createMasterKey(null)
     }
 
     private fun createMasterKey(passwd: String?) {
-        Log.e(TAG, "createMasterKey ")
+        //Log.d(TAG, "createMasterKey ")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             createAndroidSymmetricKey() // Android provided symmetric key
         } else {
@@ -51,7 +51,7 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
     }
 
     override fun encrypt(data: String): EncryptedData? {
-        Log.e(TAG, "Encrypt ")
+        //Log.d(TAG, "Encrypt ")
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             encryptWithAndroidSymmetricKey(data) // Symmetric algo
         } else {
@@ -60,7 +60,7 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
     }
 
     override fun decrypt(encryptedData: EncryptedData): String? {
-        Log.e(TAG, "decrypt ")
+        Log.d(TAG, "decrypt ")
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             decryptWithAndroidSymmetricKey(encryptedData) // Symmetric algo
         } else {
@@ -69,7 +69,7 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
     }
 
     private fun createAndroidSymmetricKey() {
-        Log.e(TAG, "createAndroidSymmetricKey")
+      //  Log.d(TAG, "createAndroidSymmetricKey")
         if (KeyStoreProvider.getSymmetricKeyFromAndroidKeyStore(MASTER_KEY) == null) {
             KeyStoreProvider.createAndroidKeyStoreSymmetricKey(MASTER_KEY) as Key
         }
@@ -91,7 +91,7 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
                     SecretKeyFactory.getInstance(masterKey?.algorithm, ANDROID_KEYSTORE)
                 keyInfo = factory.getKeySpec(masterKey, KeyInfo::class.java) as KeyInfo
             } catch (e: Exception) {  //
-                e.message?.let { Log.e(TAG, it) }
+                e.message?.let { Log.d(TAG, it) }
             }
         }
         return keyInfo
@@ -99,34 +99,34 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
 
     @TargetApi(23)
     private fun ShowKeyInfo() {
-        Log.e(
+        Log.d(
             TAG,
             "********************************************KeyIno Start ********************************************"
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val keyInfo: KeyInfo? = getKeyInfo()
-            Log.e(TAG, keyInfo.toString())
-            Log.e(TAG, "KeySize = " + keyInfo?.keySize)
-            Log.e(TAG, "KeystoreAlias = " + keyInfo?.keystoreAlias)
-            Log.e(TAG, "getOrigion = " + keyInfo?.origin)
-            Log.e(TAG, "getPurposes = " + keyInfo?.purposes)
-            Log.e(
+            Log.d(TAG, keyInfo.toString())
+            Log.d(TAG, "KeySize = " + keyInfo?.keySize)
+            Log.d(TAG, "KeystoreAlias = " + keyInfo?.keystoreAlias)
+            Log.d(TAG, "getOrigion = " + keyInfo?.origin)
+            Log.d(TAG, "getPurposes = " + keyInfo?.purposes)
+            Log.d(
                 TAG,
                 "getUserAuthenticationValidityDurationSeconds = " + keyInfo?.userAuthenticationValidityDurationSeconds
             )
-            Log.e(TAG, "isInsideSecureHardware =  " + keyInfo?.isInsideSecureHardware)
-            Log.e(
+            Log.d(TAG, "isInsideSecureHardware =  " + keyInfo?.isInsideSecureHardware)
+            Log.d(
                 TAG,
                 "isInvalidatedByBiometricEnrollment = " + keyInfo?.isInvalidatedByBiometricEnrollment
             )
-            //Log.e(TAG, "isTrustedUserPresenceRequired" + keyInfo.isTrustedUserPresenceRequired()); // required API level 28.
-            Log.e(TAG, "isUserAuthenticationRequired = " + keyInfo?.isUserAuthenticationRequired)
-            Log.e(
+            //Log.d(TAG, "isTrustedUserPresenceRequired" + keyInfo.isTrustedUserPresenceRequired()); // required API level 28.
+            Log.d(TAG, "isUserAuthenticationRequired = " + keyInfo?.isUserAuthenticationRequired)
+            Log.d(
                 TAG,
                 "isUserAuthenticationValidWhileOnBody = " + keyInfo?.isUserAuthenticationValidWhileOnBody
             )
-            //Log.e(TAG, "isUserConfirmationRequired" + keyInfo.isUserConfirmationRequired()); // required API level 28.
-            Log.e(
+            //Log.d(TAG, "isUserConfirmationRequired" + keyInfo.isUserConfirmationRequired()); // required API level 28.
+            Log.d(
                 TAG,
                 "********************************************KeyIno Ends ********************************************"
             )
@@ -136,14 +136,14 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
 
     //( Java symmetric Key + Android Asymmetric key pair  )
     private fun createDefaultSymmetricKey() {
-        Log.e(TAG, "createDefaultSymmetricKey")
+        Log.d(TAG, "createDefaultSymmetricKey")
         var encryptedSymmetricKey: String? = null
 
         runBlocking {
             encryptedSymmetricKey = dataStorageManager.getString(KEY_ENCRYPTED_SYM_KEY).first()
         }
         if (encryptedSymmetricKey != null) {
-            Log.e(TAG, " Encrypted symmetric already created $encryptedSymmetricKey")
+            //Log.d(TAG, " Encrypted symmetric already created $encryptedSymmetricKey")
             return
         }
         val symmetricKey: SecretKey? =
@@ -165,7 +165,7 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
     }
 
     private fun encryptWithAndroidSymmetricKey(data: String): EncryptedData? {
-        Log.e(TAG, "encryptWithAndroidSymmetricKey")
+       // Log.d(TAG, "encryptWithAndroidSymmetricKey")
         val symmetricKey: SecretKey = KeyStoreProvider.getSymmetricKeyFromAndroidKeyStore(MASTER_KEY)
             ?: return null
         var cipherObj: EncrypterDecrypter? = null
@@ -179,7 +179,7 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
     }
 
     private fun decryptWithAndroidSymmetricKey(encryptedData: EncryptedData): String? {
-        Log.e(TAG, "decryptWithAndroidSymmetricKey")
+       // Log.d(TAG, "decryptWithAndroidSymmetricKey")
         val symmetricKey: SecretKey = KeyStoreProvider.getSymmetricKeyFromAndroidKeyStore(MASTER_KEY)
             ?: return null
         var cipherObj: EncrypterDecrypter? = null
@@ -197,7 +197,7 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
     }
 
     private fun encryptWithDefaultSymmetricKey(data: String): EncryptedData? {
-        Log.e(TAG, "encryptWithDefaultSymmetricKey ")
+       // Log.d(TAG, "encryptWithDefaultSymmetricKey ")
         val asymmetricKeyPair: KeyPair? = KeyStoreProvider.getAsymmetricKeyPairFromAndroidKeyStore(
             MASTER_KEY) // get the asymmetric key.
         var encryptedSymmetricMasterKey:String? = null
@@ -223,7 +223,7 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
     }
 
     private fun decryptWithDefaultSymmetricKey(encryptedData: EncryptedData): String? {
-        Log.e(TAG, "decryptWithDefaultSymmetricKey ")
+       // Log.d(TAG, "decryptWithDefaultSymmetricKey ")
         val asymmetricKeyPair: KeyPair ?=
             KeyStoreProvider.getAsymmetricKeyPairFromAndroidKeyStore(MASTER_KEY)
         var encryptedSymmetricMasterKey:String? =null

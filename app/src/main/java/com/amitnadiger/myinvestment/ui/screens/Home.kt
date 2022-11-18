@@ -13,6 +13,7 @@ import com.amitnadiger.myinvestment.utility.*
 
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 
+//@Destination
 @Composable
 fun Home(navController: NavHostController,viewModel: FinProductViewModel,padding:PaddingValues) {
     val allProducts by viewModel.allAccounts.observeAsState(listOf())
