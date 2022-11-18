@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.R
+import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.ui.screens.ScreenConfig
 import com.amitnadiger.myinvestment.utility.CustomTextField
 import com.amitnadiger.myinvestment.utility.TitleRow
@@ -261,6 +262,7 @@ fun getScreenConfig4DisplaySetting(): ScreenConfig {
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
+        screenOnBackPress = NavRoutes.Setting.route,
         topAppBarTitle = "DisplaySettings", bottomAppBarTitle = "",
         fabString = "add",
         fabColor = Color.Red

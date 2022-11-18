@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.amitnadiger.myinvestment.R
+import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.ui.screens.ScreenConfig
 
 private val TAG = "SettingPage"
@@ -156,6 +157,7 @@ fun getScreenConfig4Setting(): ScreenConfig {
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
+        screenOnBackPress = NavRoutes.Home.route,
         topAppBarStartPadding = 40.dp,
         topAppBarTitle = "Settings", bottomAppBarTitle = "",
         fabString = "add",

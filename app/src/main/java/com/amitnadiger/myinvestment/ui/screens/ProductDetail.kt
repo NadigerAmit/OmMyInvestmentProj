@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 
 import com.amitnadiger.myinvestment.room.Product
@@ -286,16 +287,17 @@ return rec
 }
 
 fun getScreenConfig4ProductDetail():ScreenConfig {
-Log.e("ProductDetail","getScreenConfig4ProductDetail");
-return ScreenConfig(
-enableTopAppBar = true,
-enableBottomAppBar = true,
-enableDrawer = true,
-enableFab = false,
-enableAction = false,
-topAppBarTitle = "AccountDetail", bottomAppBarTitle = "",
-fabString = "",
-)
+    Log.e("ProductDetail","getScreenConfig4ProductDetail");
+    return ScreenConfig(
+        enableTopAppBar = true,
+        enableBottomAppBar = true,
+        enableDrawer = true,
+        enableFab = false,
+        screenOnBackPress = NavRoutes.Home.route,
+        enableAction = false,
+        topAppBarTitle = "AccountDetail", bottomAppBarTitle = "",
+        fabString = "",
+    )
 }
 
 @Composable

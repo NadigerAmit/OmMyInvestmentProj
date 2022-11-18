@@ -143,10 +143,12 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
         composable(NavRoutes.TC.route) {
             News(navController = navController,padding)
         }
-
+/*
         composable(NavRoutes.License.route) {
             LicensePage(navController = navController,padding)
         }
+
+ */
 
         composable(NavRoutes.Tutorial.route) {
             Tutorial(navController = navController,padding)
