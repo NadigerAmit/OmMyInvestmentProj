@@ -88,8 +88,8 @@ fun CenterAlignedTopBar(screenConfig: ScreenConfig,
                                 // When clicked trigger onClick
                                 // Callback to trigger drawer open
                                 modifier = Modifier.
-                                clickable(onClick = onSearchClicked)
-                                    .wrapContentWidth(Alignment.Start),
+                                    // clickable(onClick = onSearchClicked).
+                                    wrapContentWidth(Alignment.Start),
                                 tint = Color.Black
                             )
                         }

@@ -38,6 +38,7 @@ import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.PASSWORD_HI
 import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.SECURE_DATASTORE
 import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.UNSECURE_DATASTORE
 import com.amitnadiger.myinvestment.utility.DateUtility
+import com.amitnadiger.myinvestment.utility.handleSavingUserProfileSettingData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -99,7 +100,7 @@ fun SignUpScreen(navController: NavHostController,
 
     val onExistingPasswordConfirm = { confirmPwd : Boolean ->
         isShowProfileUpdateScreenAllowed = confirmPwd
-       // Log.e(TAG,"onExistingPasswordConfirm => confirmPwd - $confirmPwd")
+
     }
     Log.e(TAG,"onExistingPasswordConfirm => confirmPwd - $isShowProfileUpdateScreenAllowed")
    // Log.e(TAG,"isTriggerFrom => confirmPwd - $isTriggerFrom")
@@ -152,56 +153,16 @@ fun SignUpScreen(navController: NavHostController,
                     "Save" -> {
                         Button(onClick = {
                             isAlreadyRegistered = true
-                            when {
-                                isPasswordProtectRequired -> {
-                                    if(!validatePassword(password,confirmPassword,context)
-                                        ||!validateBirtDate(birthDate,
-                                            "BirthDate Cant be future date",context)) {
-                                        // Toast will be shown in the validate**
-                                    } else {
-                                        saveSingUpInfoInDataStore(context,
-                                            fullName,
-                                            DateUtility.getPickedDateAsString(
-                                            birthDate.get(Calendar.YEAR),
-                                            birthDate.get(Calendar.MONTH),
-                                            birthDate.get(Calendar.DAY_OF_MONTH),
-                                            com.amitnadiger.myinvestment.ui.screens.dateFormat
-                                        ),isPasswordProtectRequired,
-                                            password,
-                                            passwordHint1,
-                                            passwordHint2)
-
-                                        navController.navigate(NavRoutes.Login.route)  {
-                                            navController.graph.startDestinationRoute?.let { route ->
-                                                popUpTo(route) {
-                                                    saveState = true
-                                                }
-                                            }
-                                            launchSingleTop = true
-                                        }
-                                    }
-                                }
-                                else -> {
-                                    saveSingUpInfoInDataStore(context,fullName, DateUtility.getPickedDateAsString(
-                                        birthDate.get(Calendar.YEAR),
-                                        birthDate.get(Calendar.MONTH),
-                                        birthDate.get(Calendar.DAY_OF_MONTH),
-                                        com.amitnadiger.myinvestment.ui.screens.dateFormat
-                                    ),isPasswordProtectRequired,
-                                        password,
-                                        passwordHint1,
-                                        passwordHint2)
-                                    isShowProfileUpdateScreenAllowed = false
-                                    navController.navigate(NavRoutes.Home.route)  {
-                                        navController.graph.startDestinationRoute?.let { route ->
-                                            popUpTo(route) {
-                                                saveState = true
-                                            }
-                                        }
-                                        launchSingleTop = true
-                                    }
-                                }
-                            }
+                            handleSavingUserProfileSettingData(isPasswordProtectRequired,
+                                fullName,
+                                password,
+                                confirmPassword,
+                                context,
+                                birthDate,
+                                passwordHint1,
+                                passwordHint2,
+                                navController
+                            )
                         }) {
                             Text("Save")
                         }
@@ -271,13 +232,30 @@ fun SignUpScreen(navController: NavHostController,
 
 }
 
- fun validateBirtDate(investmentDate: Calendar, toastMessage:String,context:Context):Boolean {
+ fun validateBirtDate(birthDate: Calendar, toastMessage:String,context:Context):Boolean {
     val currentDate = Calendar.getInstance()
-    if(investmentDate.timeInMillis > currentDate.timeInMillis) {
+    if(birthDate.timeInMillis >= currentDate.timeInMillis) {
         Toast.makeText(context, toastMessage, Toast.LENGTH_LONG)
             .show()
+        Log.e("validateBirtDate","return false  ")
         return false
     }
+     Log.e("validateBirtDate","return true  ")
+    return true
+}
+
+fun validateFullName(fullName: String?,context:Context):Boolean {
+    Log.e("validateFullName","$fullName ")
+    if(fullName == null ||
+        fullName.isBlank()
+        ||fullName.isEmpty()
+        ||fullName == "") {
+        Toast.makeText(context, "FullName cant be null or Empty ", Toast.LENGTH_LONG)
+            .show()
+        Log.e("validateFullName","return false  ")
+        return false
+    }
+    Log.e("validateFullName","return ture  ")
     return true
 }
 
@@ -312,6 +290,7 @@ fun saveSingUpInfoInDataStore(context:Context,fullName:String,
     val dataStoreProvider = DataStoreHolder.getDataStoreProvider(context,SECURE_DATASTORE,true)
     val coroutineScope = CoroutineScope(Dispatchers.IO)
 
+    Log.e(TAG,"fullName = $fullName")
     coroutineScope.launch {
         dataStoreProvider.putBool(IS_PASS_PROTECTION_REQ,isPasswordProtectionReq)
         dataStoreProvider.putString(FULL_NAME,fullName)
@@ -366,6 +345,7 @@ fun getScreenConfig4SignUpScreen():ScreenConfig {
         enableTopAppBar = true,
         enableBottomAppBar = false,
         enableDrawer = false,
+        screenOnBackPress = NavRoutes.Home.route,
         enableFab = false,
         topAppBarTitle = "UserProfileSetting",
         bottomAppBarTitle = "",

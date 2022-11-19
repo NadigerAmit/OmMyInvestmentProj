@@ -74,6 +74,7 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
                      padding: PaddingValues) {
     val context = LocalContext.current
 
+    Log.e(TAG,"ScreenNavigation isLogInDone = $isLogInDone")
      if(isLogInDone) {
          launchScreenCache = NavRoutes.Home.route
      } else if(launchScreenCache == null || launchScreenCache == NavRoutes.SignUp.route) {

@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +32,7 @@ import com.amitnadiger.myinvestment.utility.CustomTextField
 import com.amitnadiger.myinvestment.utility.DataStoreConst
 import com.amitnadiger.myinvestment.utility.DateUtility
 import com.amitnadiger.myinvestment.utility.DateUtility.Companion.getCalendar
+import com.amitnadiger.myinvestment.utility.handleSavingUserProfileSettingData
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -115,6 +115,7 @@ fun UserSetting(navController: NavHostController,
     }
 
 
+
     val registerItemList = listOf(
         // Pair("Heading",Pair("") { _: String -> }),
         Pair("Full Name",Pair(fullName,onFullNameTextChange)),
@@ -194,65 +195,18 @@ fun UserSetting(navController: NavHostController,
                         }
                         "Save" -> {
                             Button(onClick = {
-
-                                when {
-                                    isPasswordProtectRequired -> {
-                                        if(!validatePassword(password,confirmPassword,context)
-                                            ||!validateBirtDate(birthDate,
-                                                "BirthDate Cant be future date",context)) {
-                                            // Toast will be shown in the validate**
-                                            navController.navigate(NavRoutes.Setting.route)  {
-                                                navController.graph.startDestinationRoute?.let { route ->
-                                                    popUpTo(route) {
-                                                        saveState = true
-                                                    }
-                                                }
-                                                launchSingleTop = true
-                                            }
-                                        } else {
-                                            saveSingUpInfoInDataStore(context,
-                                                fullName,
-                                                DateUtility.getPickedDateAsString(
-                                                    birthDate.get(Calendar.YEAR),
-                                                    birthDate.get(Calendar.MONTH),
-                                                    birthDate.get(Calendar.DAY_OF_MONTH),
-                                                    com.amitnadiger.myinvestment.ui.screens.dateFormat
-                                                ),isPasswordProtectRequired,
-                                                password,
-                                                passwordHint1,
-                                                passwordHint2)
-                                            navController.navigate(NavRoutes.Setting.route)  {
-                                                navController.graph.startDestinationRoute?.let { route ->
-                                                    popUpTo(route) {
-                                                        saveState = true
-                                                    }
-                                                }
-                                                launchSingleTop = true
-                                            }
-                                        }
-                                    }
-                                    else -> {
-                                        saveSingUpInfoInDataStore(context,fullName, DateUtility.getPickedDateAsString(
-                                            birthDate.get(Calendar.YEAR),
-                                            birthDate.get(Calendar.MONTH),
-                                            birthDate.get(Calendar.DAY_OF_MONTH),
-                                            com.amitnadiger.myinvestment.ui.screens.dateFormat
-                                        ),isPasswordProtectRequired,
-                                            password,
-                                            passwordHint1,
-                                            passwordHint2)
-                                        isShowProfileUpdateScreenAllowed = false
-                                        navController.navigate(NavRoutes.Setting.route)  {
-                                            navController.graph.startDestinationRoute?.let { route ->
-                                                popUpTo(route) {
-                                                    saveState = true
-                                                }
-                                            }
-                                            launchSingleTop = true
-                                        }
-                                    }
-                                }
-                            }) {
+                                handleSavingUserProfileSettingData(isPasswordProtectRequired,
+                                    fullName,
+                                    password,
+                                    confirmPassword,
+                                    context,
+                                    birthDate,
+                                    passwordHint1,
+                                    passwordHint2,
+                                    navController,
+                                    onExistingPasswordConfirm
+                                )
+                        }) {
                                 Text("Save")
                             }
                             Spacer(modifier = Modifier.width(40.dp).height(90.dp))
