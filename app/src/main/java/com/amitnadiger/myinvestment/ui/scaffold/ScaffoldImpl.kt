@@ -2,6 +2,7 @@ package com.amitnadiger.myinvestment.ui.scaffold
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -13,6 +14,7 @@ import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import kotlinx.coroutines.launch
 
+private val TAG = "ScaffoldImpl"
 @Composable
 fun ScaffoldImpl(navController: NavHostController,
                  finProductViewModel: FinProductViewModel,
@@ -28,8 +30,26 @@ fun ScaffoldImpl(navController: NavHostController,
    // Log.e("Scafold"," Entry showFabButton = $showFabButton")
     val coroutineScope = rememberCoroutineScope()
 
-    Log.e("ScaffoldImpl","topAppBarTitle - ${screenConfig.topAppBarTitle}")
+    Log.e(TAG,"topAppBarTitle - ${screenConfig.topAppBarTitle}")
 
+    fun searchFunction() {
+        Log.e(TAG,"finProductViewModel.allAccounts.value?.size = " +
+                "${finProductViewModel.allAccounts.value?.size}" )
+        if(finProductViewModel.allAccounts.value?.size!! > 0) {
+            navController.navigate(NavRoutes.SearchProduct.route)  {
+                navController.graph.startDestinationRoute?.let { route ->
+                    popUpTo(route) {
+                        saveState = true
+                    }
+                }
+                launchSingleTop = true
+            }
+        } else {
+            Toast.makeText(context, "No investment records yet in DB, " +
+                    "Search don't make much sense", Toast.LENGTH_LONG)
+                .show()
+        }
+    }
 
 
     if(screenConfig.enableDrawer) {
@@ -53,15 +73,7 @@ fun ScaffoldImpl(navController: NavHostController,
                     },
                     onSearchClicked = {
                         coroutineScope.launch {
-                            // to close use -> scaffoldState.drawerState.close()
-                            navController.navigate(NavRoutes.SearchProduct.route)  {
-                                navController.graph.startDestinationRoute?.let { route ->
-                                    popUpTo(route) {
-                                        saveState = true
-                                    }
-                                }
-                                launchSingleTop = true
-                            }
+                            searchFunction()
                         }
                     }
                 )
@@ -88,7 +100,6 @@ fun ScaffoldImpl(navController: NavHostController,
             scaffoldState = scaffoldState,
             // pass the topbar we created
             topBar = {
-
                 //CenterAlignedTopBar(
                 TopBar(
                     screenConfig,
@@ -102,19 +113,10 @@ fun ScaffoldImpl(navController: NavHostController,
                     },
                     onSearchClicked = {
                         coroutineScope.launch {
-                            // to close use -> scaffoldState.drawerState.close()
-                            navController.navigate(NavRoutes.SearchProduct.route)  {
-                                navController.graph.startDestinationRoute?.let { route ->
-                                    popUpTo(route) {
-                                        saveState = true
-                                    }
-                                }
-                                launchSingleTop = true
-                            }
+                            searchFunction()
                         }
                     }
                 )
-
             },
             content = { padding ->
                 Body(navController,finProductViewModel,finHistoryViewModel,padding)
@@ -125,8 +127,8 @@ fun ScaffoldImpl(navController: NavHostController,
             floatingActionButton = {
                 Fab(navController,screenConfig,coroutineScope,finProductViewModel,finHistoryViewModel)
             },floatingActionButtonPosition = FabPosition.Center,
-            isFloatingActionButtonDocked = true)
+            isFloatingActionButtonDocked = true
+        )
     }
-
 }
 

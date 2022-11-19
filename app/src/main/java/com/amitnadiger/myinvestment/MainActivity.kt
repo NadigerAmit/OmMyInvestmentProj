@@ -26,7 +26,9 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.amitnadiger.myinvestment.base.getActivity
 import com.amitnadiger.myinvestment.componentFactory.ComponentInitializer
+import com.amitnadiger.myinvestment.ui.isLogInDone
 import com.amitnadiger.myinvestment.ui.theme.MyInvestmentTheme
 
 import com.amitnadiger.myinvestment.ui.scaffold.ScaffoldImpl
@@ -38,6 +40,7 @@ import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModelFactory
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModelFactory
+import kotlin.system.exitProcess
 
 @SuppressLint("StaticFieldLeak")
 
@@ -47,10 +50,11 @@ class MainActivity : ComponentActivity() {
 
     private var backPressed = 0L
     private val finish: () -> Unit = {
-        Log.e(TAG,"finish called")
+
         if (backPressed + 3000 > System.currentTimeMillis()) {
-            Log.e(TAG,"finishAndRemoveTask called")
             finishAndRemoveTask()
+            finishAffinity()
+            exitProcess(0)
         } else {
             Toast.makeText(this, "Press BACK again to exit", Toast.LENGTH_SHORT).show()
         }
@@ -117,13 +121,15 @@ fun setupMainScreen(finish: () -> Unit) {
                 fabString = ""
             )) }
         val currentBackStackEntryAsState by navController.currentBackStackEntryAsState()
-
+/*
         val destination = currentBackStackEntryAsState?.destination?.route
             ?: "home"
          Log.e(TAG,"destination = $destination")
         if (destination == "home") {
             BackHandler { finish() }
         }
+
+ */
 
         screenConfig = when (currentBackStackEntryAsState?.destination?.route) {
             "login" -> {
@@ -208,14 +214,6 @@ fun setupMainScreen(finish: () -> Unit) {
             screenConfig,LocalContext.current)
     }
 }
-/*
-     object HistoryProductDetail : NavRoutes("historyDetail")
-     object Setting : NavRoutes("setting")
-     object TC : NavRoutes("tc")
-     object License : NavRoutes("license")
-     object Profile : NavRoutes("profile")
-     object Tutorial : NavRoutes("tutorial")
- */
 
 fun getDefaultScreenConfig():ScreenConfig {
     Log.e("MainScreen","getDefaultScreenConfig");

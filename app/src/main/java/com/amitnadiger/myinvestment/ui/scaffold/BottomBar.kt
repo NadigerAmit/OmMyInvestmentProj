@@ -24,7 +24,7 @@ import com.amitnadiger.myinvestment.ui.screens.LabelledCheckbox
 import com.amitnadiger.myinvestment.ui.screens.ScreenConfig
 
 import com.amitnadiger.myinvestment.viewModel.ThemeViewModel
-
+import kotlin.system.exitProcess
 
 
 private val TAG ="BottomBar"
@@ -41,6 +41,8 @@ private fun handleHomeScreenExit(context: Context) {
     if (backPressed + 3000 > System.currentTimeMillis()) {
         Log.e(TAG,"finish called ${context.getActivity().toString()}")
         context.getActivity()?.finishAndRemoveTask()
+        context.getActivity()?.finishAffinity()
+        exitProcess(0)
         backPressed = 0L
     } else {
         Toast.makeText(context, "Press BACK again to exit", Toast.LENGTH_SHORT).show()
