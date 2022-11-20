@@ -1,6 +1,7 @@
 package com.amitnadiger.myinvestment.utility
 
 import android.util.Log
+import androidx.compose.foundation.border
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +21,7 @@ import androidx.navigation.NavHostController
 
 import com.amitnadiger.myinvestment.room.Product
 import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
+import com.amitnadiger.myinvestment.ui.screens.HomeDisplaySettingFragment
 
 import com.amitnadiger.myinvestment.ui.screens.dateFormat
 
@@ -34,6 +38,7 @@ fun ProductListScreen(
     allProducts: List<Product>,
     padding: PaddingValues,
     parentScreen:String,
+    displayItemList:List<String>
 ) {
     //
     val context = LocalContext.current
@@ -43,70 +48,78 @@ fun ProductListScreen(
     )
 
     runBlocking {
-        nod.value = dataStoreProvider.getString(DataStoreConst.NOTIFICATION_DAYS).first()?:"30"
+        nod.value = dataStoreProvider.getString(DataStoreConst.NOTIFICATION_DAYS).first() ?: "30"
     }
     var advanceNotifyDays by remember { mutableStateOf(nod.value.toInt()) }
-    Log.e(TAG,"advanceNotifyDays  $advanceNotifyDays and nod = ${nod.value}")
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(padding)
-    ) {
-        TitleRow(head1 = " Fin Ins\n\n AccNum\n\n Product ",
-            head2 = " Dep.amount\n\n Mat.amount\n\n Int.Rte %",
-            head3 =" Dep.Date\n\n Mat.Date\n\n Investor")
-
-        LazyColumn(
-            Modifier
+    Log.e(TAG, "advanceNotifyDays  $advanceNotifyDays and nod = ${nod.value}")
+    if (allProducts.isNotEmpty()) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
                 .fillMaxWidth()
-               // .border(width = 1.dp, color = Color.Black)
+                .padding(padding)
         ) {
+            TitleRow(
+                head1 = " Fin Ins\n\n AccNum\n\n Product ",
+                head2 = " Dep.amount\n\n Mat.amount\n\n Int.Rte %",
+                head3 = " Dep.Date\n\n Mat.Date\n\n Investor"
+            )
 
-            items(allProducts) { product ->
+            LazyColumn(
+                Modifier
+                    .fillMaxWidth()
+                // .border(width = 1.dp, color = Color.Black)
+            ) {
 
-                Log.e(TAG,"Product is retived in $parentScreen \n accountNumber = ${product.accountNumber}" +
-                        // " \n financialInstitutionName +  ${product.financialInstitutionName}" +
-                        //  " \n investorName = ${product.investorName} " +
-                        //  " \ninvestmentAmount = ${product.investmentAmount}" +
-                        //   " \ninvestmentDate in long = ${product.investmentDate.time.time}  " +
-                        " \n maturityDate in Long = ${product.maturityDate}  "
-                    //    + " \n interestRate = ${product.interestRate}  " +
-                    //       " \n depositPeriod = ${product.depositPeriod} " +
-                    //       " \n nomineeName = ${product.nomineeName} "
-                )
+                items(allProducts) { product ->
 
-                var color: Color = getProductColor(product,advanceNotifyDays)
-
-                ProductRow(
-                    product.accountNumber,
-                    FirstColumn = truncateString(product.financialInstitutionName) + "\n" + truncateString(
-                        product.accountNumber
+                    /*
+                    Log.e(TAG,"Product is retived in $parentScreen \n accountNumber = ${product.accountNumber}" +
+                            // " \n financialInstitutionName +  ${product.financialInstitutionName}" +
+                            //  " \n investorName = ${product.investorName} " +
+                            //  " \ninvestmentAmount = ${product.investmentAmount}" +
+                            //   " \ninvestmentDate in long = ${product.investmentDate.time.time}  " +
+                            " \n maturityDate in Long = ${product.maturityDate}  "
+                        //    + " \n interestRate = ${product.interestRate}  " +
+                        //       " \n depositPeriod = ${product.depositPeriod} " +
+                        //       " \n nomineeName = ${product.nomineeName} "
                     )
-                            + "\n" + truncateString(product.productType),
-                    SecondColumn = truncateString(product.investmentAmount.toString()) + "\n" + truncateString(
-                        NumberFormat.getInstance().format(product.maturityAmount)
-                    ) + "\n" +
-                            truncateString(product.interestRate.toString()),
-                    ThirdColumn = truncateString(
-                        DateUtility.getPickedDateAsString(
-                            product.investmentDate.get(Calendar.YEAR),
-                            product.investmentDate.get(Calendar.MONTH),
-                            product.investmentDate.get(Calendar.DAY_OF_MONTH), dateFormat
+                     */
+
+                    var color: Color = getProductColor(product, advanceNotifyDays)
+
+                    ProductRow(
+                        product.accountNumber,
+                        FirstColumn = truncateString(product.financialInstitutionName) + "\n" + truncateString(
+                            product.accountNumber
                         )
-                    ) + "\n" +
-                            truncateString(
-                                DateUtility.getPickedDateAsString(
-                                    product.maturityDate.get(Calendar.YEAR),
-                                    product.maturityDate.get(Calendar.MONTH),
-                                    product.maturityDate.get(Calendar.DAY_OF_MONTH), dateFormat
-                                )
-                            ) + "\n" +
-                            truncateString(product.investorName),
-                    navController, color,
-                    parentScreen
-                )
+                                + "\n" + truncateString(product.productType),
+                        SecondColumn = truncateString(product.investmentAmount.toString()) + "\n" + truncateString(
+                            NumberFormat.getInstance().format(product.maturityAmount)
+                        ) + "\n" +
+                                truncateString(product.interestRate.toString()),
+                        ThirdColumn = truncateString(
+                            DateUtility.getPickedDateAsString(
+                                product.investmentDate.get(Calendar.YEAR),
+                                product.investmentDate.get(Calendar.MONTH),
+                                product.investmentDate.get(Calendar.DAY_OF_MONTH), dateFormat
+                            )
+                        ) + "\n" +
+                                truncateString(
+                                    DateUtility.getPickedDateAsString(
+                                        product.maturityDate.get(Calendar.YEAR),
+                                        product.maturityDate.get(Calendar.MONTH),
+                                        product.maturityDate.get(Calendar.DAY_OF_MONTH), dateFormat
+                                    )
+                                ) + "\n" +
+                                truncateString(product.investorName),
+                        navController, color,
+                        parentScreen
+                    )
+                }
             }
         }
+    } else {
+        HomeDisplaySettingFragment(displayItemList)
     }
 }

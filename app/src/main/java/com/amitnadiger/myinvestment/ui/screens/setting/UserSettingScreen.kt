@@ -1,4 +1,4 @@
-package com.amitnadiger.myinvestment.ui.screens
+package com.amitnadiger.myinvestment.ui.screens.setting
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -28,11 +28,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
 import com.amitnadiger.myinvestment.ui.NavRoutes
-import com.amitnadiger.myinvestment.utility.CustomTextField
-import com.amitnadiger.myinvestment.utility.DataStoreConst
-import com.amitnadiger.myinvestment.utility.DateUtility
+import com.amitnadiger.myinvestment.ui.screens.LabelledCheckbox
+import com.amitnadiger.myinvestment.ui.screens.ScreenConfig
+import com.amitnadiger.myinvestment.utility.*
 import com.amitnadiger.myinvestment.utility.DateUtility.Companion.getCalendar
-import com.amitnadiger.myinvestment.utility.handleSavingUserProfileSettingData
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -312,7 +311,7 @@ fun confirmPasswordScreen(existingPasswd:String,onPasswdConfirm: (Boolean) -> Un
     }
 }
 
-fun getScreenConfig4UserSetting():ScreenConfig {
+fun getScreenConfig4UserSetting(): ScreenConfig {
     //Log.e("HomeScvreen","getScreenConfig4Home");
     return ScreenConfig(
         enableTopAppBar = true,

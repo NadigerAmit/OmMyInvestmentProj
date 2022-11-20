@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.*
 
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.R
 
 import androidx.compose.ui.Modifier
 
@@ -26,9 +25,7 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.amitnadiger.myinvestment.base.getActivity
 import com.amitnadiger.myinvestment.componentFactory.ComponentInitializer
-import com.amitnadiger.myinvestment.ui.isLogInDone
 import com.amitnadiger.myinvestment.ui.theme.MyInvestmentTheme
 
 import com.amitnadiger.myinvestment.ui.scaffold.ScaffoldImpl
@@ -36,6 +33,7 @@ import com.amitnadiger.myinvestment.ui.screens.*
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4DisplaySetting
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4NotificationSetting
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4Setting
+import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4UserSetting
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModelFactory
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
@@ -121,7 +119,7 @@ fun setupMainScreen(finish: () -> Unit) {
                 fabString = ""
             )) }
         val currentBackStackEntryAsState by navController.currentBackStackEntryAsState()
-/*
+
         val destination = currentBackStackEntryAsState?.destination?.route
             ?: "home"
          Log.e(TAG,"destination = $destination")
@@ -129,7 +127,6 @@ fun setupMainScreen(finish: () -> Unit) {
             BackHandler { finish() }
         }
 
- */
 
         screenConfig = when (currentBackStackEntryAsState?.destination?.route) {
             "login" -> {

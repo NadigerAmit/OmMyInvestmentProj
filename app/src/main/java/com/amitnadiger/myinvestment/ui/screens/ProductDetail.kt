@@ -126,18 +126,18 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
                        accountNumber:String,
                        navController: NavHostController,
                        padding: PaddingValues)  {
-GlobalScope.launch {
-viewModel.findProductsBasedOnAccountNumber(accountNumber)
-}
+    GlobalScope.launch {
+        viewModel.findProductsBasedOnAccountNumber(accountNumber)
+    }
 
-var productDetail:Product? = null
-if(viewModel.searchResults.value == null || viewModel.searchResults.value!!.isEmpty()) {
-Log.e("ProductDetail.Kt","Product List is empty returning from screenSetUpInProductDetail !!")
-productDetail =viewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
-} else {
-Log.e("ProductDetail.Kt","Got it from Database ")
-productDetail = viewModel.searchResults.value?.get(0)
-}
+    var productDetail:Product? = null
+    if(viewModel.searchResults.value == null || viewModel.searchResults.value!!.isEmpty()) {
+        Log.e("ProductDetail.Kt","Product List is empty returning from screenSetUpInProductDetail !!")
+        productDetail =viewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
+    } else {
+        Log.e("ProductDetail.Kt","Got it from Database ")
+        productDetail = viewModel.searchResults.value?.get(0)
+    }
 
 // Log.e("ProductDetail.Kt","Product is retived and list size = ${viewModel.searchResults.value!!.size}")
 
@@ -152,75 +152,75 @@ Log.e("ProductDetail.Kt","Product is retived in Home \n accountNumber = ${produc
     " \n depositPeriod = ${productDetail?.depositPeriod} " +
     " \n nomineeName = ${productDetail?.nomineeName} ")
 */
-if(productDetail == null) return
-val productFieldList = getListOPropertiesOfProduct(productDetail)
+    if(productDetail == null) return
+    val productFieldList = getListOPropertiesOfProduct(productDetail)
 
 
-Column(
-horizontalAlignment = Alignment.CenterHorizontally,
-modifier = Modifier
-    .fillMaxWidth()
-    .padding(padding)
-) {
-//TitleRowProductDetails("\n  Account Details\n")
-LazyColumn(
-    Modifier
+    Column(
+    horizontalAlignment = Alignment.CenterHorizontally,
+    modifier = Modifier
         .fillMaxWidth()
-        .border(width = 1.dp, color = Color.Black)
-        .padding(3.dp)
+        .padding(padding)
+    ) {
+        //TitleRowProductDetails("\n  Account Details\n")
+        LazyColumn(
+            Modifier
+                .fillMaxWidth()
+                .border(width = 1.dp, color = Color.Black)
+                .padding(3.dp)
 
-) {
-    items(productFieldList) { productFeild ->
-        when(productFeild.first) {
-            "DeleteAndEditButton" -> {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    // .padding(50.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Button(onClick = {
-                        showDeleteAlertDialogGlobal.value = true
-                        Log.e("DeleteAlert","Button clicked showDeleteAlertDialog.value - " +
-                                "${showDeleteAlertDialogGlobal.value}")
-                    },modifier = Modifier
-                        .padding(10.dp)) {
-                        Icon(Icons.Filled.Delete, "Delete")
-                        Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                        Text("Delete")
-                    }
-                    Button(onClick = {
-                        navController.navigate(NavRoutes.AddProduct.route + "/$accountNumber") {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) {
-                                    saveState = true
-                                }
+        ) {
+            items(productFieldList) { productFeild ->
+            when(productFeild.first) {
+                "DeleteAndEditButton" -> {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        // .padding(50.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        Button(onClick = {
+                                showDeleteAlertDialogGlobal.value = true
+                                Log.e("DeleteAlert","Button clicked showDeleteAlertDialog.value - " +
+                                        "${showDeleteAlertDialogGlobal.value}")
+                            },modifier = Modifier
+                                .padding(10.dp)) {
+                                Icon(Icons.Filled.Delete, "Delete")
+                                Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                                Text("Delete")
                             }
-                            // Avoid multiple copies of the same destination when
-                            // reselecting the same item
-                            launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            //restoreState = true
-                        }
+                            Button(onClick = {
+                                navController.navigate(NavRoutes.AddProduct.route + "/$accountNumber") {
+                                    // Pop up to the start destination of the graph to
+                                    // avoid building up a large stack of destinations
+                                    // on the back stack as users select items
+                                    navController.graph.startDestinationRoute?.let { route ->
+                                        popUpTo(route) {
+                                            saveState = true
+                                        }
+                                    }
+                                    // Avoid multiple copies of the same destination when
+                                    // reselecting the same item
+                                    launchSingleTop = true
+                                    // Restore state when reselecting a previously selected item
+                                    //restoreState = true
+                                }
 
-                    },modifier = Modifier
-                        .padding(10.dp)) {
-                        Icon(Icons.Filled.Edit, "Edit")
-                        Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                        Text("Edit")
+                            },modifier = Modifier
+                                .padding(10.dp)) {
+                                Icon(Icons.Filled.Edit, "Edit")
+                                Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                                Text("Edit")
+                            }
+                        }
+                    } else -> {
+                        val color = getProductColor(productDetail, nod.value.toInt())
+                        ProductDetailsRow(productFeild.first,productFeild.second,color)
                     }
                 }
-            } else -> {
-                val color = getProductColor(productDetail, nod.value.toInt())
-                ProductDetailsRow(productFeild.first,productFeild.second,color)
             }
         }
     }
-}
-}
 }
 
 private fun printProductDetails(productDetail: Product){

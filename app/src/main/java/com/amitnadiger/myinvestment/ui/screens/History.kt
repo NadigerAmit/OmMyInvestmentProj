@@ -15,11 +15,19 @@ import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 fun History(navController: NavHostController, viewModel: FinHistoryViewModel, padding: PaddingValues) {
     val allProducts by viewModel.allAccounts.observeAsState(listOf())
     //val searchResults by viewModel.searchResults.observeAsState(listOf())
+    val displayItemListOfBlankHistory = listOf(
+        //  "DisplayImage",
+        "statementTextForHistory",
+        "GuideToDeleteAllItemsFromHistory",
+      //  "ImageToDeleteAllItemsFromHistory"
+    )
     ProductListScreen(
         navController,
         allProducts = allProducts,
         // searchResults = searchResults,
-        padding,"HistoryProductDetail")
+        padding,"HistoryProductDetail",
+        displayItemListOfBlankHistory
+    )
 
 }
 
