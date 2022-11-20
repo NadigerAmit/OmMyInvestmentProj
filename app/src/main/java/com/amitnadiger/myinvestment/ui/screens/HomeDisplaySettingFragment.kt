@@ -43,7 +43,7 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
             when(item) {
                 "statementTextForHome" -> {
                     Text(
-                        text = "\nNo investmentRecords are added now.",
+                        text = "\nInvestments are displayed Here.",
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold
                         //color = Color.Black
@@ -51,7 +51,7 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                 }
                 "statementTextForHistory" -> {
                     Text(
-                        text = "\nThere are no deletedRecords now." +
+                        text = "\nDeletedRecords are displayed Here ." +
                                 "\n\nWhen records are deleted from home screen , they will appear in this screen ",
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold

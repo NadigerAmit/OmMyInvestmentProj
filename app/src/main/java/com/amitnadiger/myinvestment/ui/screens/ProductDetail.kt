@@ -277,7 +277,7 @@ AlertDialog(
             navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber")
         })
         { Text(text = "Cancel delete",
-        modifier = Modifier.padding(end = 40.dp)) }
+        modifier = Modifier.padding(end = 20.dp)) }
     },
     properties= DialogProperties(dismissOnBackPress = true,
         dismissOnClickOutside=true)
