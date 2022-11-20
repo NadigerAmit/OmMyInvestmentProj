@@ -45,8 +45,8 @@ fun ScaffoldImpl(navController: NavHostController,
                 launchSingleTop = true
             }
         } else {
-            Toast.makeText(context, "No investment records yet in DB, " +
-                    "Search don't make much sense", Toast.LENGTH_LONG)
+            Toast.makeText(context, "No investment records yet in DataBase, "
+                , Toast.LENGTH_LONG)
                 .show()
         }
     }

@@ -24,12 +24,23 @@ private val TAG = "Home"
 fun Home(navController: NavHostController,viewModel: FinProductViewModel,padding:PaddingValues) {
     val allProducts by viewModel.allAccounts.observeAsState(listOf())
     //val searchResults by viewModel.searchResults.observeAsState(listOf())
+    val displayItemListOfBlankHome = listOf(
+        //  "DisplayImage",
+        "statementTextForHome",
+        "statementText1",
+        "maturedItemsText",
+        "aboutToMaturedItemsText",
+        "normalItemsText",
+        "GuideToAddItems",
+      //  "ImageToAddItems",
+    )
       ProductListScreen(
           navController,
         allProducts = allProducts,
        // searchResults = searchResults,
           padding,
-      "ProductDetail"
+          "ProductDetail",
+          displayItemListOfBlankHome
       )
 }
 

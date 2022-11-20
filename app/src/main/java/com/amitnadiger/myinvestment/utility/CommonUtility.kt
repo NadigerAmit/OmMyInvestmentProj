@@ -2,11 +2,16 @@ package com.amitnadiger.myinvestment.utility
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.amitnadiger.myinvestment.room.Product
+import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
 import com.amitnadiger.myinvestment.ui.NavRoutes
 import com.amitnadiger.myinvestment.ui.screens.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 private val TAG = "CommonUtility"
@@ -101,4 +106,88 @@ fun handleSavingUserProfileSettingData(isPasswordProtectRequired:Boolean,
             }
         }
     }
+}
+
+fun validateBirtDate(birthDate: Calendar, toastMessage:String,context:Context):Boolean {
+    val currentDate = Calendar.getInstance()
+    if(birthDate.timeInMillis >= currentDate.timeInMillis) {
+        Toast.makeText(context, toastMessage, Toast.LENGTH_LONG)
+            .show()
+        Log.e("validateBirtDate","return false  ")
+        return false
+    }
+    Log.e("validateBirtDate","return true  ")
+    return true
+}
+
+fun validateFullName(fullName: String?,context:Context):Boolean {
+    Log.e("validateFullName","$fullName ")
+    if(fullName == null ||
+        fullName.isBlank()
+        ||fullName.isEmpty()
+        ||fullName == "") {
+        Toast.makeText(context, "FullName cant be null or Empty ", Toast.LENGTH_LONG)
+            .show()
+        Log.e("validateFullName","return false  ")
+        return false
+    }
+    Log.e("validateFullName","return ture  ")
+    return true
+}
+
+fun validatePassword(password: String,confirmPassword:String,context:Context):Boolean {
+    Log.e("validatePassword","password = $password and confirmPassword = $confirmPassword")
+    if(password != confirmPassword) {
+        Toast.makeText(context, "Mismatch between Password and Confirm Password field ", Toast.LENGTH_LONG)
+            .show()
+        return false
+    }
+    if(password.isEmpty()||password.isBlank()) {
+        Toast.makeText(context, "Cant have a blank password ", Toast.LENGTH_LONG)
+            .show()
+        return false
+    }
+    return true
+}
+
+data class SignUpData(val fullName:String,
+                      val dob:String,
+                      val isPasswordProtectionReq:Boolean = false,
+                      val password:String= "",
+                      val passwordHint1:String= "",
+                      val passwordHint2:String = "",
+                      val isRegistrationComplete:Boolean = true)
+
+fun saveSingUpInfoInDataStore(context:Context,fullName:String,
+                              dob:String,isPasswordProtectionReq:Boolean,
+                              password:String,passwordHint1:String,
+                              passwordHint2:String) {
+
+    val dataStoreProvider = DataStoreHolder.getDataStoreProvider(context,
+        DataStoreConst.SECURE_DATASTORE,true)
+    val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+    Log.e(TAG,"fullName = $fullName")
+    coroutineScope.launch {
+        dataStoreProvider.putBool(DataStoreConst.IS_PASS_PROTECTION_REQ,isPasswordProtectionReq)
+        dataStoreProvider.putString(DataStoreConst.FULL_NAME,fullName)
+        dataStoreProvider.putString(DataStoreConst.DOB,dob)
+        dataStoreProvider.putBool(DataStoreConst.IS_REG_COMPLETE,true)
+    }
+
+    if(isPasswordProtectionReq) {
+        coroutineScope.launch {
+            dataStoreProvider.putString(DataStoreConst.PASSWORD,password)
+            dataStoreProvider.putString(DataStoreConst.PASSWORD_HINT1,passwordHint1)
+            dataStoreProvider.putString(DataStoreConst.PASSWORD_HINT2,passwordHint2)
+        }
+    } else {
+        coroutineScope.launch {
+            dataStoreProvider.removeKey(DataStoreConst.PASSWORD,"String")
+            dataStoreProvider.removeKey(DataStoreConst.PASSWORD_HINT1,"String")
+            dataStoreProvider.removeKey(DataStoreConst.PASSWORD_HINT2,"String")
+        }
+
+    }
+
 }

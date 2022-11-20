@@ -39,6 +39,7 @@ import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.SECURE_DATA
 import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.UNSECURE_DATASTORE
 import com.amitnadiger.myinvestment.utility.DateUtility
 import com.amitnadiger.myinvestment.utility.handleSavingUserProfileSettingData
+import com.amitnadiger.myinvestment.utility.validateBirtDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -94,14 +95,6 @@ fun SignUpScreen(navController: NavHostController,
         passwordHint2 = text
     }
 
-    val onIsAlreadyRegisteredStateChange = { text : Boolean ->
-        isAlreadyRegistered = text
-    }
-
-    val onExistingPasswordConfirm = { confirmPwd : Boolean ->
-        isShowProfileUpdateScreenAllowed = confirmPwd
-
-    }
     Log.e(TAG,"onExistingPasswordConfirm => confirmPwd - $isShowProfileUpdateScreenAllowed")
    // Log.e(TAG,"isTriggerFrom => confirmPwd - $isTriggerFrom")
 
@@ -229,115 +222,7 @@ fun SignUpScreen(navController: NavHostController,
             }
         }
    // }
-
 }
-
- fun validateBirtDate(birthDate: Calendar, toastMessage:String,context:Context):Boolean {
-    val currentDate = Calendar.getInstance()
-    if(birthDate.timeInMillis >= currentDate.timeInMillis) {
-        Toast.makeText(context, toastMessage, Toast.LENGTH_LONG)
-            .show()
-        Log.e("validateBirtDate","return false  ")
-        return false
-    }
-     Log.e("validateBirtDate","return true  ")
-    return true
-}
-
-fun validateFullName(fullName: String?,context:Context):Boolean {
-    Log.e("validateFullName","$fullName ")
-    if(fullName == null ||
-        fullName.isBlank()
-        ||fullName.isEmpty()
-        ||fullName == "") {
-        Toast.makeText(context, "FullName cant be null or Empty ", Toast.LENGTH_LONG)
-            .show()
-        Log.e("validateFullName","return false  ")
-        return false
-    }
-    Log.e("validateFullName","return ture  ")
-    return true
-}
-
- fun validatePassword(password: String,confirmPassword:String,context:Context):Boolean {
-     Log.e("validatePassword","password = $password and confirmPassword = $confirmPassword")
-    if(password != confirmPassword) {
-        Toast.makeText(context, "Mismatch between Password and Confirm Password field ", Toast.LENGTH_LONG)
-            .show()
-        return false
-    }
-    if(password.isEmpty()||password.isBlank()) {
-        Toast.makeText(context, "Cant have a blank password ", Toast.LENGTH_LONG)
-            .show()
-        return false
-    }
-    return true
-}
-
-data class SignUpData(val fullName:String,
-                      val dob:String,
-                      val isPasswordProtectionReq:Boolean = false,
-                      val password:String= "",
-                      val passwordHint1:String= "",
-                      val passwordHint2:String = "",
-                      val isRegistrationComplete:Boolean = true)
-
-fun saveSingUpInfoInDataStore(context:Context,fullName:String,
-                                dob:String,isPasswordProtectionReq:Boolean,
-                                password:String,passwordHint1:String,
-                              passwordHint2:String) {
-
-    val dataStoreProvider = DataStoreHolder.getDataStoreProvider(context,SECURE_DATASTORE,true)
-    val coroutineScope = CoroutineScope(Dispatchers.IO)
-
-    Log.e(TAG,"fullName = $fullName")
-    coroutineScope.launch {
-        dataStoreProvider.putBool(IS_PASS_PROTECTION_REQ,isPasswordProtectionReq)
-        dataStoreProvider.putString(FULL_NAME,fullName)
-        dataStoreProvider.putString(DOB,dob)
-        dataStoreProvider.putBool(IS_REG_COMPLETE,true)
-    }
-
-    if(isPasswordProtectionReq) {
-        coroutineScope.launch {
-            dataStoreProvider.putString(PASSWORD,password)
-            dataStoreProvider.putString(PASSWORD_HINT1,passwordHint1)
-            dataStoreProvider.putString(PASSWORD_HINT2,passwordHint2)
-        }
-    } else {
-        coroutineScope.launch {
-            dataStoreProvider.removeKey(PASSWORD,"String")
-            dataStoreProvider.removeKey(PASSWORD_HINT1,"String")
-            dataStoreProvider.removeKey(PASSWORD_HINT2,"String")
-        }
-
-    }
-
-}
-
-fun saveSingUpInfoInDataStoreInUnSecureDataStore(context:Context,
-                                                 fullName:String,
-                              dob:String,isPasswordProtectionReq:Boolean,
-                              password:String,passwordHint1:String,
-                              passwordHint2:String,
-                              isRegistrationComplete:Boolean) {
-
-    val dataStoreProvider = DataStoreHolder.getDataStoreProvider(context,UNSECURE_DATASTORE,false)
-    val coroutineScope = CoroutineScope(Dispatchers.IO)
-
-    coroutineScope.launch {
-        dataStoreProvider.putString(FULL_NAME,fullName)
-        dataStoreProvider.putString(DOB,dob)
-        dataStoreProvider.putString(PASSWORD,password)
-        dataStoreProvider.putString(PASSWORD_HINT1,passwordHint1)
-        dataStoreProvider.putString(PASSWORD_HINT2,passwordHint2)
-        dataStoreProvider.putBool(IS_PASS_PROTECTION_REQ,isPasswordProtectionReq)
-        dataStoreProvider.putBool(IS_REG_COMPLETE,isRegistrationComplete)
-
-    }
-}
-
-
 
 fun getScreenConfig4SignUpScreen():ScreenConfig {
     Log.e("Login","getScreenConfig4SignUpScrean");
