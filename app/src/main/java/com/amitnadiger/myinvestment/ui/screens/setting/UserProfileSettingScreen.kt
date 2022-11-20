@@ -36,10 +36,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
-private val TAG = "UserSetting"
+private val TAG = "UserProfileSetting"
 @Composable
-fun UserSetting(navController: NavHostController,
-                padding: PaddingValues) {
+fun UserProfileSetting(navController: NavHostController,
+                       padding: PaddingValues) {
 
     val dateFormat = "yyyy-MM-dd"
     Log.e(TAG,"SignUpScreen entered")
@@ -319,7 +319,7 @@ fun getScreenConfig4UserSetting(): ScreenConfig {
         enableDrawer = true,
         screenOnBackPress = NavRoutes.Setting.route,
         enableFab = false,
-        topAppBarTitle = "UserSettings", bottomAppBarTitle = "",
+        topAppBarTitle = "ProfileSettings", bottomAppBarTitle = "",
         fabString = "add",
         fabColor = Color.Red
     )

@@ -13,7 +13,7 @@ import com.amitnadiger.myinvestment.ui.screens.setting.SettingPage
 import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
 import com.amitnadiger.myinvestment.ui.screens.setting.DisplaySetting
 import com.amitnadiger.myinvestment.ui.screens.setting.NotificationSetting
-import com.amitnadiger.myinvestment.ui.screens.setting.UserSetting
+import com.amitnadiger.myinvestment.ui.screens.setting.UserProfileSetting
 import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.SECURE_DATASTORE
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
@@ -33,10 +33,8 @@ sealed class NavRoutes(val route:String) {
      object HistoryProductDetail : NavRoutes("historyDetail")
      object Setting : NavRoutes("setting")
      object TC : NavRoutes("tc")
-     object License : NavRoutes("license")
-     object Profile : NavRoutes("profile")
      object Tutorial : NavRoutes("tutorial")
-     object UserSetting : NavRoutes("userSetting")
+     object UserProfileSetting : NavRoutes("userSetting")
      object DisplaySetting : NavRoutes("displaySetting")
      object NotificationSetting : NavRoutes("notificationSetting")
 
@@ -136,9 +134,6 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
             SettingPage(navController = navController,padding)
         }
 
-        composable(NavRoutes.Profile.route) {
-            ProfilePage(navController = navController,padding)
-        }
 
         composable(NavRoutes.TC.route) {
             News(navController = navController,padding)
@@ -154,8 +149,8 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
             Tutorial(navController = navController,padding)
         }
 
-        composable(NavRoutes.UserSetting.route) {
-            UserSetting(navController = navController,padding)
+        composable(NavRoutes.UserProfileSetting.route) {
+            UserProfileSetting(navController = navController,padding)
         }
 
         composable(NavRoutes.DisplaySetting.route) {
