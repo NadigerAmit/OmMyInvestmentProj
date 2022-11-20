@@ -173,17 +173,7 @@ fun setupMainScreen(finish: () -> Unit) {
                 Log.e("MainActivity"," tc ->screen config")
                 getScreenConfig4TAndC()
             }
-            /*
-            "license" -> {
-                Log.e("MainActivity","license ->screen config")
-                getScreenConfig4License()
-            }
 
-             */
-            "profile" -> {
-                Log.e("MainActivity"," profile ->screen config")
-                getScreenConfig4Profile()
-            }
             "tutorial" -> {
                 Log.e("MainActivity"," tutorial ->screen config")
                 getScreenConfig4Tutorial()

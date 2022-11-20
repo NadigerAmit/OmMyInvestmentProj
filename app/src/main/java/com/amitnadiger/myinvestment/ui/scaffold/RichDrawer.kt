@@ -10,19 +10,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.navigation.NavController
 import com.amitnadiger.myinvestment.R
 import kotlinx.coroutines.CoroutineScope
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -34,19 +34,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.amitnadiger.myinvestment.base.launchActivity
+import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
 import com.amitnadiger.myinvestment.ui.NavRoutes
-import com.amitnadiger.myinvestment.ui.screens.Home
+import com.amitnadiger.myinvestment.utility.DataStoreConst
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 private val TAG = "RichDrawer"
 @Composable
 fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navController: NavController) {
+    val dataStorageManager = DataStoreHolder.getDataStoreProvider(
+        LocalContext.current,
+        DataStoreConst.SECURE_DATASTORE,true)
+    var fname:String? = null
+    runBlocking {
+        fname = dataStorageManager.getString(DataStoreConst.FULL_NAME).first()
+    }
+
     val settingItems = listOf(
         NavDrawerItem.Home,
         NavDrawerItem.History,
@@ -61,14 +69,58 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
             .background(colorResource(id = R.color.teal_700))
     ) {
         // Header
-        Image(
-            painter = painterResource(id = R.drawable.ic_app_logo),
-            contentDescription = R.drawable.logo.toString(),
+        Row(
             modifier = Modifier
-                .height(100.dp)
+                .background(MaterialTheme.colors.primaryVariant)
                 .fillMaxWidth()
-                .padding(10.dp)
-        )
+                .padding(5.dp)
+              //  .border(width = 2.dp, color = MaterialTheme.colors.primaryVariant)
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(5.dp)
+            ) {
+                Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "ProfileUpdate",
+                    Modifier.height(90.dp).width(90.dp)
+                        // Modifier.fillMaxSize()
+                        .clickable {
+                            scope.launch {
+                                navController.navigate(NavRoutes.UserProfileSetting.route) {
+                                    navController.graph.startDestinationRoute?.let { route ->
+                                        popUpTo(route) {
+                                            saveState = true
+                                        }
+                                    }
+                                    launchSingleTop = true
+                                }
+                                scaffoldState.drawerState.close()
+                            }
+                        })
+                Spacer(
+                    modifier = Modifier
+                        .height(4.dp)
+                )
+                var fullname = fname?:""
+                Text(
+                    text = fullname,
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(5.dp)
+                )
+            }
+            Spacer(Modifier.weight(1f,true))
+                    //.height(15.dp)
+            Image(
+                painter = painterResource(id = R.drawable.ic_app_logo),
+                contentDescription = R.drawable.logo.toString(),
+                modifier = Modifier
+                    .height(70.dp)
+                    .fillMaxWidth()
+            )
+
+        }
+
         // Space between
         Spacer(
             modifier = Modifier
