@@ -71,6 +71,7 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
         // Header
         Row(
             modifier = Modifier
+                //.background(MaterialTheme.colors.primaryVariant)
                 .background(MaterialTheme.colors.primaryVariant)
                 .fillMaxWidth()
                 .padding(5.dp)
@@ -109,15 +110,20 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
                         .padding(5.dp)
                 )
             }
+            /*
             Spacer(Modifier.weight(1f,true))
                     //.height(15.dp)
             Image(
-                painter = painterResource(id = R.drawable.ic_app_logo),
+                painter = painterResource(id = R.drawab le.ic_app_logo),
                 contentDescription = R.drawable.logo.toString(),
                 modifier = Modifier
                     .height(70.dp)
                     .fillMaxWidth()
+                    .padding(top = 10.dp)
             )
+
+
+             */
 
         }
 
