@@ -1,0 +1,128 @@
+package com.amitnadiger.myinvestment.ui.screens.setting.termandpolicy
+
+import android.widget.TextView
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.text.HtmlCompat
+import androidx.navigation.NavController
+
+import com.amitnadiger.myinvestment.base.asHTML
+
+import com.amitnadiger.myinvestment.ui.NavRoutes
+import com.amitnadiger.myinvestment.ui.screens.ScreenConfig
+
+val privacyPolicy = "\nAbout personal data:\n" +
+        "\n" +
+        "All the data provide to this app will be stored within the device " +
+        "in the encrypted format and will be accessed only by PFA app.\n" +
+        "None of the data is sent outside the device by any means.\n" +
+        "\n" +
+        "Below is the list of personal data which are stored in" +
+        " encrypted format within the device\n" +
+        "\n" +
+        "1. Full Name -> Used for displaying name in the profile page\n\n" +
+        "2. Date of birth -> Used for authentication of user to display,Password hint when user clicks forgot password in login screen.\n\n" +
+        "3. Password -> Used to login in PFA app if user wants to protect his data with password to access the app\n\n" +
+        "4. Password Hint1/2 - To help user if he forgets the password in login page when user clicks forgot passwd.\n\n" +
+        "   the hint will be shown after user provide the correct date of birth registered during signup.\n\n" +
+        "All the below Personal Investment data will be stored within the encrypted local database.\n" +
+        " None of the data is sent outside the device by any means.\n" +
+        "\n" +
+        "1. AccountNumber - used as Unique ID for any investment , usually provided by banks in India \n" +
+        "2. Investor name - \n" +
+        "3. Investment amount - \n" +
+        "4. Bank name - Financial institution name such as SBI , IDBI,LIC,etc\n" +
+        "5. Product type - InvestmentType such as FD,NSC,Insurance.\n" +
+        "6. Investment date - \n" +
+        "7. Maturity date - \n" +
+        "8. Nominee name \n" +
+        "\n" +
+        "\n" +
+        "It’s user/your responsibility to keep mobile phone access to keep the app secure. \n" +
+        "We therefore recommend that you do not jailbreak or root your phone, " +
+        "which is the process of removing software restrictions and limitations imposed by the " +
+        "official operating system of your device. It could make your phone vulnerable to malware/viruses/malicious programs." +
+        "Even though the data in the device is encrypted  remember that no method" +
+        "  of electronic storage is 100% secure and reliable, and I cannot" +
+        " guarantee its absolute security. " +
+        "\n\nGoogle Policy & Terms\n" +
+        "" +
+        "\nhttps://policies.google.com/terms\n\n"
+
+@Composable
+private fun linkTextColor() = Color(
+    TextView(LocalContext.current).linkTextColors.defaultColor
+)
+
+private const val URL_TAG = "url_tag"
+@Composable
+fun TermsAndPrivacyScreen(
+    navigator: NavController
+    ,padding: PaddingValues,
+
+) {
+
+    val content = "https://policies.google.com/terms".asHTML(
+        14.sp,
+        HtmlCompat.FROM_HTML_MODE_COMPACT,
+        SpanStyle(
+            color = linkTextColor(),
+            textDecoration = TextDecoration.Underline
+        )
+    )
+
+    Column(modifier = Modifier.background(MaterialTheme.colors.background)) {
+        var linkClicked: ((String) -> Unit) = {}
+
+        Text(
+            text = privacyPolicy,
+            modifier = Modifier
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+            //fontSize = 22.sp,
+            // fontWeight = FontWeight.Bold
+            //color = Color.Black
+        )
+
+        ClickableText(
+            text = AnnotatedString(content.text),
+            onClick = {
+                content
+                    .getStringAnnotations(URL_TAG, it, it)
+                    .firstOrNull()
+                    ?.let { stringAnnotation -> linkClicked(stringAnnotation.item) }
+
+            })
+    }
+}
+
+fun getScreenConfig4TCAndPrivacy(): ScreenConfig = //Log.e("HomeScvreen","getScreenConfig4Home");
+    ScreenConfig(
+        enableTopAppBar = true,
+        enableBottomAppBar = true,
+        enableDrawer = true,
+        screenOnBackPress = NavRoutes.Home.route,
+        enableFab = false,
+        topAppBarStartPadding = 20.dp,
+        topAppBarTitle = "Privacy Policy", bottomAppBarTitle = "",
+        fabString = "",
+    )

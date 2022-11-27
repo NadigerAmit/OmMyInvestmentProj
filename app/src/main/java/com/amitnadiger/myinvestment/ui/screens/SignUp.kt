@@ -162,21 +162,24 @@ fun SignUpScreen(navController: NavHostController,
                         Spacer(modifier = Modifier.width(40.dp).height(90.dp))
 
                     }
-                    "BirthDate"->
-                        CustomTextField(
-                            modifier = Modifier.clickable {
-                                DateUtility.showDatePickerDialog(context,items.second.first,dateFormat,items.second.second)
-                            },
-                            text = items.second.first,
-                            placeholder = items.first,
-                            onChange = {
-                                if(validateBirtDate(birthDate,
-                                        "BirthDate Cant be future date",context)){
-                                    items.second.second
-                                } },
-                            isEnabled = false,
-                            imeAction = ImeAction.Next
-                        )
+                    "BirthDate"-> {
+                        if(isPasswordProtectRequired){
+                            CustomTextField(
+                                modifier = Modifier.clickable {
+                                    DateUtility.showDatePickerDialog(context,items.second.first,dateFormat,items.second.second)
+                                },
+                                text = items.second.first,
+                                placeholder = items.first,
+                                onChange = {
+                                    if(validateBirtDate(birthDate,
+                                            "BirthDate Cant be future date",context)){
+                                        items.second.second
+                                    } },
+                                isEnabled = false,
+                                imeAction = ImeAction.Next
+                            )
+                        }
+                    }
                     "Password",
                     "Confirm Password" -> {
                         if(isPasswordProtectRequired) {

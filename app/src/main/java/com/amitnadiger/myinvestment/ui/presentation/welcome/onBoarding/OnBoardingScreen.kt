@@ -44,7 +44,8 @@ fun OnBoardingScreen() {
     val pages = listOf(
         OnBoardingPage.First,
         OnBoardingPage.Second,
-        OnBoardingPage.Third
+        OnBoardingPage.Third,
+        OnBoardingPage.Forth
     )
     val pagerState = rememberPagerState()
 
@@ -134,19 +135,21 @@ fun FinishButton(
     ) {
         AnimatedVisibility(
             modifier = Modifier.fillMaxWidth(),
-            visible = pagerState.currentPage == 2
+            visible = pagerState.currentPage == 3
         ) {
             Button(
                 onClick = onClick,
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Red
+                    backgroundColor = MaterialTheme.colors.primary
                 ),
                 shape = RectangleShape
             ) {
                 Text(
                     //text = stringResource(id = R.string.text_finish),
                     text = "Lets Go",
-                    color = White,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
                     modifier = Modifier.padding(4.dp)
                 )
             }

@@ -59,10 +59,12 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
         NavDrawerItem.Home,
         NavDrawerItem.History,
         NavDrawerItem.Settings,
-        NavDrawerItem.News,
+        //NavDrawerItem.News,
         //NavDrawerItem.Tutorial,
         NavDrawerItem.License,
+        NavDrawerItem.Privacy,
         NavDrawerItem.Faq,
+        NavDrawerItem.About,
     )
     Column(
         modifier = Modifier
@@ -104,8 +106,8 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
                 var fullname = fname?:""
                 Text(
                     text = fullname,
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Medium,
                     modifier = Modifier
                         .padding(5.dp)
                 )
@@ -183,7 +185,7 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
             text = "Nadiger Ventures ",
            // color = Color.White,
             textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Light,
             modifier = Modifier
                 .padding(12.dp)
                 .align(Alignment.CenterHorizontally)

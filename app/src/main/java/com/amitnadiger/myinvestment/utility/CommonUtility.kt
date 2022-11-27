@@ -47,17 +47,7 @@ fun handleSavingUserProfileSettingData(isPasswordProtectRequired:Boolean,
                 || !validateBirtDate(birthDate,
                     "BirthDate Cant be future or current date",context)
             ) {
-                // Toast will be shown in the validate**
-                /*
-                navController.navigate(NavRoutes.Setting.route)  {
-                    navController.graph.startDestinationRoute?.let { route ->
-                        popUpTo(route) {
-                            saveState = true
-                        }
-                    }
-                    launchSingleTop = true
-                }
-                 */
+
             } else {
                 Log.e(TAG,"handleSavingUserProfileSettingData  Validaton passed ")
                 saveSingUpInfoInDataStore(context,

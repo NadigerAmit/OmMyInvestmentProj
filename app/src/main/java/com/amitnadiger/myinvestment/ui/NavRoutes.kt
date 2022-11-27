@@ -1,6 +1,7 @@
 package com.amitnadiger.myinvestment.ui
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
@@ -11,9 +12,12 @@ import androidx.navigation.compose.composable
 import com.amitnadiger.myinvestment.ui.screens.*
 import com.amitnadiger.myinvestment.ui.screens.setting.SettingPage
 import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
+import com.amitnadiger.myinvestment.ui.presentation.welcome.WelcomeActivity
+import com.amitnadiger.myinvestment.ui.scaffold.NavDrawerItem
 import com.amitnadiger.myinvestment.ui.screens.setting.DisplaySetting
 import com.amitnadiger.myinvestment.ui.screens.setting.NotificationSetting
 import com.amitnadiger.myinvestment.ui.screens.setting.UserProfileSetting
+import com.amitnadiger.myinvestment.ui.screens.setting.termandpolicy.TermsAndPrivacyScreen
 import com.amitnadiger.myinvestment.utility.DataStoreConst.Companion.SECURE_DATASTORE
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
@@ -32,14 +36,16 @@ sealed class NavRoutes(val route:String) {
      object History : NavRoutes("history")
      object HistoryProductDetail : NavRoutes("historyDetail")
      object Setting : NavRoutes("setting")
-     object TC : NavRoutes("tc")
+     object Privacy : NavRoutes("privacy")
      object Tutorial : NavRoutes("tutorial")
      object UserProfileSetting : NavRoutes("userSetting")
      object DisplaySetting : NavRoutes("displaySetting")
      object NotificationSetting : NavRoutes("notificationSetting")
+     object AboutScreen : NavRoutes("aboutScreen")
 
 
 }
+
 private var launchScreenCache:String? = null
 var isLogInDone:Boolean = false
 
@@ -134,10 +140,15 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
             SettingPage(navController = navController,padding)
         }
 
-
-        composable(NavRoutes.TC.route) {
-            News(navController = navController,padding)
+        composable(NavRoutes.AboutScreen.route) {
+            AboutScreen(navController = navController,padding)
         }
+
+        composable(NavRoutes.Privacy.route) {
+            TermsAndPrivacyScreen(navController,padding)
+        }
+
+
 /*
         composable(NavRoutes.License.route) {
             LicensePage(navController = navController,padding)

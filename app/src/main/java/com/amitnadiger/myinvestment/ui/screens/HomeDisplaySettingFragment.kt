@@ -45,7 +45,7 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                     Text(
                         text = "\nInvestments are displayed Here.",
                         fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Medium
                         //color = Color.Black
                     )
                 }
@@ -53,8 +53,8 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                     Text(
                         text = "\nDeletedRecords are displayed Here ." +
                                 "\n\nWhen records are deleted from home screen , they will appear in this screen ",
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold
+                        fontSize = 21.sp,
+                        fontWeight = FontWeight.Medium
                         //color = Color.Black
                     )
                 }
@@ -63,7 +63,7 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                         text = "\nInvestmentsRecords displayed" +
                                 " in 3 colours",
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Light
                         //color = Color.Black
                     )
                 }
@@ -71,16 +71,16 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                     //Spacer(modifier = Modifier.width(40.dp))
                     Text(
                         text = "\nRed => Already matured Records ",
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Light,
                         color = Color.Red)
                 }
 
                 "aboutToMaturedItemsText" -> {
                     Text(
                         text = "\nMagenta => Records with maturityDate <= ${nod.value} days",
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Light,
                         color = Color.Magenta,)
                     Spacer(modifier = Modifier.width(40.dp))
                 }
@@ -89,8 +89,8 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                     Spacer(modifier = Modifier.width(40.dp))
                     Text(
                         text = "\nBlack/White => Records with maturityDate > ${nod.value} days",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Light,
+                        fontSize = 16.sp,
 
                         //color = Color.Black
                     )
@@ -101,7 +101,7 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                     Text(
                         text = "\nFieldLengthLimit => 9 ex: *876543210",
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Light
                         //color = Color.Black
                     )
                     Text(
@@ -119,7 +119,7 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                     Text(
                         text = "\nMeaning of Fields in Home & History",
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Medium
                         //color = Color.Black
                     )
                     TitleRow(head1 = " Fin Ins\n\n AccNum\n\n Product ",
@@ -212,7 +212,7 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                     Text(
                         text = "\nAdd new records by pressing below Red + button  ",
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Medium
                     )
                 }
                 "ImageToAddItems" -> {
@@ -238,7 +238,7 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                     Text(
                         text = "\nYou can clear all items from history pressing below Red button  ",
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Medium
                     )
                 }
                 "ImageToDeleteAllItemsFromHistory" -> {
