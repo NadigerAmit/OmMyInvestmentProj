@@ -34,6 +34,7 @@ import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4DisplaySe
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4NotificationSetting
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4Setting
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4UserSetting
+import com.amitnadiger.myinvestment.ui.screens.setting.termandpolicy.getScreenConfig4TCAndPrivacy
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModel
 import com.amitnadiger.myinvestment.viewModel.FinHistoryViewModelFactory
 import com.amitnadiger.myinvestment.viewModel.FinProductViewModel
@@ -169,9 +170,9 @@ fun setupMainScreen(finish: () -> Unit) {
                 Log.e("MainActivity"," setting ->screen config")
                 getScreenConfig4Setting()
             }
-            "tc" -> {
+            "privacy" -> {
                 Log.e("MainActivity"," tc ->screen config")
-                getScreenConfig4TAndC()
+                getScreenConfig4TCAndPrivacy()
             }
 
             "tutorial" -> {
@@ -187,6 +188,11 @@ fun setupMainScreen(finish: () -> Unit) {
             "notificationSetting" ->{
                 getScreenConfig4NotificationSetting()
             }
+            "aboutScreen" ->{
+                getScreenConfig4About()
+            }
+
+
 
             //"searchProduct" -> getScreenConfig4Sea() todo
             else -> {

@@ -29,4 +29,13 @@ sealed class OnBoardingPage(
                 "2. Operation \n" +
                 "3. Value "
     )
+
+    object Forth : OnBoardingPage(
+        image = R.drawable.onboardingscreen4_datasecurity,
+        title = "Attention!",
+        description = "DataSecurity\n" +
+                "App store all enteredData securely with encryption within the Device, " +
+                "so that even developers cant know them." +
+                "The data is never sent out of the device "
+    )
 }

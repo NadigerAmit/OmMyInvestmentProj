@@ -58,7 +58,6 @@ private fun WelcomeRoot(context: Context) {
             color = MaterialTheme.colors.background
         ) {
             WelcomeNavGraph()
-
         }
     }
 }

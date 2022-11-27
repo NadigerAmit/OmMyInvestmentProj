@@ -25,10 +25,10 @@ fun TopBar(screenConfig: ScreenConfig,
 
             title = {
                 Text(text = screenConfig.topAppBarTitle, color = MaterialTheme.colors.primary,
-                    fontSize = 30.sp,
+                    fontSize = 25.sp,
                     textAlign = TextAlign.Start,
-                modifier = Modifier.padding(start = screenConfig.topAppBarStartPadding,
-                )
+                //modifier = Modifier.padding(start = screenConfig.topAppBarStartPadding,)
+                        modifier =Modifier.fillMaxWidth()
             )},
             elevation = AppBarDefaults.TopAppBarElevation,
            // backgroundColor = Color(0xFFC0E8D5),

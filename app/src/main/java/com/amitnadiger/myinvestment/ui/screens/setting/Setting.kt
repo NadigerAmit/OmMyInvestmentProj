@@ -14,8 +14,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.Menu
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -24,23 +23,46 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+
 import com.amitnadiger.myinvestment.R
+
+import com.amitnadiger.myinvestment.base.launchActivity
 import com.amitnadiger.myinvestment.ui.NavRoutes
+import com.amitnadiger.myinvestment.ui.presentation.welcome.WelcomeActivity
 import com.amitnadiger.myinvestment.ui.screens.ScreenConfig
 
 private val TAG = "SettingPage"
 
-sealed class SettingItem(var route: String , var icon: Int, var title: String) {
-    object UserProfileSetting : SettingItem("userSetting",   R.drawable.ic_profile,"User profile settings")
-    object DisplaySettings : SettingItem("displaySetting",  R.drawable.ic_displaysetting,"DisplaySettings")
-    object Notification : SettingItem("notificationSetting",   R.drawable.ic_notification,"Notifications setting")
-    //object Language : SettingItem("profile", R.drawable.ic_language,"Language Settings\n")
+sealed class SettingItem(var route: String , var icon: Int, var title: String
+    ,var desc:String) {
+    object UserProfileSetting : SettingItem("userSetting",
+        R.drawable.ic_profile,
+        "UserProfileSettings","Setting such as :\n " +
+                "UserName , DOB, Password & PasswdHint")
+
+    object DisplaySettings : SettingItem("displaySetting",
+        R.drawable.ic_displaysetting,"DisplaySettings",
+        "Description about :\n " +
+                "InvestmentRecords Fields,colorCode ,etc")
+    object Notification : SettingItem("notificationSetting",
+        R.drawable.ic_notification,"NotificationSetting",
+        "Setting such as :\n " +
+                "Notification ,AdvanceNotificationDays,etc")
+    object Introduction : SettingItem("introduction",
+        R.drawable.ic_introduction,"OnBoarding\n",
+        "Brief description about :\n " +
+                "AppUsage/On-boarding description screens")
+    /*
+    object RateApp : SettingItem("rateApp", R.drawable.ic_rate_app,"RateApp\n",
+    "Feedback and Rate this app in play store ")
+     */
 
 }
 
@@ -50,12 +72,14 @@ fun SettingPage(navController: NavHostController, paddingValues: PaddingValues) 
         SettingItem.UserProfileSetting,
         SettingItem.DisplaySettings,
         SettingItem.Notification,
-   //     SettingItem.Language,
+        SettingItem.Introduction,
+       // SettingItem.RateApp,
     )
     Column(
        // modifier = Modifier
            // .background(colorResource(id = R.color.white))
     ) {
+        val context = LocalContext.current
 
         // List of navigation items
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -63,6 +87,7 @@ fun SettingPage(navController: NavHostController, paddingValues: PaddingValues) 
         LazyColumn(
             Modifier
                 .fillMaxWidth()
+                .padding(paddingValues)
                 .border(width = 1.dp, color = Color.Black)
         ) {
             items(settingItems) { items ->
@@ -70,21 +95,31 @@ fun SettingPage(navController: NavHostController, paddingValues: PaddingValues) 
                 DrawerItem(item = items, selected = currentRoute == items.route, padding = paddingValues , onItemClick = {
                         Log.e(TAG,"SettingPage items.route == signUp")
 
-                        navController.navigate(items.route) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) {
-                                    saveState = true
-                                }
-                            }
-                            // Avoid multiple copies of the same destination when
-                            // reselecting the same item
-                            launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            //restoreState = true
+                    when(items.route) {
+                        "introduction" -> {
+                            context.launchActivity<WelcomeActivity> { }
+                            //(context as WelcomeActivity).finish()
+                            //context.getActivity()?.finish()
+
                         }
+                        else -> {
+                            navController.navigate(items.route) {
+                                // Pop up to the start destination of the graph to
+                                // avoid building up a large stack of destinations
+                                // on the back stack as users select items
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                        saveState = true
+                                    }
+                                }
+                                // Avoid multiple copies of the same destination when
+                                // reselecting the same item
+                                launchSingleTop = true
+                                // Restore state when reselecting a previously selected item
+                                //restoreState = true
+                            }
+                        }
+                    }
                 })
             }
         }
@@ -142,8 +177,7 @@ fun DrawerItem(item: SettingItem, selected: Boolean, padding: PaddingValues,onIt
             )
         }
         Text(
-            text = "This is user setting such as :\n " +
-                    "User name , DOB Password and Passwd Hint",
+            text = item.desc,
             fontSize = 15.sp,
             //color = Color.Black
            )
@@ -160,7 +194,7 @@ fun getScreenConfig4Setting(): ScreenConfig {
         screenOnBackPress = NavRoutes.Home.route,
         topAppBarStartPadding = 40.dp,
         topAppBarTitle = "Settings", bottomAppBarTitle = "",
-        fabString = "add",
+        fabString = "",
         fabColor = Color.Red
     )
 }

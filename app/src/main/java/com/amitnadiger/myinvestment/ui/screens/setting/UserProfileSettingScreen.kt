@@ -137,9 +137,11 @@ fun UserProfileSetting(navController: NavHostController,
 
     //userDetailUpdateFragment(navController,registerItemList,padding)
 
+
+
     if(passwd != null
         && !isShowProfileUpdateScreenAllowed ) {
-        confirmPasswordScreen(passwd!!, onExistingPasswordConfirm)
+        confirmPasswordScreen(fullName,passwd!!, onExistingPasswordConfirm)
     } else {
         isShowProfileUpdateScreenAllowed = true
     }
@@ -150,6 +152,7 @@ fun UserProfileSetting(navController: NavHostController,
             .fillMaxWidth()
             .padding(padding)
     ) {
+        Text(text = "Hello $fullName ", style = TextStyle(fontSize = 25.sp))
         if(isShowProfileUpdateScreenAllowed) {
 
             Row(
@@ -167,7 +170,7 @@ fun UserProfileSetting(navController: NavHostController,
                     Spacer(modifier = Modifier.width(30.dp))
                     Image(
                         painter = painterResource(id = com.amitnadiger.myinvestment.R.drawable.ic_profile),
-                        contentDescription = "DisplaySetting",
+                        contentDescription = "UserSetting",
                         colorFilter = ColorFilter.tint(Color.Black),
                         contentScale = ContentScale.Fit,
                         modifier = Modifier
@@ -210,22 +213,25 @@ fun UserProfileSetting(navController: NavHostController,
                             }
                             Spacer(modifier = Modifier.width(40.dp).height(90.dp))
                         }
-                        "BirthDate"->
-                            CustomTextField(
-                                modifier = Modifier.clickable {
-                                    DateUtility.showDatePickerDialog(context,items.second.first,
-                                        dateFormat,items.second.second)
-                                },
-                                text = items.second.first,
-                                placeholder = items.first,
-                                onChange = {
-                                    if(validateBirtDate(birthDate,
-                                            "BirthDate Cant be future date",context)){
-                                        items.second.second
-                                    } },
-                                isEnabled = false,
-                                imeAction = ImeAction.Next
-                            )
+                        "BirthDate"-> {
+                            if(isPasswordProtectRequired) {
+                                CustomTextField(
+                                    modifier = Modifier.clickable {
+                                        DateUtility.showDatePickerDialog(context,items.second.first,
+                                            dateFormat,items.second.second)
+                                    },
+                                    text = items.second.first,
+                                    placeholder = items.first,
+                                    onChange = {
+                                        if(validateBirtDate(birthDate,
+                                                "BirthDate Cant be future date",context)){
+                                            items.second.second
+                                        } },
+                                    isEnabled = false,
+                                    imeAction = ImeAction.Next
+                                )
+                            }
+                        }
                         "Password",
                         "Confirm Password" -> {
                             if(isPasswordProtectRequired) {
@@ -277,7 +283,7 @@ fun UserProfileSetting(navController: NavHostController,
 
 
 @Composable
-fun confirmPasswordScreen(existingPasswd:String,onPasswdConfirm: (Boolean) -> Unit = {}, ) {
+fun confirmPasswordScreen(fullName:String,existingPasswd:String,onPasswdConfirm: (Boolean) -> Unit = {}, ) {
     var password by remember { mutableStateOf("") }
     val onPasswordTextChange = { text : String ->
         password = text
@@ -289,6 +295,10 @@ fun confirmPasswordScreen(existingPasswd:String,onPasswdConfirm: (Boolean) -> Un
             .fillMaxWidth()
         //.padding(padding)
     ) {
+        Text(text = "Hello $fullName ", style = TextStyle(fontSize = 25.sp))
+        Text(text = "Enter password to see/edit rest of details", style = TextStyle(fontSize = 18.sp))
+        Spacer(modifier = Modifier.width(40.dp).height(10.dp))
+
         CustomTextField(
             placeholder = "Enter current password",
             text = password,
