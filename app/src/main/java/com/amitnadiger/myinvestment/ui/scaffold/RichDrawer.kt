@@ -73,7 +73,6 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
         // Header
         Row(
             modifier = Modifier
-                //.background(MaterialTheme.colors.primaryVariant)
                 .background(MaterialTheme.colors.primaryVariant)
                 .fillMaxWidth()
                 .padding(5.dp)
