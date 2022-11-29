@@ -40,6 +40,12 @@ fun AboutScreen(navController: NavHostController, paddingValues: PaddingValues) 
             .fillMaxWidth()
             .padding(paddingValues)
     ) {
+        Text(
+            text = "\nPersonal Financial Assistant",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Medium
+            //color = Color.Black
+        )
         Spacer(modifier = Modifier.height(30.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -78,7 +84,7 @@ fun AboutScreen(navController: NavHostController, paddingValues: PaddingValues) 
                         val version = context.appVersion()
                         Text(
                             text = "\nVersion $version",
-                            fontSize = 22.sp,
+                            fontSize = 20.sp,
                             fontWeight = FontWeight.Medium
                             //color = Color.Black
                         )
@@ -86,7 +92,7 @@ fun AboutScreen(navController: NavHostController, paddingValues: PaddingValues) 
                     "developer" -> {
                         Text(
                             text = "\nnadigerventures@gmail.com",
-                            fontSize = 22.sp,
+                            fontSize = 20.sp,
                             fontWeight = FontWeight.Medium
                             //color = Color.Black
                         )

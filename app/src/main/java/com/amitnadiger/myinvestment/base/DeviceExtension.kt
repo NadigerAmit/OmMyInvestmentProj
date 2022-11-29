@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.content.pm.PackageInfoCompat
 
@@ -37,7 +38,10 @@ fun Context.deviceId(): String {
 fun Context.appVersion(): String {
 
     val packageInfo = this.packageManager.getPackageInfo(this.packageName, 0)
-    return PackageInfoCompat.getLongVersionCode(packageInfo).toString()
+    Log.e("AppVersion",PackageInfoCompat.getLongVersionCode(packageInfo).toString())
+    Log.e("AppVersion--- ",packageManager.getPackageInfo(packageName, 0).versionName)
+    //return PackageInfoCompat.getLongVersionCode(packageInfo).toString()
+    return packageManager.getPackageInfo(packageName, 0).versionName
 }
 
 @RequiresApi(Build.VERSION_CODES.P)
