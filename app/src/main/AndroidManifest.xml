@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.amitnadiger.myinvestment">
+    package="com.nadigerventures.pfa">
 
     <application
         android:allowBackup="true"
@@ -28,7 +28,7 @@
         </activity>
         -->
         <activity
-            android:name=".ui.presentation.splash.StartActivity"
+            android:name="com.nadigerventures.pfa.ui.presentation.splash.StartActivity"
             android:exported="true"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
@@ -37,8 +37,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ui.presentation.welcome.WelcomeActivity" />
+        <activity android:name="com.nadigerventures.pfa.MainActivity" />
+        <activity android:name="com.nadigerventures.pfa.ui.presentation.welcome.WelcomeActivity" />
         <activity android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/Theme.AppCompat.Light"/>
 
