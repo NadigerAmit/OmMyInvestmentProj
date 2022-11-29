@@ -1,7 +1,7 @@
 package com.amitnadiger.myinvestment.ui
 
 import android.content.Context
-import android.content.Intent
+
 import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
@@ -12,8 +12,8 @@ import androidx.navigation.compose.composable
 import com.amitnadiger.myinvestment.ui.screens.*
 import com.amitnadiger.myinvestment.ui.screens.setting.SettingPage
 import com.amitnadiger.myinvestment.securityProvider.DataStoreHolder
-import com.amitnadiger.myinvestment.ui.presentation.welcome.WelcomeActivity
-import com.amitnadiger.myinvestment.ui.scaffold.NavDrawerItem
+
+import com.amitnadiger.myinvestment.ui.screens.Faq.Faq
 import com.amitnadiger.myinvestment.ui.screens.setting.DisplaySetting
 import com.amitnadiger.myinvestment.ui.screens.setting.NotificationSetting
 import com.amitnadiger.myinvestment.ui.screens.setting.UserProfileSetting
@@ -37,13 +37,11 @@ sealed class NavRoutes(val route:String) {
      object HistoryProductDetail : NavRoutes("historyDetail")
      object Setting : NavRoutes("setting")
      object Privacy : NavRoutes("privacy")
-     object Tutorial : NavRoutes("tutorial")
      object UserProfileSetting : NavRoutes("userSetting")
      object DisplaySetting : NavRoutes("displaySetting")
      object NotificationSetting : NavRoutes("notificationSetting")
      object AboutScreen : NavRoutes("aboutScreen")
-
-
+     object Faq : NavRoutes("faq")
 }
 
 private var launchScreenCache:String? = null
@@ -102,6 +100,10 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
             History(navController = navController, finHistoryViewModel,padding)
         }
 
+        composable(NavRoutes.Faq.route) {
+            Faq(navController = navController,padding)
+        }
+
         composable(NavRoutes.AddProduct.route+ "/{id}" ) { navBackStack ->
             val accountId = navBackStack.arguments?.getString("id")
             AddProduct(navController = navController,
@@ -146,18 +148,6 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
 
         composable(NavRoutes.Privacy.route) {
             TermsAndPrivacyScreen(navController,padding)
-        }
-
-
-/*
-        composable(NavRoutes.License.route) {
-            LicensePage(navController = navController,padding)
-        }
-
- */
-
-        composable(NavRoutes.Tutorial.route) {
-            Tutorial(navController = navController,padding)
         }
 
         composable(NavRoutes.UserProfileSetting.route) {

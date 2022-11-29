@@ -30,6 +30,7 @@ import com.amitnadiger.myinvestment.ui.theme.MyInvestmentTheme
 
 import com.amitnadiger.myinvestment.ui.scaffold.ScaffoldImpl
 import com.amitnadiger.myinvestment.ui.screens.*
+import com.amitnadiger.myinvestment.ui.screens.Faq.getScreenConfig4Faq
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4DisplaySetting
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4NotificationSetting
 import com.amitnadiger.myinvestment.ui.screens.setting.getScreenConfig4Setting
@@ -175,9 +176,9 @@ fun setupMainScreen(finish: () -> Unit) {
                 getScreenConfig4TCAndPrivacy()
             }
 
-            "tutorial" -> {
-                Log.e("MainActivity"," tutorial ->screen config")
-                getScreenConfig4Tutorial()
+            "faq" -> {
+                Log.e("MainActivity"," faq ->screen config")
+                getScreenConfig4Faq()
             }
             "userSetting" ->{
                 getScreenConfig4UserSetting()

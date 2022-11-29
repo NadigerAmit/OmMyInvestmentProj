@@ -191,9 +191,7 @@ fun NotificationDaysRow(FirstColumn: String,numOfDays:String ,onChangeNotificati
             .weight(0.2f))
 
         CustomTextField(modifier = Modifier .width(100.dp)
-            .clickable {
-
-        },
+            .clickable {},
             text = numOfDays,
             placeholder = "Days",
             onChange = onChangeNotification,
