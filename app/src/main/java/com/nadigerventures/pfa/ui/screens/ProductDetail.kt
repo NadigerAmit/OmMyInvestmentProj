@@ -71,33 +71,33 @@ private fun addRecordToHistory(finHistoryViewModel: FinHistoryViewModel) {
 
 private fun getListOPropertiesOfProduct(productDetail: Product): List<Pair<String, String>> {
     val mutableList = mutableListOf(
-        Pair("Investor name", productDetail.investorName),
-        Pair("Account number ", productDetail.accountNumber.toString()),
-        Pair("Financial institution", productDetail.financialInstitutionName),
-        Pair("Product type", productDetail.productType),
-        Pair("Investment start date", DateUtility.getPickedDateAsString(
+        Pair("Investor Name", productDetail.investorName),
+        Pair("Account Number ", productDetail.accountNumber.toString()),
+        Pair("Financial Institution", productDetail.financialInstitutionName),
+        Pair("Product Type", productDetail.productType),
+        Pair("Investment Start Date", DateUtility.getPickedDateAsString(
             productDetail.investmentDate.get(Calendar.YEAR),
             productDetail.investmentDate.get(Calendar.MONTH),
             productDetail.investmentDate.get(Calendar.DAY_OF_MONTH)
             ,dateFormat)),
-        Pair("Investment amount",  productDetail.investmentAmount.toString()),
-        Pair("Maturity date", DateUtility.getPickedDateAsString(
+        Pair("Investment Amount",  productDetail.investmentAmount.toString()),
+        Pair("Maturity Date", DateUtility.getPickedDateAsString(
             productDetail.maturityDate.get(Calendar.YEAR),
             productDetail.maturityDate.get(Calendar.MONTH),
             productDetail.maturityDate.get(Calendar.DAY_OF_MONTH)
             ,dateFormat)),
 
-        Pair("Maturity amount", NumberFormat.getInstance().format(productDetail.maturityAmount)),
-        Pair("Interest rate", productDetail.interestRate.toString()),
+        Pair("Maturity Amount", NumberFormat.getInstance().format(productDetail.maturityAmount)),
+        Pair("Interest Rate", productDetail.interestRate.toString()),
 
-        Pair("Nominee name", productDetail.nomineeName),
+        Pair("Nominee Name", productDetail.nomineeName),
         Pair("DeleteAndEditButton", "")
     )
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
     {
    //     /*
         mutableList.add(9,Pair("Investment Duration", getPeriodBetween2Dates(productDetail.investmentDate,productDetail.maturityDate)))
-        mutableList.add(10,Pair("Remaining duration",getPeriodBetween2Dates(localDateToCalendar(LocalDateTime.now()),productDetail.maturityDate)))
+        mutableList.add(10,Pair("Remaining Duration",getPeriodBetween2Dates(localDateToCalendar(LocalDateTime.now()),productDetail.maturityDate)))
 
  //        */
 /*
@@ -110,7 +110,7 @@ mutableList.add(10,Pair("Remaining duration",
 } else {
 mutableList.add(9,Pair("Investment Duration",
     DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,productDetail.investmentDate).toString()+" Days"))
-mutableList.add(10,Pair("Remaining duration",
+mutableList.add(10,Pair("Remaining Duration",
     DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,Calendar.getInstance()).toString()+" Days"))
 }
 return mutableList
@@ -302,18 +302,18 @@ fun ProductDetailsRow(FirstColumn: String,
        SecondColumn: String,
               color:Color = Color.Unspecified
 ) {
-Row(
-modifier = Modifier
-    .fillMaxWidth()
-    .padding(7.dp)
-) {
-var textColor: Color = Color.Unspecified
-if(FirstColumn == "Remaining duration") {
-    textColor = color
-}
-Text(FirstColumn.toString(), color = textColor,modifier = Modifier
-    .weight(0.2f))
-Text(SecondColumn ,  color = textColor,modifier = Modifier.weight(0.2f))
+    Row(
+        modifier = Modifier
+        .fillMaxWidth()
+        .padding(7.dp)
+        ) {
+            var textColor: Color = Color.Unspecified
+            if(FirstColumn == "Remaining duration") {
+                textColor = color
+            }
+            Text(FirstColumn.toString(), color = textColor,modifier = Modifier
+            .weight(0.2f))
+            Text(SecondColumn ,  color = textColor,modifier = Modifier.weight(0.2f))
 
-}
+        }
 }
