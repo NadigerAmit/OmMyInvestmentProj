@@ -52,7 +52,7 @@ fun ProductDetail(navController: NavHostController,
                   finHistoryViewModel: FinHistoryViewModel,
                   accountNumber:String,padding: PaddingValues) {
 
-    Log.e(TAG,"Jai shree Ram Row is clicked ,ProductDetail  AccountNumber = $accountNumber ")
+   // Log.e(TAG,"Jai shree Ram Row is clicked ,ProductDetail  AccountNumber = $accountNumber ")
 
     deleteRecord(showDialog =showDeleteAlertDialogGlobal.value,
         onDismiss ={},// {showDeleteAlertDialogGlobal.value = false },
@@ -292,7 +292,7 @@ fun getScreenConfig4ProductDetail():ScreenConfig {
         enableFab = false,
         screenOnBackPress = NavRoutes.Home.route,
         enableAction = false,
-        topAppBarTitle = "AccountDetail", bottomAppBarTitle = "",
+        topAppBarTitle = "Product Detail", bottomAppBarTitle = "",
         fabString = "",
     )
 }

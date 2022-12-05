@@ -38,6 +38,6 @@ fun getScreenConfig4History():ScreenConfig = //Log.e("HomeScvreen","getScreenCon
         screenOnBackPress = NavRoutes.Home.route,
         enableFab = true,
         topAppBarStartPadding = 20.dp,
-        topAppBarTitle = "DeletedHistory", bottomAppBarTitle = "",
+        topAppBarTitle = "Recycle Bin", bottomAppBarTitle = "",
         fabString = "Clear all",
     )
