@@ -4,6 +4,7 @@
     package="com.nadigerventures.pfa">
 
     <application
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
