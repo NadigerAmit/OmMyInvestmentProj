@@ -1,14 +1,19 @@
 package com.nadigerventures.pfa.ui.screens
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.nadigerventures.pfa.securityProvider.DataStoreHolder
 import com.nadigerventures.pfa.ui.NavRoutes
+import com.nadigerventures.pfa.utility.DataStoreConst
 import com.nadigerventures.pfa.utility.ProductListScreen
+import com.nadigerventures.pfa.utility.nod
 import com.nadigerventures.pfa.viewModel.FinHistoryViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun History(navController: NavHostController, viewModel: FinHistoryViewModel, padding: PaddingValues) {
@@ -20,14 +25,23 @@ fun History(navController: NavHostController, viewModel: FinHistoryViewModel, pa
         "GuideToDeleteAllItemsFromHistory",
       //  "ImageToDeleteAllItemsFromHistory"
     )
+    var advanceNotifyDays by remember { mutableStateOf(nod.value.toInt()) }
+    val context = LocalContext.current
+    val dataStoreProvider = DataStoreHolder.getDataStoreProvider(
+        context,
+        DataStoreConst.SECURE_DATASTORE, true
+    )
+    runBlocking {
+        nod.value = dataStoreProvider.getString(DataStoreConst.NOTIFICATION_DAYS).first() ?: "30"
+    }
     ProductListScreen(
         navController,
         allProducts = allProducts,
         // searchResults = searchResults,
         padding,"HistoryProductDetail",
-        displayItemListOfBlankHistory
+        displayItemListOfBlankHistory,
+        advanceNotifyDays
     )
-
 }
 
 fun getScreenConfig4History():ScreenConfig = //Log.e("HomeScvreen","getScreenConfig4Home");

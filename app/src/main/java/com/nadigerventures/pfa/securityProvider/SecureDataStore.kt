@@ -5,19 +5,28 @@ import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
     private val TAG = "SecDtaStrProvider"
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = dataStoreName)
-    private val cryptProvider: ICryptoProvider = CryptoProvider(context)
+    private lateinit var cryptProvider: ICryptoProvider
     private val stringMap = HashMap<String, String?>()
     private val boolMap = HashMap<String, Boolean?>()
     private val intMap = HashMap<String, Int?>()
     private val longMap = HashMap<String, Long?>()
     private val doubleMap = HashMap<String, Double?>()
     private val floatMap = HashMap<String, Float?>()
+    val coroutineScope = CoroutineScope(Dispatchers.IO)
+    init {
+        coroutineScope.launch {
+            cryptProvider =  CryptoProvider(context)
+        }
+    }
 
     override suspend fun getBool(key: String) = context.dataStore.data.map {
        // Log.i(TAG, "getBool --> Key = $key")
