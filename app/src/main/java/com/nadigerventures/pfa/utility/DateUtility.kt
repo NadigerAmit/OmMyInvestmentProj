@@ -6,10 +6,6 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.nadigerventures.pfa.ui.screens.dateFormat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
 
 import java.text.SimpleDateFormat
 import java.time.*
@@ -18,9 +14,8 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class DateUtility {
-
     companion object{
-        private val coroutineScope = CoroutineScope(Dispatchers.Main)
+
         fun showDatePickerDialog(context: Context,
                                  inputDate:String,
                                  dateFormat:String,

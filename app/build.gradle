@@ -25,7 +25,10 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+           // isMinifyEnabled = true
+           // isShrinkResources = true
+           // isDebuggable = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -106,6 +109,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat-resources:1.4.2")
 
     // For Pager --> Onboarding screens
+
     // Accompanist
     implementation "com.google.accompanist:accompanist-swiperefresh:0.23.1"
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.23.1"
@@ -119,10 +123,6 @@ dependencies {
 
     // For splash screen
     implementation"androidx.core:core-splashscreen:1.0.0-beta02"
-
-    // Work manager
-   // implementation "androidx.work:work-runtime:2.7.1"
-    implementation "androidx.work:work-runtime-ktx:2.7.1"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

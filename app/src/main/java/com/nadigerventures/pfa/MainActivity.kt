@@ -63,7 +63,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //DataStoreHolder.initializeDataStoreManager(this@MainActivity)
         setContent {
+
             val resourceProvider = ComponentInitializer(this)
             val themeViewModel = resourceProvider.geThemeViewModel()
             MyInvestmentTheme(darkTheme = themeViewModel.isDarkMode.value) {
@@ -84,7 +86,6 @@ class MainActivity : ComponentActivity() {
 fun setupMainScreen(finish: () -> Unit) {
     val owner = LocalViewModelStoreOwner.current
     owner?.let {
-
         val productViewModel: FinProductViewModel = viewModel(
             it,
             "FinProductViewModel",
@@ -94,11 +95,6 @@ fun setupMainScreen(finish: () -> Unit) {
             )
         )
 
-        val resourceProvider = ComponentInitializer(LocalContext.current)
-        //val productViewModel = resourceProvider.getFinProductViewModel()
-        Log.e(TAG,"in setupMainScreen step1 ")
-
-        Log.e(TAG,"in setupMainScreen step2 ")
         val historyViewModel: FinHistoryViewModel = viewModel(
             it,
             "FinHistoryViewModel",
@@ -107,6 +103,7 @@ fun setupMainScreen(finish: () -> Unit) {
                         as Application
             )
         )
+
 
         val navController = rememberNavController()
         //ScreenNavigation(navController,viewModel,padding)
@@ -207,7 +204,7 @@ fun setupMainScreen(finish: () -> Unit) {
 
         }
         ScaffoldImpl(navController = navController,
-            productViewModel!!,historyViewModel,
+            productViewModel,historyViewModel,
             screenConfig,LocalContext.current)
     }
 }
@@ -222,4 +219,12 @@ fun getDefaultScreenConfig():ScreenConfig {
         topAppBarTitle = "", bottomAppBarTitle = "",
         fabString = "",
     )
+}
+
+
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+
 }

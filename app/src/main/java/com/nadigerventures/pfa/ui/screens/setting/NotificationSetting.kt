@@ -246,7 +246,7 @@ fun getScreenConfig4NotificationSetting(): ScreenConfig {
         enableFab = false,
         screenOnBackPress = NavRoutes.Setting.route,
         topAppBarStartPadding =0.dp,
-        topAppBarTitle = "Notification Settings", bottomAppBarTitle = "",
+        topAppBarTitle = "NotifySettings", bottomAppBarTitle = "",
         fabString = "",
         fabColor = Color.Red
     )

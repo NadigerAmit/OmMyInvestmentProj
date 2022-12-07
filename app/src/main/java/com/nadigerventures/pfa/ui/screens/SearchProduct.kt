@@ -112,18 +112,18 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
     var finalList:MutableList<Product> = searchResults.toMutableList()
     finalList.add(
         Product("00000000000",
-            "","","TotalInvestmentAmount",0, Calendar.getInstance(), Calendar.getInstance(),1.1,
+    "","","TotalInvestmentAmount",0, Calendar.getInstance(), Calendar.getInstance(),1.1,
             0.0f,0)
     )
 
     // Create a list of cities
-    val searchFieldList = listOf("Account Number",
-        "Financial Institution Name",
-        "Product Type", "Investor Name",
-        "Investment Amount", "Investment Date",
-        "Maturity Date","Maturity Amount",
-        "Interest Rate","Deposit Period",
-        "Nominee Name"
+    val searchFieldList = listOf("accountNumber",
+        "financialInstitutionName",
+        "productType", "investorName",
+        "investmentAmount", "investmentDate",
+        "maturityDate","maturityAmount",
+        "interestRate","depositPeriod",
+        "nomineeName"
     )
 
     Row(
@@ -213,49 +213,49 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
 
 fun search(viewModel: FinProductViewModel) {
     when(searchByFieldValue.value) {
-        "Account Number"->{
+        "accountNumber"->{
             viewModel.findProductsBasedOnAccountNumber(valueFieldValue.value,
                 operationFieldValue.value)
         }
-        "Financial Institution Name"->{
+        "financialInstitutionName"->{
             viewModel.findProductsBasedOnFinanceInstituteName(valueFieldValue.value,
                 operationFieldValue.value)
         }
-        "Product Type"->{
+        "productType"->{
             viewModel.findProductsBasedOnProductType(valueFieldValue.value,
                 operationFieldValue.value)
         }
-        "Investor Name"->{
+        "investorName"->{
             viewModel.findProductsBasedOnInvestorName(valueFieldValue.value,
                 operationFieldValue.value)
         }
-        "Investment Amount"->{
+        "investmentAmount"->{
             viewModel.findProductsHavingInvestmentAmount(valueFieldValue.value,
                 operationFieldValue.value)
         }
-        "Investment Date"->{
+        "investmentDate"->{
             viewModel.findProductsHavingInvestmentDate(valueFieldValue.value,
                 operationFieldValue.value)
         }
-        "Maturity Date"->{
+        "maturityDate"->{
             Log.e("search", "Called in SearchProduct with Maturity date ")
             viewModel.findProductsHavingMaturityDate(valueFieldValue.value,
                 operationFieldValue.value)
         }
-        "Maturity Amount"->{
+        "maturityAmount"->{
             viewModel.findProductsHavingMaturityAmount(valueFieldValue.value,
                 operationFieldValue.value)
 
         }
-        "Interest Rate"->{
+        "interestRate"->{
             viewModel.findProductsHavingInterestRate(valueFieldValue.value,
                 operationFieldValue.value)
         }
-        "Deposit Period"->{
+        "depositPeriod"->{
             viewModel.findProductsHavingDepositPeriod(valueFieldValue.value,
                 operationFieldValue.value)
         }
-        "Nominee Name" -> {
+        "nomineeName" -> {
             viewModel.findProductsBasedOnNomineeName(valueFieldValue.value,operationFieldValue.value)
         }
         else -> {
@@ -268,32 +268,32 @@ fun getValuesList(fieldName:String,allProducts: List<Product>,):List<String> {
     Log.e("SearchProduct", "getValuesList() fieldName -$fieldName")
     var listOfValues = mutableSetOf<String>()
     when(fieldName) {
-        "Account Number"->{
+        "accountNumber"->{
             for(i in allProducts) {
                 listOfValues.add(i.accountNumber)
             }
         }
-        "Financial Institution Name"->{
+        "financialInstitutionName"->{
             for(i in allProducts) {
                 listOfValues.add(i.financialInstitutionName)
             }
         }
-        "Product Type"->{
+        "productType"->{
             for(i in allProducts) {
                 listOfValues.add(i.productType)
             }
         }
-        "Investor Name"->{
+        "investorName"->{
             for(i in allProducts) {
                 listOfValues.add(i.investorName)
             }
         }
-        "Investment Amount"->{
+        "investmentAmount"->{
             for(i in allProducts) {
                 listOfValues.add(i.investmentAmount.toString())
             }
         }
-        "Investment Date"->{
+        "investmentDate"->{
             for(i in allProducts) {
                 listOfValues.add(DateUtility.getPickedDateAsString(
                     i.investmentDate.get(Calendar.YEAR),
@@ -301,7 +301,7 @@ fun getValuesList(fieldName:String,allProducts: List<Product>,):List<String> {
                     i.investmentDate.get(Calendar.DAY_OF_MONTH), dateFormat))
             }
         }
-        "Maturity Date"->{
+        "maturityDate"->{
             for(i in allProducts) {
                 listOfValues.add(DateUtility.getPickedDateAsString(
                     i.maturityDate.get(Calendar.YEAR),
@@ -309,22 +309,22 @@ fun getValuesList(fieldName:String,allProducts: List<Product>,):List<String> {
                     i.maturityDate.get(Calendar.DAY_OF_MONTH), dateFormat))
             }
         }
-        "Maturity Amount"->{
+        "maturityAmount"->{
             for(i in allProducts) {
                 listOfValues.add(NumberFormat.getInstance().format(i.maturityAmount))
             }
         }
-        "Interest Rate"->{
+        "interestRate"->{
             for(i in allProducts) {
                 listOfValues.add(i.interestRate.toString())
             }
         }
-        "Nominee Name"->{
+        "nomineeName"->{
             for(i in allProducts) {
                 listOfValues.add(i.nomineeName)
             }
         }
-        "Deposit Period"->{
+        "depositPeriod"->{
             for(i in allProducts) {
                 listOfValues.add(i.depositPeriod.toString() +" Days")
                 Log.e("depositPeriod", i.depositPeriod.toString() +" Days")
@@ -341,11 +341,11 @@ fun getOperationList(searchFieldList:String):List<String> {
         "<="
     )
     when(searchFieldList) {
-        "Account Number",
-        "financial Institution Name",
-        "Product Type",
-        "Investor Name",
-        "Nominee Name" -> return listOf("=","!=")
+        "accountNumber",
+        "financialInstitutionName",
+        "productType",
+        "investorName",
+        "nomineeName" -> return listOf("=","!=")
     }
     return operationFieldList
 }
@@ -358,7 +358,7 @@ fun getScreenConfig4SearchScreen():ScreenConfig {
         screenOnBackPress = NavRoutes.Home.route,
         enableFab = true,
         enableAction = false,
-        topAppBarTitle = "Search Investment", bottomAppBarTitle = "",
+        topAppBarTitle = "SearchInvestment", bottomAppBarTitle = "",
         fabString = "search",
     )
 }

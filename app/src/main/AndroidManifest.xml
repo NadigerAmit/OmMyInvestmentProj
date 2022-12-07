@@ -4,18 +4,15 @@
     package="com.nadigerventures.pfa">
 
     <application
-        android:name=".BaseApplication"
         android:allowBackup="true"
-        android:hardwareAccelerated="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:largeHeap="true"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/Theme.MyInvestment"
-        android:screenOrientation="sensorPortrait"
         tools:targetApi="31">
         <!--
         <activity
@@ -34,19 +31,15 @@
         <activity
             android:name="com.nadigerventures.pfa.ui.presentation.splash.StartActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.nadigerventures.pfa.MainActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name="com.nadigerventures.pfa.ui.presentation.welcome.WelcomeActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity android:name="com.nadigerventures.pfa.MainActivity" />
+        <activity android:name="com.nadigerventures.pfa.ui.presentation.welcome.WelcomeActivity" />
         <activity android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/Theme.AppCompat.Light"/>
 

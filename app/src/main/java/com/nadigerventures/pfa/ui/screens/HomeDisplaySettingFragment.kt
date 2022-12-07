@@ -33,27 +33,27 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                 "statementTextForHome" -> {
                     Text(
                         text = "\nInvestments are displayed Here.",
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Medium
-                        //color = Color.Black
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Light,
+                        color = Color.Gray
                     )
                 }
                 "statementTextForHistory" -> {
                     Text(
                         text = "\nDeletedRecords are displayed Here ." +
                                 "\n\nWhen records are deleted from home screen , they will appear in this screen ",
-                        fontSize = 21.sp,
-                        fontWeight = FontWeight.Medium
-                        //color = Color.Black
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Light,
+                                color = Color.Gray
                     )
                 }
                 "statementText1"->{
                     Text(
                         text = "\nInvestmentsRecords displayed" +
                                 " in 3 colours",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Light
-                        //color = Color.Black
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Light,
+                                color = Color.Gray
                     )
                 }
                 "maturedItemsText" ->{
@@ -61,7 +61,7 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                     Text(
                         text = "\nRed => Already matured Records ",
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Light,
+                        fontWeight = FontWeight.ExtraLight,
                         color = Color.Red)
                 }
 
@@ -69,7 +69,7 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                     Text(
                         text = "\nMagenta => Records with maturityDate <= ${nod.value} days",
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Light,
+                        fontWeight = FontWeight.ExtraLight,
                         color = Color.Magenta,)
                     Spacer(modifier = Modifier.width(40.dp))
                 }
@@ -78,7 +78,7 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                     Spacer(modifier = Modifier.width(40.dp))
                     Text(
                         text = "\nBlack/White => Records with maturityDate > ${nod.value} days",
-                        fontWeight = FontWeight.Light,
+                        fontWeight = FontWeight.ExtraLight,
                         fontSize = 16.sp,
 
                         //color = Color.Black
@@ -199,9 +199,10 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                 }
                 "GuideToAddItems" -> {
                     Text(
-                        text = "\nAdd new records by pressing below Red + button  ",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium
+                        text = "\n\nAdd new records by pressing below Red + button  ",
+                        fontSize = 19.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Gray
                     )
                 }
                 "ImageToAddItems" -> {
@@ -226,8 +227,9 @@ fun HomeDisplaySettingFragment(displayItemList:List<String>) {
                 "GuideToDeleteAllItemsFromHistory" -> {
                     Text(
                         text = "\nYou can clear all items from history pressing below Red button  ",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium
+                        fontSize = 19.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Gray
                     )
                 }
                 "ImageToDeleteAllItemsFromHistory" -> {

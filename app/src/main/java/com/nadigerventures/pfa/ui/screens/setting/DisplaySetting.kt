@@ -87,7 +87,7 @@ fun getScreenConfig4DisplaySetting(): ScreenConfig {
         enableDrawer = true,
         enableFab = false,
         screenOnBackPress = NavRoutes.Setting.route,
-        topAppBarTitle = "Display Settings", bottomAppBarTitle = "",
+        topAppBarTitle = "DisplaySettings", bottomAppBarTitle = "",
         fabString = "add",
         fabColor = Color.Red
     )
