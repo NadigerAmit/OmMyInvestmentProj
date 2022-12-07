@@ -42,19 +42,19 @@ sealed class SettingItem(var route: String , var icon: Int, var title: String
     ,var desc:String) {
     object UserProfileSetting : SettingItem("userSetting",
         com.nadigerventures.pfa.R.drawable.ic_profile,
-        "User Settings","Setting such as :\n " +
+        "UserProfileSettings","Setting such as :\n " +
                 "UserName , DOB, Password & PasswdHint")
 
     object DisplaySettings : SettingItem("displaySetting",
-        com.nadigerventures.pfa.R.drawable.ic_displaysetting,"Display Settings",
+        com.nadigerventures.pfa.R.drawable.ic_displaysetting,"DisplaySettings",
         "Description about :\n " +
                 "InvestmentRecords Fields,colorCode ,etc")
     object Notification : SettingItem("notificationSetting",
-        com.nadigerventures.pfa.R.drawable.ic_notification,"Notification Setting",
+        com.nadigerventures.pfa.R.drawable.ic_notification,"NotificationSetting",
         "Setting such as :\n " +
                 "Notification ,AdvanceNotificationDays,etc")
     object Introduction : SettingItem("introduction",
-        com.nadigerventures.pfa.R.drawable.ic_introduction,"On-Boarding\n",
+        com.nadigerventures.pfa.R.drawable.ic_introduction,"OnBoarding\n",
         "Brief description about :\n " +
                 "AppUsage/On-boarding description screens")
     /*

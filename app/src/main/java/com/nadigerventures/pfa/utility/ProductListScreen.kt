@@ -35,10 +35,19 @@ fun ProductListScreen(
     allProducts: List<Product>,
     padding: PaddingValues,
     parentScreen:String,
-    displayItemList:List<String>,
-    advanceNotifyDays:Int
+    displayItemList:List<String>
 ) {
+    //
+    val context = LocalContext.current
+    val dataStoreProvider = DataStoreHolder.getDataStoreProvider(
+        context,
+        DataStoreConst.SECURE_DATASTORE, true
+    )
 
+    runBlocking {
+        nod.value = dataStoreProvider.getString(DataStoreConst.NOTIFICATION_DAYS).first() ?: "30"
+    }
+    var advanceNotifyDays by remember { mutableStateOf(nod.value.toInt()) }
     Log.e(TAG, "advanceNotifyDays  $advanceNotifyDays and nod = ${nod.value}")
     if (allProducts.isNotEmpty()) {
         Column(
@@ -60,6 +69,20 @@ fun ProductListScreen(
             ) {
 
                 items(allProducts) { product ->
+
+                    /*
+                    Log.e(TAG,"Product is retived in $parentScreen \n accountNumber = ${product.accountNumber}" +
+                            // " \n financialInstitutionName +  ${product.financialInstitutionName}" +
+                            //  " \n investorName = ${product.investorName} " +
+                            //  " \ninvestmentAmount = ${product.investmentAmount}" +
+                            //   " \ninvestmentDate in long = ${product.investmentDate.time.time}  " +
+                            " \n maturityDate in Long = ${product.maturityDate}  "
+                        //    + " \n interestRate = ${product.interestRate}  " +
+                        //       " \n depositPeriod = ${product.depositPeriod} " +
+                        //       " \n nomineeName = ${product.nomineeName} "
+                    )
+                     */
+
                     var color: Color = getProductColor(product, advanceNotifyDays)
 
                     ProductRow(

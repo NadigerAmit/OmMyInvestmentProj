@@ -20,18 +20,17 @@ import com.nadigerventures.pfa.componentFactory.ComponentInitializer
 import com.nadigerventures.pfa.ui.theme.MyInvestmentTheme
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 private val TAG = "WelcomeActivity"
 //@AndroidEntryPoint
 class WelcomeActivity : FragmentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.e(TAG,"onCreate() ")
         setContent {
             WelcomeRoot(this)
+            //finish()
         }
     }
 }

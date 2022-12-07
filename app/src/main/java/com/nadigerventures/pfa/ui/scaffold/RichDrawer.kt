@@ -59,6 +59,8 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
         NavDrawerItem.Home,
         NavDrawerItem.History,
         NavDrawerItem.Settings,
+        //NavDrawerItem.News,
+        //NavDrawerItem.Tutorial,
         NavDrawerItem.License,
         NavDrawerItem.Privacy,
         NavDrawerItem.Faq,
@@ -109,6 +111,21 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
                         .padding(5.dp)
                 )
             }
+            /*
+            Spacer(Modifier.weight(1f,true))
+                    //.height(15.dp)
+            Image(
+                painter = painterResource(id = R.drawab le.ic_app_logo),
+                contentDescription = R.drawable.logo.toString(),
+                modifier = Modifier
+                    .height(70.dp)
+                    .fillMaxWidth()
+                    .padding(top = 10.dp)
+            )
+
+
+             */
+
         }
 
         // Space between
@@ -131,6 +148,10 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
                 DrawerItem(item = items, selected = currentRoute == items.route, onItemClick = {
                     when(items.route) {
                         "license" -> {
+                            Log.e(TAG, "license is triggerred ")
+
+                            // val intent = Intent(context, OssLicensesMenuActivity::class.java)
+                            // context.startActivity(intent)
                             context.launchActivity<OssLicensesMenuActivity> { }
                         }
                         else -> {

@@ -29,7 +29,7 @@ context instance together with some properties and an initializer block as outli
   In this case, the application context is required when creating a database and will be passed
   into the view model from within the activity later in the chapter:
 * */
-class FinProductViewModel(application: Application): MvvmViewModel() {
+class FinProductViewModel(application: Application): ViewModel() {
 
    // val allAccounts:kotlinx.coroutines.flow.Flow<List<Product>>
    private val TAG = "FinProductViewModel"

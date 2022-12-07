@@ -1,17 +1,10 @@
 package com.nadigerventures.pfa.utility
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.ui.graphics.Color
-import androidx.core.app.NotificationCompat
 import androidx.navigation.NavHostController
-import com.nadigerventures.pfa.MainActivity
 import com.nadigerventures.pfa.room.Product
 import com.nadigerventures.pfa.securityProvider.DataStoreHolder
 import com.nadigerventures.pfa.ui.NavRoutes
@@ -35,23 +28,6 @@ fun getProductColor(product:Product,advanceNotifyDays:Int): Color {
 }
 
 
-enum class MaturedItems{
-    ALREADY_MATURED,
-    TO_BE_MATURED_WITHIN_ADVANCED_SETTING,
-    TO_BE_MATURED_AFTER_ADVANCED_SETTING,
-}
-
-fun getProductMaturityStatus(product:Product,advanceNotifyDays:Int): MaturedItems {
-    var maturityStatus: MaturedItems = MaturedItems.TO_BE_MATURED_AFTER_ADVANCED_SETTING
-    val numberOfDays =
-        DateUtility.getNumberOfDaysBetweenTwoDays(product.maturityDate, Calendar.getInstance())
-    if (numberOfDays <= 0) {
-        maturityStatus = MaturedItems.ALREADY_MATURED
-    } else if (numberOfDays <= advanceNotifyDays) {
-        maturityStatus = MaturedItems.TO_BE_MATURED_WITHIN_ADVANCED_SETTING
-    }
-    return maturityStatus
-}
 
 fun handleSavingUserProfileSettingData(isPasswordProtectRequired:Boolean,
                                        fullName:String,
