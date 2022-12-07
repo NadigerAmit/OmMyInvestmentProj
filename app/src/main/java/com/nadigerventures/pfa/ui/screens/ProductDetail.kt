@@ -96,7 +96,7 @@ private fun getListOPropertiesOfProduct(productDetail: Product): List<Pair<Strin
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
     {
    //     /*
-        mutableList.add(9,Pair("Investment Duration", getPeriodBetween2Dates(productDetail.investmentDate,productDetail.maturityDate)))
+        mutableList.add(9,Pair("Investment duration", getPeriodBetween2Dates(productDetail.investmentDate,productDetail.maturityDate)))
         mutableList.add(10,Pair("Remaining duration",getPeriodBetween2Dates(localDateToCalendar(LocalDateTime.now()),productDetail.maturityDate)))
 
  //        */
@@ -135,20 +135,7 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
         Log.e("ProductDetail.Kt","Got it from Database ")
         productDetail = viewModel.searchResults.value?.get(0)
     }
-
-// Log.e("ProductDetail.Kt","Product is retived and list size = ${viewModel.searchResults.value!!.size}")
-
-/*
-Log.e("ProductDetail.Kt","Product is retived in Home \n accountNumber = ${productDetail?.accountNumber}" +
-    " \n financialInstitutionName +  ${productDetail?.financialInstitutionName}" +
-    " \n investorName = ${productDetail?.investorName} " +
-    " \ninvestmentAmount = ${productDetail?.investmentAmount}" +
-    " \ninvestmentDate = ${productDetail?.investmentDate}  " +
-    " \n maturityDate = ${productDetail?.maturityDate}  " +
-    " \n interestRate = $ {productDetail?.interestRate}  " +
-    " \n depositPeriod = ${productDetail?.depositPeriod} " +
-    " \n nomineeName = ${productDetail?.nomineeName} ")
-*/
+    
     if(productDetail == null) return
     val productFieldList = getListOPropertiesOfProduct(productDetail)
 
