@@ -12,6 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:largeHeap="true"
+        android:hardwareAccelerated="false"
+        android:screenOrientation="sensorPortrait"
         android:theme="@style/Theme.MyInvestment"
         tools:targetApi="31">
         <!--

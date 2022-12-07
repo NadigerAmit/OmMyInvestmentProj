@@ -141,24 +141,24 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
     }
 
     val productDetailItemList = listOf(
-        Pair("AccNum",Pair(accountNumber,onAccountNumTextChange)),
-        Pair("InvestmentAmount",Pair(investmentAmount,onInvestmentAmountTextChange)),
-        Pair("InvestorName",Pair(investorName,onInvestorNameTextChange)),
-        Pair("FinInstitutionName",Pair(finInstitutionName,onFinInstitutionNameTextChange)),
-        Pair("ProductType",Pair(productType,onProductTypeTextChange)),
-        Pair("InvestmentDate",Pair(DateUtility.getPickedDateAsString(
+        Pair("Account Number",Pair(accountNumber,onAccountNumTextChange)),
+        Pair("Investment Amount",Pair(investmentAmount,onInvestmentAmountTextChange)),
+        Pair("Investor Name",Pair(investorName,onInvestorNameTextChange)),
+        Pair("FinInstitution Name",Pair(finInstitutionName,onFinInstitutionNameTextChange)),
+        Pair("Product Type",Pair(productType,onProductTypeTextChange)),
+        Pair("Investment Date",Pair(DateUtility.getPickedDateAsString(
             investmentDate.get(Calendar.YEAR),
             investmentDate.get(Calendar.MONTH),
             investmentDate.get(Calendar.DAY_OF_MONTH)
             ,dateFormat),onInvestmentDateTextChange)),
-        Pair("MaturityDate",Pair(DateUtility.getPickedDateAsString(
+        Pair("Maturity Date",Pair(DateUtility.getPickedDateAsString(
             maturityDate.get(Calendar.YEAR),
             maturityDate.get(Calendar.MONTH),
             maturityDate.get(Calendar.DAY_OF_MONTH)
             ,dateFormat),onMaturityDateTextChange)),
-        Pair("MaturityAmount",Pair(maturityAmount,onMaturityAmountTextChange)),
-        Pair("InterestRate",Pair(interestRate,onInterestRateTextChange)),
-        Pair("NomineeName",Pair(nomineeName,onNomineeNameTextChange)),
+        Pair("Maturity Amount",Pair(maturityAmount,onMaturityAmountTextChange)),
+        Pair("Interest Rate",Pair(interestRate,onInterestRateTextChange)),
+        Pair("Nominee Name",Pair(nomineeName,onNomineeNameTextChange)),
         Pair("Save",Pair("") { _: String -> })
     )
 
@@ -248,8 +248,8 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                     }
                     Spacer(modifier = Modifier.width(40.dp).height(90.dp))
                 }
-                "InvestmentDate",
-                "MaturityDate"->
+                "Investment Date",
+                "Maturity Date"->
                 CustomTextField(
                     modifier = Modifier.clickable {
                         DateUtility.showDatePickerDialog(context,items.second.first,dateFormat,items.second.second)
@@ -260,9 +260,9 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                     isEnabled = false,
                     imeAction = ImeAction.Next
                 )
-                "InvestmentAmount",
-                "MaturityAmount",
-                "InterestRate" -> {
+                "Investment Amount",
+                "Maturity Amount",
+                "Interest Rate" -> {
                     CustomTextField(
                         modifier = Modifier.clickable {
 
