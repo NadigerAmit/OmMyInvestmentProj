@@ -35,9 +35,10 @@ fun ProductListScreen(
     allProducts: List<Product>,
     padding: PaddingValues,
     parentScreen:String,
-    displayItemList:List<String>
+    displayItemList:List<String>,
+    advanceNotifyDays:Int
 ) {
-    //
+/*
     val context = LocalContext.current
     val dataStoreProvider = DataStoreHolder.getDataStoreProvider(
         context,
@@ -48,6 +49,8 @@ fun ProductListScreen(
         nod.value = dataStoreProvider.getString(DataStoreConst.NOTIFICATION_DAYS).first() ?: "30"
     }
     var advanceNotifyDays by remember { mutableStateOf(nod.value.toInt()) }
+
+ */
     Log.e(TAG, "advanceNotifyDays  $advanceNotifyDays and nod = ${nod.value}")
     if (allProducts.isNotEmpty()) {
         Column(

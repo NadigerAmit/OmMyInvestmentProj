@@ -40,10 +40,14 @@ import com.nadigerventures.pfa.viewModel.FinHistoryViewModel
 import com.nadigerventures.pfa.viewModel.FinHistoryViewModelFactory
 import com.nadigerventures.pfa.viewModel.FinProductViewModel
 import com.nadigerventures.pfa.viewModel.FinProductViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 @SuppressLint("StaticFieldLeak")
 
+private val coroutineScope = CoroutineScope(Dispatchers.Main)
 private val TAG = "MainActivity"
 class MainActivity : ComponentActivity() {
     val TAG = "MainActivity"
@@ -63,22 +67,25 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val context = this
         //DataStoreHolder.initializeDataStoreManager(this@MainActivity)
-        setContent {
+        //coroutineScope.launch(Dispatchers.Main) {
+            setContent {
 
-            val resourceProvider = ComponentInitializer(this)
-            val themeViewModel = resourceProvider.geThemeViewModel()
-            MyInvestmentTheme(darkTheme = themeViewModel.isDarkMode.value) {
+                val resourceProvider = ComponentInitializer(context)
+                val themeViewModel = resourceProvider.geThemeViewModel()
+                MyInvestmentTheme(darkTheme = themeViewModel.isDarkMode.value) {
 
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    setupMainScreen(finish = finish)
+                    // A surface container using the 'background' color from the theme
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colors.background
+                    ) {
+                        setupMainScreen(finish = finish)
+                    }
                 }
             }
-        }
+        //}
     }
 }
 
@@ -103,7 +110,6 @@ fun setupMainScreen(finish: () -> Unit) {
                         as Application
             )
         )
-
 
         val navController = rememberNavController()
         //ScreenNavigation(navController,viewModel,padding)

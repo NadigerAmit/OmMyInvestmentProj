@@ -22,7 +22,6 @@ class BaseApplication() : Application(){
         Log.e(TAG,"Current thread: ${Thread.currentThread()}")
         Log.e(TAG,"onCreate- Creating work request")
 
-
         coroutineScope.launch(Dispatchers.Default) {
             Log.e(TAG,"Current coroutine: $CoroutineName")
             Log.e(TAG,"Current thread: ${Thread.currentThread()}")

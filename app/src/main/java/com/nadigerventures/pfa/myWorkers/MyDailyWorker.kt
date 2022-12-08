@@ -1,36 +1,42 @@
 package com.nadigerventures.pfa.myWorkers
 
 import android.content.Context
+
 import android.util.Log
+
 import androidx.work.*
 import com.google.common.util.concurrent.ListenableFuture
+
+import com.nadigerventures.pfa.ui.screens.triggerNotification
+
 import kotlinx.coroutines.Dispatchers
 
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+
 import java.util.*
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.*
 
 
-private val TAG = "DailyWorker"
 
-val TAG_NOTIFY_WORK = "PFA_NOTIFICATION4"
+private val TAG = "MyDailyWorker"
+
+val TAG_NOTIFY_WORK = "PFA_MATURITY_NOTIFICATION"
 val constraints = Constraints.Builder()
     .setRequiresBatteryNotLow(true)
     .build()
 
-val TEST_STARTVAL_HR = 13
-val TEST_STARTVAL_MIN = 30
+val START_NOTTI_VAL_HR = 0
+val START_NOTTI_VAL_MIN = 5
+val START_NOTTI_VAL_SEC = 0
 
-val TEST_REG_HR = TEST_STARTVAL_HR
-val TEST_REGL_MIN = TEST_STARTVAL_MIN+1
+
 
 class MyDailyWorker (val ctx: Context,
                      params: WorkerParameters
 ) : Worker(ctx, params) {
-    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     companion object {
         fun  createWorkRequest(context: Context) {
@@ -40,15 +46,11 @@ class MyDailyWorker (val ctx: Context,
                 )) { // check if your work is not already scheduled
                 val currentDate = Calendar.getInstance()
                 val dueDate = Calendar.getInstance()
-// Set Execution around 05:00:00 AM
-                //    dueDate.set(Calendar.HOUR_OF_DAY, 0)
-                //    dueDate.set(Calendar.MINUTE, 5)
-                //    dueDate.set(Calendar.SECOND, 0)
+                // Set Execution around 0:05:00 AM
 
-                dueDate.set(Calendar.HOUR_OF_DAY,  TEST_STARTVAL_HR)
-                dueDate.set(Calendar.MINUTE, TEST_STARTVAL_MIN)
-                dueDate.set(Calendar.SECOND, 0)
-                TEST_STARTVAL_HR
+                dueDate.set(Calendar.HOUR_OF_DAY,  START_NOTTI_VAL_HR)
+                dueDate.set(Calendar.MINUTE, START_NOTTI_VAL_MIN)
+                dueDate.set(Calendar.SECOND, START_NOTTI_VAL_SEC)
                 if (dueDate.before(currentDate)) {
                     dueDate.add(Calendar.HOUR_OF_DAY, 24)
                 }
@@ -106,43 +108,35 @@ class MyDailyWorker (val ctx: Context,
 
     }
     override fun doWork(): Result {
-        var result = Result.success()
-        Log.e(TAG,"Current thread outside : ${Thread.currentThread()}")
-        coroutineScope.launch {
-            Log.e(TAG,"Current thread inside withContext : ${Thread.currentThread()}")
-            Log.e(TAG,"Current coroutine: $CoroutineName")
-            printTasks(TAG_NOTIFY_WORK, context = ctx)
-            Log.e(TAG, "create new Work Request in doWork !!")
-            val currentDate = Calendar.getInstance()
-            val dueDate = Calendar.getInstance()
-            // Set Execution around 05:00:00 AM
-            dueDate.set(Calendar.HOUR_OF_DAY, TEST_REG_HR)
-            dueDate.set(Calendar.MINUTE, TEST_REGL_MIN)
-            dueDate.set(Calendar.SECOND, 0)
 
-            //    dueDate.set(Calendar.HOUR_OF_DAY, 0)
-            //    dueDate.set(Calendar.MINUTE, 5)
-            //    dueDate.set(Calendar.SECOND, 0)
+        Log.e(TAG,"Current thread : ${Thread.currentThread()}")
+        printTasks(TAG_NOTIFY_WORK, context = ctx)
+        Log.e(TAG, "create new Work Request in doWork !!")
+        val currentDate = Calendar.getInstance()
+        val dueDate = Calendar.getInstance()
+        // Set Execution around 0:05:00 AM
+        dueDate.set(Calendar.HOUR_OF_DAY,  START_NOTTI_VAL_HR)
+        dueDate.set(Calendar.MINUTE, START_NOTTI_VAL_MIN)
+        dueDate.set(Calendar.SECOND, START_NOTTI_VAL_SEC)
 
-            if (dueDate.before(currentDate) ||
-                dueDate.equals(currentDate)) {
-                Log.e(TAG,"Due date is before or equal to current date")
-                dueDate.add(Calendar.HOUR_OF_DAY, 24)
-            }
-            val timeDiff = dueDate.timeInMillis - currentDate.timeInMillis
-            val dailyWorkRequest = OneTimeWorkRequestBuilder<MyDailyWorker>()
-                .setConstraints(constraints)
-                .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
-                .addTag(TAG_NOTIFY_WORK)
-                .build()
-            WorkManager.getInstance(applicationContext)
-                .enqueue(dailyWorkRequest)
-            pruneTask(context = ctx)
-            Log.e(TAG,"Finished doing work" )
-            Result.success()
+        if (dueDate.before(currentDate) ||
+            dueDate.equals(currentDate)) {
+            Log.e(TAG,"Due date is before or equal to current date")
+            dueDate.add(Calendar.HOUR_OF_DAY, 24)
         }
-        Log.e(TAG,"Returning the result" )
-        return result
+        val timeDiff = dueDate.timeInMillis - currentDate.timeInMillis
+        val dailyWorkRequest = OneTimeWorkRequestBuilder<MyDailyWorker>()
+            .setConstraints(constraints)
+            .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
+            .addTag(TAG_NOTIFY_WORK)
+            .build()
+        WorkManager.getInstance(applicationContext)
+            .enqueue(dailyWorkRequest)
+        pruneTask(context = ctx)
+        Log.e(TAG,"Finished doing work" )
+        triggerNotification()
+
+        return Result.success()
     }
 }
 

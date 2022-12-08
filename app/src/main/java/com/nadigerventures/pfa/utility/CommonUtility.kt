@@ -27,7 +27,23 @@ fun getProductColor(product:Product,advanceNotifyDays:Int): Color {
     return color
 }
 
+enum class MaturedItems{
+    ALREADY_MATURED,
+    TO_BE_MATURED_WITHIN_ADVANCED_SETTING,
+    TO_BE_MATURED_AFTER_ADVANCED_SETTING,
+}
 
+fun getProductMaturityStatus(product:Product,advanceNotifyDays:Int): MaturedItems {
+    var maturityStatus: MaturedItems = MaturedItems.TO_BE_MATURED_AFTER_ADVANCED_SETTING
+    val numberOfDays =
+        DateUtility.getNumberOfDaysBetweenTwoDays(product.maturityDate, Calendar.getInstance())
+    if (numberOfDays <= 0) {
+        maturityStatus = MaturedItems.ALREADY_MATURED
+    } else if (numberOfDays <= advanceNotifyDays) {
+        maturityStatus = MaturedItems.TO_BE_MATURED_WITHIN_ADVANCED_SETTING
+    }
+    return maturityStatus
+}
 
 fun handleSavingUserProfileSettingData(isPasswordProtectRequired:Boolean,
                                        fullName:String,
