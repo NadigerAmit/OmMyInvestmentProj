@@ -85,8 +85,6 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
 
     val allProducts by viewModel.allAccounts.observeAsState(listOf())
     val searchResults by viewModel.searchResults.observeAsState(listOf())
-    var searching by rememberSaveable { mutableStateOf(false) }
-
     var searchByField by rememberSaveable { mutableStateOf("") }
     var operationField by rememberSaveable { mutableStateOf("") }
     var valueField by rememberSaveable { mutableStateOf("") }
@@ -116,7 +114,6 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
             0.0f,0)
     )
 
-    // Create a list of cities
     val searchFieldList = listOf("Account Number",
         "Financial Institution Name",
         "Product Type", "Investor Name",
@@ -146,14 +143,6 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
             searchByFieldValue.value = searchByField
             operationFieldValue.value = operationField
             valueFieldValue.value = valueField
-            /*
-            saveToDataStore(SearchQuery(searchByField,
-                    operationField,
-                    valueField),
-                dataStorageManager)
-
-             */
-
 
             if(finalList.size>1) {
                 TitleRow(head1 = " Fin Ins\n\n AccNum\n\n Product ",

@@ -108,7 +108,7 @@ mutableList.add(10,Pair("Remaining duration",
 
  */
 } else {
-mutableList.add(9,Pair("Investment Duration",
+mutableList.add(9,Pair("Investment duration",
     DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,productDetail.investmentDate).toString()+" Days"))
 mutableList.add(10,Pair("Remaining duration",
     DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,Calendar.getInstance()).toString()+" Days"))
@@ -123,11 +123,17 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
                        accountNumber:String,
                        navController: NavHostController,
                        padding: PaddingValues)  {
+    /*
     GlobalScope.launch {
         viewModel.findProductsBasedOnAccountNumber(accountNumber)
     }
 
+     */
+
+
     var productDetail:Product? = null
+    productDetail =viewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
+    /*
     if(viewModel.searchResults.value == null || viewModel.searchResults.value!!.isEmpty()) {
         Log.e("ProductDetail.Kt","Product List is empty returning from screenSetUpInProductDetail !!")
         productDetail =viewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
@@ -135,7 +141,9 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
         Log.e("ProductDetail.Kt","Got it from Database ")
         productDetail = viewModel.searchResults.value?.get(0)
     }
-    
+
+     */
+
     if(productDetail == null) return
     val productFieldList = getListOPropertiesOfProduct(productDetail)
 
