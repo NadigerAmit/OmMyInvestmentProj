@@ -7,6 +7,7 @@ import com.nadigerventures.pfa.ui.presentation.theme.ReadTheme
 import com.nadigerventures.pfa.ui.presentation.theme.SaveTheme
 import com.nadigerventures.pfa.ui.presentation.welcome.onBoarding.ReadOnBoarding
 import com.nadigerventures.pfa.ui.presentation.welcome.onBoarding.SaveOnBoarding
+import com.nadigerventures.pfa.viewModel.FinProductViewModel
 import com.nadigerventures.pfa.viewModel.OnBoardingViewModel
 
 import com.nadigerventures.pfa.viewModel.StartViewModel
@@ -29,6 +30,7 @@ class ComponentInitializer private constructor(private val context: Context)
     private val saveOnBoarding = SaveOnBoarding(welcomeRepository)
     private val startViewModel = StartViewModel(readOnBoarding)
     private val onBoardingViewModel = OnBoardingViewModel(saveOnBoarding)
+    //var finProductViewModel: FinProductViewModel?= null
 
     override fun getStartViewModel(): StartViewModel {
         return startViewModel
