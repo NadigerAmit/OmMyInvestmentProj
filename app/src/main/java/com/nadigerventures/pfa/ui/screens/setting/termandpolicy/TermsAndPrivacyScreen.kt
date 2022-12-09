@@ -41,18 +41,19 @@ val privacyPolicy = "\nAbout personal data:\n" +
         "3. Password -> Used to login in PFA app if user wants to protect his data with password to access the app\n\n" +
         "4. Password Hint1/2 - To help user if he forgets the password in login page when user clicks forgot passwd.\n\n" +
         "   the hint will be shown after user provide the correct date of birth registered during signup.\n\n" +
-        "All the below Personal Investment data will be stored within the encrypted local database.\n" +
+        "All the below is the list of personal investment data will be stored in the encrypted local database within the device.\n" +
         " None of the data is sent outside the device by any means.\n" +
         "\n" +
-        "1. AccountNumber - used as Unique ID for any investment , usually provided by banks in India \n" +
-        "2. Investor name - \n" +
-        "3. Investment amount - \n" +
+        "1. Account Number - used as Unique ID for any investment, usually provided by banks in India. \n" +
+        "2. Investor name \n" +
+        "3. Investment amount\n" +
         "4. Bank name - Financial institution name such as SBI , IDBI,LIC,etc\n" +
-        "5. Product type - InvestmentType such as FD,NSC,Insurance.\n" +
-        "6. Investment date - \n" +
-        "7. Maturity date - \n" +
+        "5. Product type - Investment Type such as FD ,NSC , Insurance,Mutual funds ,etc\n" +
+        "6. Investment date \n" +
+        "7. Maturity date \n" +
         "8. Nominee name \n" +
         "\n" +
+        "None of the above data is sent outside of the device.\n"+
         "\n" +
         "It’s user/your responsibility to keep mobile phone access to keep the app secure. \n" +
         "We therefore recommend that you do not jailbreak or root your phone, " +
@@ -61,9 +62,19 @@ val privacyPolicy = "\nAbout personal data:\n" +
         "Even though the data in the device is encrypted  remember that no method" +
         "  of electronic storage is 100% secure and reliable, and I cannot" +
         " guarantee its absolute security. " +
-        "\n\nGoogle Policy & Terms\n" +
+        "\n\n How to delete the data within the device:\n"+
+        "Settings ->Apps -> PFA -> Storage ->  Clear storage . " +
+        "Then all your date will be wiped out from your device. " +
+        "\n Caution: All data stored in the app will be cleared, App will be same as initial state." +
+        " \n\n" +
+        " Contact us:"+
+        "\n If you have any questions or suggestions about my Privacy Policy, " +
+        "do not hesitate to contact me at nadigerventures@gmail.com."+
+        "\n\nLink to this Privacy policy:" +
+        "\n https://pages.flycricket.io/personal-financial-a/privacy.html"+
+        "\n\nLink to Google Policy & Terms:\n" +
         "" +
-        "\nhttps://policies.google.com/terms\n\n"
+        "https://policies.google.com/terms\n\n"
 
 @Composable
 private fun linkTextColor() = Color(
