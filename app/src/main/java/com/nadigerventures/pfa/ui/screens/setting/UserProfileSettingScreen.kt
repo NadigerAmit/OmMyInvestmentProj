@@ -1,6 +1,8 @@
 package com.nadigerventures.pfa.ui.screens.setting
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,8 +10,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,24 +28,29 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
+import com.nadigerventures.pfa.room.Product
 import com.nadigerventures.pfa.securityProvider.DataStoreHolder
 import com.nadigerventures.pfa.ui.NavRoutes
-import com.nadigerventures.pfa.ui.screens.LabelledCheckbox
-import com.nadigerventures.pfa.ui.screens.ScreenConfig
+import com.nadigerventures.pfa.ui.screens.*
 import com.nadigerventures.pfa.utility.*
 import com.nadigerventures.pfa.utility.DateUtility.Companion.getCalendar
+import com.nadigerventures.pfa.viewModel.FinHistoryViewModel
+import com.nadigerventures.pfa.viewModel.FinProductViewModel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import java.util.*
 
 private val TAG = "UserProfileSetting"
+var showDeletePersonalDataAlertDialogGlobal =  mutableStateOf(false)
+
 @Composable
 fun UserProfileSetting(navController: NavHostController,
                        padding: PaddingValues) {
 
     val dateFormat = "yyyy-MM-dd"
-    Log.e(TAG,"SignUpScreen entered")
+    Log.e(TAG,"UserProfileSetting entered")
     val context = LocalContext.current
 
     val dataStorageManager = DataStoreHolder.getDataStoreProvider(context,
@@ -69,7 +77,11 @@ fun UserProfileSetting(navController: NavHostController,
     }
 
     var fullName by remember { mutableStateOf(fname?:"") }
-    var birthDate by remember { mutableStateOf( getCalendar(dob!!,dateFormat)?:Calendar.getInstance()) }
+    var dobTemp:String = ""
+    if(dob != null) {
+        dobTemp = dob!!
+    }
+    var birthDate by remember { mutableStateOf( getCalendar(dobTemp,dateFormat)?:Calendar.getInstance()) }
     var isPasswordProtectRequired by remember { mutableStateOf(isPasswdReq?:false) }
     var password by remember { mutableStateOf(passwd?:"") }
     var confirmPassword by remember { mutableStateOf(passwd?:"") }
@@ -137,7 +149,16 @@ fun UserProfileSetting(navController: NavHostController,
 
     //userDetailUpdateFragment(navController,registerItemList,padding)
 
-
+    deletePersonalData(showDialog =showDeletePersonalDataAlertDialogGlobal.value,
+        onDismiss ={
+            fullName = ""
+            dobTemp = ""
+            isPasswordProtectRequired = false
+            password  = ""
+            passwordHint1 = ""
+            passwordHint2 = ""
+        },// {showDeleteAlertDialogGlobal.value = false },
+        navController)
 
     if(passwd != null
         && !isShowProfileUpdateScreenAllowed ) {
@@ -187,30 +208,45 @@ fun UserProfileSetting(navController: NavHostController,
                     .fillMaxWidth()
                     .padding(padding)
             ) {
-                val dataStorageManager = DataStoreHolder.getDataStoreProvider(context,
-                    DataStoreConst.SECURE_DATASTORE,true)
-
                 items(registerItemList) { items ->
                     when(items.first) {
                         "Heading" -> {
                             Text(text = "Register Details ", style = TextStyle(fontSize = 30.sp))
                         }
                         "Save" -> {
-                            Button(onClick = {
-                                handleSavingUserProfileSettingData(isPasswordProtectRequired,
-                                    fullName,
-                                    password,
-                                    confirmPassword,
-                                    context,
-                                    birthDate,
-                                    passwordHint1,
-                                    passwordHint2,
-                                    navController,
-                                    onExistingPasswordConfirm
-                                )
-                        }) {
-                                Text("Save")
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                // .padding(50.dp),
+                                horizontalArrangement = Arrangement.SpaceEvenly
+                            ) {
+                                Button(onClick = {
+                                    showDeletePersonalDataAlertDialogGlobal.value = true
+                                    Log.e("DeleteAlert","Button clicked showDeleteAlertDialog.value - " +
+                                            "${showDeletePersonalDataAlertDialogGlobal.value}")
+                                },modifier = Modifier) {
+                                    Icon(Icons.Filled.Delete, "Delete")
+                                    Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                                    Text("Delete")
+                                }
+                                Button(onClick = {
+                                    handleSavingUserProfileSettingData(isPasswordProtectRequired,
+                                        fullName,
+                                        password,
+                                        confirmPassword,
+                                        context,
+                                        birthDate,
+                                        passwordHint1,
+                                        passwordHint2,
+                                        navController,
+                                        onExistingPasswordConfirm
+                                    )
+                                }) {
+                                    Text("Save")
+                                }
+
                             }
+
                             Spacer(modifier = Modifier.width(40.dp).height(90.dp))
                         }
                         "BirthDate"-> {
@@ -281,6 +317,66 @@ fun UserProfileSetting(navController: NavHostController,
 
 }
 
+@Composable
+fun deletePersonalData(showDialog: Boolean,
+                 onDismiss: () -> Unit,
+                       navController: NavHostController
+                ) {
+    val context = LocalContext.current
+
+    Log.e(TAG,"Called ->showDialog = $showDialog")
+    if (showDialog) {
+
+        Log.e(TAG,"Showing the alert dialog  = $showDialog")
+        AlertDialog(
+            title = { Text(text = "Are you sure to delete user profile setting ?",color = Color.Red) },
+            text = { Text(text = "Deleted items such as full name , dob ,Password , " +
+                    "etc will be removed permanently and app can be accessed without password protection ")},
+            onDismissRequest = onDismiss,
+            confirmButton = {
+                TextButton(onClick = {
+                    deleteAllPersonalData(context)
+                    Toast.makeText(context, "Deleting the all profile data !" , Toast.LENGTH_LONG)
+                        .show()
+                    showDeletePersonalDataAlertDialogGlobal.value = false
+                    onDismiss()
+                    navController.navigate(NavRoutes.Setting.route )
+                })
+                { Text(text = "Continue delete",color = Color.Red) }
+            },
+            shape  = MaterialTheme.shapes.medium,
+            dismissButton = {
+                onDismiss()
+                TextButton(onClick = {
+                    showDeletePersonalDataAlertDialogGlobal.value = false
+                    navController.navigate(NavRoutes.Setting.route )
+                })
+                { Text(text = "Cancel delete",
+                    modifier = Modifier.padding(end = 20.dp)) }
+            },
+            properties= DialogProperties(dismissOnBackPress = true,
+                dismissOnClickOutside=true)
+        )
+    }
+}
+
+
+fun deleteAllPersonalData(context: Context) {
+     val coroutineScope = CoroutineScope(Dispatchers.IO)
+    coroutineScope.launch(Dispatchers.IO) {
+        runBlocking {
+            val dataStorageManager = DataStoreHolder.getDataStoreProvider(
+                context,
+                DataStoreConst.SECURE_DATASTORE,true)
+            dataStorageManager.removeKey(DataStoreConst.FULL_NAME,"String")
+            dataStorageManager.removeKey(DataStoreConst.DOB,"String")
+            dataStorageManager.removeKey(DataStoreConst.PASSWORD,"String")
+            dataStorageManager.removeKey(DataStoreConst.PASSWORD_HINT1,"String")
+            dataStorageManager.removeKey(DataStoreConst.PASSWORD_HINT2,"String")
+            dataStorageManager.removeKey(DataStoreConst.IS_PASS_PROTECTION_REQ,"Bool")
+        }
+    }
+}
 
 @Composable
 fun confirmPasswordScreen(fullName:String,existingPasswd:String,onPasswdConfirm: (Boolean) -> Unit = {}, ) {

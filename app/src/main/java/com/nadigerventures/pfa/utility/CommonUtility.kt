@@ -58,8 +58,9 @@ fun handleSavingUserProfileSettingData(isPasswordProtectRequired:Boolean,
    Log.e(TAG,"handleSavingUserProfileSettingData called")
     when {
         isPasswordProtectRequired -> {
-            if(!validateFullName(fullName,context)
-                || !validatePassword(password,confirmPassword,context)
+            if(/*!validateFullName(fullName,context)
+                || */
+                 !validatePassword(password,confirmPassword,context)
                 || !validateBirtDate(birthDate,
                     "BirthDate Cant be future or current date",context)
             ) {
@@ -88,8 +89,10 @@ fun handleSavingUserProfileSettingData(isPasswordProtectRequired:Boolean,
             }
         }
         else -> {
-            if(validateFullName(fullName,context)
-                && validateBirtDate(birthDate,
+            if(/*validateFullName(fullName,context)
+                &&
+                */
+                validateBirtDate(birthDate,
                     "BirthDate Cant be future or current date",context)) {
                 saveSingUpInfoInDataStore(context,fullName, DateUtility.getPickedDateAsString(
                     birthDate.get(Calendar.YEAR),
