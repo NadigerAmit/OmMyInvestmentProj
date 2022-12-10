@@ -11,8 +11,16 @@ fun gerFaqList(): List<Pair<String,String>> {
                 "KVP(Kisan vikas patra),etc  .\n"))
 
     faqList.add(Pair("${++questionNumber}. Why we need PFA app ?",
-        "Maturity dates of investments are such as FD, RD are difficult to track & take corrective" +
-                " actions such as re-investments . This app helps in effective management of the investments.\n"))
+        "Maturity dates of investments are such as FD, RD are difficult to track, " +
+                "so usually we forget the maturity dates & can't take corrective" +
+                " actions such as re-investments.This may leads to financial loss." +
+                "This app helps in effective management of the investments by indicating or " +
+                "reminding about matured investment and to-be matured investments with different color code .\n"))
+
+    faqList.add(Pair("${++questionNumber}.What is color code meaning in  home screen ?",
+        "Red- Already matured records w.r.t current date.\n" +
+                "Magenta - About to be matured in near future (i.e maturityDate <= AdvanceNotification[Default 30 days]).\n" +
+                "Black/White - To matured in far future (i.e maturityDate > AdvanceNotification) \n"))
 
     faqList.add(Pair("${++questionNumber}. What is the meaning of each fields in HomeScreen ?",
         "Please see Setting -> DisplaySetting screen. \n"))
@@ -26,7 +34,7 @@ fun gerFaqList(): List<Pair<String,String>> {
                 "2. WithPassword:Password is needed to access the home screen i.e see the investment \n"))
 
     faqList.add(Pair("${++questionNumber}. How can set the password in later stage" +
-            " if dont set at the signup screen during initial setting or vice versa ?",
+            " if you don't set at the signup screen during initial setting or vice versa ?",
         "Go to Setting -> UserProfileSetting . \n"))
 
     faqList.add(Pair("${++questionNumber}. What happens if I set the password for this app ?",
@@ -37,16 +45,27 @@ fun gerFaqList(): List<Pair<String,String>> {
          "Then you will be asked to input your date of birth which is set while setting the password " +
                 "If DOB matched , then app will show the password hint set by the user.\n"))
 
-    faqList.add(Pair("${++questionNumber}. Can I hide some investments  ?",
-        "As of now now , but we have plan to implement this feature. \n"))
+    faqList.add(Pair("${++questionNumber}. How can I delete the profile info if choose to delete from the device ?",
+        "Go to profile setting page within the app , then Press Delete button at the end of page.\n"))
+
+    faqList.add(Pair("${++questionNumber}. How can I delete the investments records if choose to delete from the device ?",
+        "Go to Account details page by pressing on the investment records and can press delete button " +
+                " Then deleted Record will be moved to Recycle Bin. " +
+                "In Recycle bin page you can Press Red colored button on the Recycle Bin to delete all the records permanently from device" +
+                "If you want to delete only individual records , go to detail of that record by " +
+                "clicking on the recode and press delete button in detail page.\n "))
+
+    faqList.add(Pair("${++questionNumber}. How can I do factory rest of the app  ?",
+        "There is no provision for factory rest within the app , how ever you can go to" +
+                " Device Settings ->Apps -> PFA -> Storage ->  Clear storage " +
+                "Then all your date will be wiped out from your device.\n" +
+                "Caution: All data stored in the app will be cleared, App will be same as initial state.\n"))
+
+    faqList.add(Pair("${++questionNumber}. Can I hide some investments ?",
+        "As of now No , but we have plan to implement this feature in future. \n"))
 
     faqList.add(Pair("${++questionNumber}. Can I change sorting order in home screen ?",
-        "No, it is fixed i.e hoem screen always sorted based on maturity dates as of now.\n"))
-
-    faqList.add(Pair("${++questionNumber}.What is color code meaning in  home screen ?",
-        "Red- Already matured records w.r.t current date.\n" +
-        "Magenta - About to be matured in near future (i.e maturityDate <= AdvanceNotification[Default 30 days]).\n" +
-                "Black/White - To matured in far future (i.e maturityDate > AdvanceNotification) \n"))
+        "No, it is fixed i.e home screen always sorted based on maturity dates as of now.\n"))
 
     faqList.add(Pair("${++questionNumber}. Is advance notification in terms of days is configurable ?",
         "Default advance notification is 30 days .\n" +
@@ -64,15 +83,19 @@ fun gerFaqList(): List<Pair<String,String>> {
 
     faqList.add(Pair("${++questionNumber}.How and where encryption keys are stored ?",
         "Encryption keys are stored within the standard android keystore.Usually android keystore stored the keys in TEE. \n"))
+
     faqList.add(Pair("${++questionNumber}. Is encryption keys used are known to developer or anyone ?",
         "No keys used to encrypt are known to developer or anyone , all are generated dynamically per device " +
                 "e.g: Key used to encrypt database are randomly generated per device.\n"))
 
-    faqList.add(Pair("${++questionNumber}. How can filter my investment records ?",
-        "There are various options to filter or search , please see SearchInvestment Screen \n"))
+    faqList.add(Pair("${++questionNumber}. How can I filter my investment records ?",
+        "There are various options to filter or search , please see Search Investment Screen \n"))
 
     faqList.add(Pair("${++questionNumber}. How can filter my investment records ?",
         "There are various options to filter or search , please see SearchInvestment Screen \n"))
+
+    faqList.add(Pair("${++questionNumber}. How can I reach developer of this app ?",
+        "e-mail at  nadigerventures@gmail.com  \n"))
 
     return faqList.toList()
 }

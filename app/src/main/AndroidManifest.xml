@@ -33,6 +33,7 @@
         -->
         <activity
             android:name="com.nadigerventures.pfa.ui.presentation.splash.StartActivity"
+            android:screenOrientation="sensorPortrait"
             android:exported="true"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
@@ -41,8 +42,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.nadigerventures.pfa.MainActivity" />
-        <activity android:name="com.nadigerventures.pfa.ui.presentation.welcome.WelcomeActivity" />
+        <activity
+            android:name="com.nadigerventures.pfa.MainActivity"
+            android:screenOrientation="sensorPortrait"
+            />
+        <activity android:name="com.nadigerventures.pfa.ui.presentation.welcome.WelcomeActivity"
+            android:screenOrientation="sensorPortrait"
+            />
         <activity android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/Theme.AppCompat.Light"/>
 

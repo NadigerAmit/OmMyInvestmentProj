@@ -15,6 +15,7 @@ class BaseApplication() : Application(){
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
     init {
         Log.e(TAG,"Init-")
+        
 
     }
     override fun onCreate() {
