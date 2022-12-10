@@ -41,6 +41,9 @@ val privacyPolicy = "\nAbout personal data:\n" +
         "3. Password -> Used to login in PFA app if user wants to protect his data with password to access the app\n\n" +
         "4. Password Hint1/2 - To help user if he forgets the password in login page when user clicks forgot passwd.\n\n" +
         "   the hint will be shown after user provide the correct date of birth registered during signup.\n\n" +
+
+        "How to delete profile data ?\n" +
+        "Go to profile setting page within the app , then Press Delete button at the end of page."+
         "All the below is the list of personal investment data will be stored in the encrypted local database within the device.\n" +
         " None of the data is sent outside the device by any means.\n" +
         "\n" +
@@ -55,6 +58,13 @@ val privacyPolicy = "\nAbout personal data:\n" +
         "\n" +
         "None of the above data is sent outside of the device.\n"+
         "\n" +
+        "How to delete investment records ?\n" +
+        "Go to Account details page by pressing on the investment records and can press delete" +
+        "Records will be moved to Recycle Bin. " +
+        "In Recycle bin page you can Press Red colored button on the Recycle Bin to delete all the records permanently from device" +
+        "If you want to delete only individual records in the Recycle bin , go to detail of that record by " +
+        "clicking on the recode and press delete button in detail page.\n\n"+
+
         "It’s user/your responsibility to keep mobile phone access to keep the app secure. \n" +
         "We therefore recommend that you do not jailbreak or root your phone, " +
         "which is the process of removing software restrictions and limitations imposed by the " +
@@ -62,7 +72,7 @@ val privacyPolicy = "\nAbout personal data:\n" +
         "Even though the data in the device is encrypted  remember that no method" +
         "  of electronic storage is 100% secure and reliable, and I cannot" +
         " guarantee its absolute security. " +
-        "\n\n How to delete the data within the device:\n"+
+        "\n\n Below is how to delete all the data(Profile data and investment data) from the device:\n"+
         "Settings ->Apps -> PFA -> Storage ->  Clear storage . " +
         "Then all your date will be wiped out from your device. " +
         "\n Caution: All data stored in the app will be cleared, App will be same as initial state." +
