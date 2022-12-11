@@ -27,7 +27,7 @@ class WelcomeActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e(TAG,"onCreate() ")
+        //Log.i(TAG,"onCreate() ")
         setContent {
             WelcomeRoot(this)
             //finish()

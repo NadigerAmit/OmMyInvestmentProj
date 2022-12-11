@@ -48,9 +48,6 @@ fun HistoryProductDetail(navController: NavHostController,
                   finHistoryViewModel: FinHistoryViewModel,
                   accountNumber:String, padding: PaddingValues
 ) {
-
-    Log.e(TAG,"Jai shree Ram Row is clicked ,HistoryProductDetail  AccountNumber = $accountNumber ")
-
     moveRecord(showDialog =showMoveAlertDialogGlobal.value,
         onDismiss ={},// {showDeleteAlertDialogGlobal.value = false },
         productViewModel,finHistoryViewModel,accountNumber,navController)
@@ -65,8 +62,8 @@ fun HistoryProductDetail(navController: NavHostController,
 }
 
 private fun addRecordToHome(productViewModel: FinProductViewModel) {
-    Log.e(TAG,"Added below record to History  = ${movedRecord.value.accountNumber} ")
-    printProductDetails(movedRecord.value)
+    //Log.i(TAG,"Added below record to History  = ${movedRecord.value.accountNumber} ")
+    //printProductDetails(movedRecord.value)
     productViewModel.insertFinProduct(movedRecord.value)
 }
 
@@ -158,8 +155,8 @@ fun screenSetUpInHistoryProductDetail(productViewModel: FinProductViewModel,
                         ) {
                             Button(onClick = {
                                 showMoveAlertDialogGlobal.value = true
-                                Log.e("RestoreAlert","Button clicked showMoveAlertDialogGlobal.value - " +
-                                        "${showMoveAlertDialogGlobal.value}")
+                                //Log.i("RestoreAlert","Button clicked showMoveAlertDialogGlobal.value - " +
+                                //        "${showMoveAlertDialogGlobal.value}")
                             },modifier = Modifier
                                 .padding(10.dp)) {
                                 //Icon(Icons.Filled.Restore, "Restore")
@@ -194,7 +191,7 @@ fun screenSetUpInHistoryProductDetail(productViewModel: FinProductViewModel,
 }
 
 private fun printProductDetails(productDetail: Product){
-    Log.e(TAG,"Product is retived in Home \n accountNumber = ${productDetail?.accountNumber}" +
+    Log.i(TAG,"Product is retived in Home \n accountNumber = ${productDetail?.accountNumber}" +
             " \n financialInstitutionName +  ${productDetail?.financialInstitutionName}" +
             " \n investorName = ${productDetail?.investorName} " +
             " \ninvestmentAmount = ${productDetail?.investmentAmount}" +
@@ -217,10 +214,10 @@ fun moveRecord(showDialog: Boolean,
     val context = LocalContext.current
     var rec : Product?= null
 
-    Log.e(TAG,"MoveAlert Called ->showDialog = $showDialog")
+    //Log.i(TAG,"MoveAlert Called ->showDialog = $showDialog")
     if (showDialog) {
 
-        Log.e(TAG,"Showing the alert dialog  = $showDialog")
+        //Log.i(TAG,"Showing the alert dialog  = $showDialog")
         AlertDialog(
             title = { Text(text = "Are you sure to move this record to home?",color = Color.Red) },
             text = { Text(text = "Moved items will be moved to Home " )
@@ -273,7 +270,7 @@ fun moveRecord(showDialog: Boolean,
 }
 
 fun getScreenConfig4HistoryProductDetail():ScreenConfig {
-    Log.e("ProductDetail","getScreenConfig4ProductDetail");
+    //Log.i("ProductDetail","getScreenConfig4ProductDetail");
     return ScreenConfig(
         enableTopAppBar = true,
         enableBottomAppBar = true,

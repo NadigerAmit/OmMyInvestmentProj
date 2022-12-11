@@ -42,19 +42,19 @@ sealed class SettingItem(var route: String , var icon: Int, var title: String
     ,var desc:String) {
     object UserProfileSetting : SettingItem("userSetting",
         com.nadigerventures.pfa.R.drawable.ic_profile,
-        "UserProfileSettings","Setting such as :\n " +
+        "User Profile Settings","Setting such as :\n " +
                 "UserName , DOB, Password & PasswdHint")
 
     object DisplaySettings : SettingItem("displaySetting",
-        com.nadigerventures.pfa.R.drawable.ic_displaysetting,"DisplaySettings",
+        com.nadigerventures.pfa.R.drawable.ic_displaysetting,"Display Settings",
         "Description about :\n " +
                 "InvestmentRecords Fields,colorCode ,etc")
     object Notification : SettingItem("notificationSetting",
-        com.nadigerventures.pfa.R.drawable.ic_notification,"NotificationSetting",
+        com.nadigerventures.pfa.R.drawable.ic_notification,"Notification Setting",
         "Setting such as :\n " +
                 "Notification ,AdvanceNotificationDays,etc")
     object Introduction : SettingItem("introduction",
-        com.nadigerventures.pfa.R.drawable.ic_introduction,"OnBoarding\n",
+        com.nadigerventures.pfa.R.drawable.ic_introduction,"On-Boarding\n",
         "Brief description about :\n " +
                 "AppUsage/On-boarding description screens")
     /*
@@ -89,9 +89,9 @@ fun SettingPage(navController: NavHostController, paddingValues: PaddingValues) 
                 .border(width = 1.dp, color = Color.Black)
         ) {
             items(settingItems) { items ->
-                Log.e(TAG,"SettingPage & items.route - ${items.route}")
+                //Log.i(TAG,"SettingPage & items.route - ${items.route}")
                 DrawerItem(item = items, selected = currentRoute == items.route, padding = paddingValues , onItemClick = {
-                        Log.e(TAG,"SettingPage items.route == signUp")
+                        //Log.i(TAG,"SettingPage items.route == signUp")
 
                     when(items.route) {
                         "introduction" -> {

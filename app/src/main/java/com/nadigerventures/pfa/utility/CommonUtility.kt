@@ -55,7 +55,7 @@ fun handleSavingUserProfileSettingData(isPasswordProtectRequired:Boolean,
                                        passwordHint2:String?,
                                        navController: NavHostController,
                                        onShowProfileUpdateScreenAllowedChange: (Boolean) -> Unit = {}) {
-   Log.e(TAG,"handleSavingUserProfileSettingData called")
+   //Log.i(TAG,"handleSavingUserProfileSettingData called")
     when {
         isPasswordProtectRequired -> {
             if(/*!validateFullName(fullName,context)
@@ -66,7 +66,7 @@ fun handleSavingUserProfileSettingData(isPasswordProtectRequired:Boolean,
             ) {
 
             } else {
-                Log.e(TAG,"handleSavingUserProfileSettingData  Validaton passed ")
+                //Log.i(TAG,"handleSavingUserProfileSettingData  Validaton passed ")
                 saveSingUpInfoInDataStore(context,
                     fullName,
                     DateUtility.getPickedDateAsString(
@@ -122,7 +122,7 @@ fun validateBirtDate(birthDate: Calendar, toastMessage:String,context:Context):B
     if(birthDate.timeInMillis >= currentDate.timeInMillis) {
         Toast.makeText(context, toastMessage, Toast.LENGTH_LONG)
             .show()
-        Log.e("validateBirtDate","return false  ")
+       // Log.i("validateBirtDate","return false  ")
         return false
     }
     Log.e("validateBirtDate","return true  ")
@@ -130,22 +130,22 @@ fun validateBirtDate(birthDate: Calendar, toastMessage:String,context:Context):B
 }
 
 fun validateFullName(fullName: String?,context:Context):Boolean {
-    Log.e("validateFullName","$fullName ")
+    Log.i("validateFullName","$fullName ")
     if(fullName == null ||
         fullName.isBlank()
         ||fullName.isEmpty()
         ||fullName == "") {
         Toast.makeText(context, "FullName cant be null or Empty ", Toast.LENGTH_LONG)
             .show()
-        Log.e("validateFullName","return false  ")
+        Log.i("validateFullName","return false  ")
         return false
     }
-    Log.e("validateFullName","return ture  ")
+    Log.i("validateFullName","return ture  ")
     return true
 }
 
 fun validatePassword(password: String,confirmPassword:String,context:Context):Boolean {
-    Log.e("validatePassword","password = $password and confirmPassword = $confirmPassword")
+   // Log.i("validatePassword","password = $password and confirmPassword = $confirmPassword")
     if(password != confirmPassword) {
         Toast.makeText(context, "Mismatch between Password and Confirm Password field ", Toast.LENGTH_LONG)
             .show()
@@ -176,7 +176,7 @@ fun saveSingUpInfoInDataStore(context:Context,fullName:String,
         DataStoreConst.SECURE_DATASTORE,true)
     val coroutineScope = CoroutineScope(Dispatchers.IO)
 
-    Log.e(TAG,"fullName = $fullName")
+    //Log.i(TAG,"fullName = $fullName")
     coroutineScope.launch {
         dataStoreProvider.putBool(DataStoreConst.IS_PASS_PROTECTION_REQ,isPasswordProtectionReq)
         dataStoreProvider.putString(DataStoreConst.FULL_NAME,fullName)

@@ -152,6 +152,8 @@ fun UserProfileSetting(navController: NavHostController,
     deletePersonalData(showDialog =showDeletePersonalDataAlertDialogGlobal.value,
         onDismiss ={
             fullName = ""
+            fname = ""
+            dob = ""
             dobTemp = ""
             isPasswordProtectRequired = false
             password  = ""
@@ -222,9 +224,9 @@ fun UserProfileSetting(navController: NavHostController,
                             ) {
                                 Button(onClick = {
                                     showDeletePersonalDataAlertDialogGlobal.value = true
-                                    Log.e("DeleteAlert","Button clicked showDeleteAlertDialog.value - " +
-                                            "${showDeletePersonalDataAlertDialogGlobal.value}")
-                                },modifier = Modifier) {
+                                    //Log.i("DeleteAlert","Button clicked showDeleteAlertDialog.value - " +
+                                    //        "${showDeletePersonalDataAlertDialogGlobal.value}")
+                                }) {
                                     Icon(Icons.Filled.Delete, "Delete")
                                     Spacer( modifier = Modifier.size(ButtonDefaults.IconSpacing))
                                     Text("Delete")
@@ -324,10 +326,8 @@ fun deletePersonalData(showDialog: Boolean,
                 ) {
     val context = LocalContext.current
 
-    Log.e(TAG,"Called ->showDialog = $showDialog")
+    //Log.i(TAG,"Called ->showDialog = $showDialog")
     if (showDialog) {
-
-        Log.e(TAG,"Showing the alert dialog  = $showDialog")
         AlertDialog(
             title = { Text(text = "Are you sure to delete user profile setting ?",color = Color.Red) },
             text = { Text(text = "Deleted items such as full name , dob ,Password , " +
@@ -384,7 +384,7 @@ fun confirmPasswordScreen(fullName:String,existingPasswd:String,onPasswdConfirm:
     val onPasswordTextChange = { text : String ->
         password = text
     }
-    Log.e("ConfirmPasswd","existingPasswd = $existingPasswd")
+    //Log.i("ConfirmPasswd","existingPasswd = $existingPasswd")
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -418,14 +418,14 @@ fun confirmPasswordScreen(fullName:String,existingPasswd:String,onPasswdConfirm:
 }
 
 fun getScreenConfig4UserSetting(): ScreenConfig {
-    //Log.e("HomeScvreen","getScreenConfig4Home");
+    //Log.e("Home Screen","getScreenConfig4Home");
     return ScreenConfig(
         enableTopAppBar = true,
         enableBottomAppBar = true,
         enableDrawer = true,
         screenOnBackPress = NavRoutes.Setting.route,
         enableFab = false,
-        topAppBarTitle = "ProfileSettings", bottomAppBarTitle = "",
+        topAppBarTitle = "User profile settings", bottomAppBarTitle = "",
         fabString = "add",
         fabColor = Color.Red
     )

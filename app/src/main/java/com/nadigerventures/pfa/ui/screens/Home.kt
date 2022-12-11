@@ -40,7 +40,7 @@ fun Home(navController: NavHostController,viewModel: FinProductViewModel,padding
     val allProducts by viewModel.allAccounts.observeAsState(listOf())
     val context = LocalContext.current
 
-    Log.e(TAG,"Current thread outside launch : ${Thread.currentThread()}")
+    //Log.i(TAG,"Current thread outside launch : ${Thread.currentThread()}")
 
     val dataStoreProvider = DataStoreHolder.getDataStoreProvider(
         context,
@@ -71,24 +71,24 @@ fun Home(navController: NavHostController,viewModel: FinProductViewModel,padding
       )
 
     if(isNotificationTimerFired.value) {
-        Log.e(TAG," Home => isNotificationTimerFired.value is true ");
+        //Log.i(TAG," Home => isNotificationTimerFired.value is true ")
         notifyToUser(context,allProducts,advanceNotifyDays)
     }
 }
 
 fun triggerNotification() {
     isNotificationTimerFired.value = true
-    Log.e(TAG," triggerNotification called ");
+    //Log.i(TAG," triggerNotification called ");
 }
 
 private fun notifyToUser(context: Context,allProducts: List<Product>,advanceNotifyDays:Int) {
-    Log.e(TAG," inside notifyToUser");
-    Log.e(TAG,"Current thread outside launch : ${Thread.currentThread()}")
-    Log.e(TAG,"Current coroutine outside: $CoroutineName")
+   // Log.i(TAG," inside notifyToUser");
+   // Log.i(TAG,"Current thread outside launch : ${Thread.currentThread()}")
+   // Log.i(TAG,"Current coroutine outside: $CoroutineName")
     coroutineScope.launch(Dispatchers.Default) {
 
-        Log.e(TAG,"Current thread inside launch : ${Thread.currentThread()}")
-        Log.e(TAG,"Current coroutine: $CoroutineName")
+       // Log.e(TAG,"Current thread inside launch : ${Thread.currentThread()}")
+       // Log.e(TAG,"Current coroutine: $CoroutineName")
         val dataStoreProvider = DataStoreHolder.getDataStoreProvider(
             context,
             DataStoreConst.SECURE_DATASTORE, true
@@ -116,8 +116,6 @@ private fun notifyToUser(context: Context,allProducts: List<Product>,advanceNoti
                 numberOfToBeMaturedItemsWithinAdvanceNotification,
                 advanceNotifyDays)
             notifyMaturedAndToBeMaturedItems(context = context,notificationString)
-        } else {
-            Log.e(TAG," notifyToUser in Else ");
         }
     }
 
@@ -125,7 +123,7 @@ private fun notifyToUser(context: Context,allProducts: List<Product>,advanceNoti
 private fun createNotification(notificationManager: NotificationManager, context: Context,
                                notificationString:String?) {
 
-    Log.e(TAG,"Notification message = textDesc = $notificationString")
+    //Log.i(TAG,"Notification message = textDesc = $notificationString")
     val CHANNEL_ID = "pfa_01"
     if(notificationString == null) return
     val name: CharSequence = "Investments Alert!" // The user-visible name of the channel.
@@ -159,7 +157,7 @@ private fun createNotification(notificationManager: NotificationManager, context
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
-        Log.e(TAG,"Notification message is >-O= $notificationString")
+        Log.i(TAG,"Notification message is = $notificationString")
         val mChannel = NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_HIGH)
         mChannel.canShowBadge()
         mChannel.setShowBadge(true)
@@ -171,7 +169,7 @@ private fun createNotification(notificationManager: NotificationManager, context
 
 
 private fun notifyMaturedAndToBeMaturedItems(context: Context, notificationString:String?) {
-    Log.e(TAG,"in notifyMaturedAndToBeMaturedItems")
+   // Log.i(TAG,"in notifyMaturedAndToBeMaturedItems")
 
     val notificationManager: NotificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -184,7 +182,7 @@ private fun prepareNotificationMessage(maturedItems:Int,
 ):String? {
     if(maturedItems <= 0 &&
         aboutToBeMaturedItems <=0) {
-        Log.e(TAG,"in createNotificationChannel return since Zero items ")
+        //Log.i(TAG,"in createNotificationChannel return since Zero items ")
         return null
     }
     var textDesc:String = ""

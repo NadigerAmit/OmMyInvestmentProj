@@ -68,7 +68,7 @@ class EncrypterDecrypter(val context: Context, private val transformation: Strin
             when (e) {
                 is InvalidAlgorithmParameterException,
                 is InvalidKeyException -> {
-                    Log.d(TAG, " InvalidAlgorithmParameterException, :InvalidKeyException e=  " + e.message)
+                    Log.e(TAG, " InvalidAlgorithmParameterException, :InvalidKeyException e=  " + e.message)
                 }
                 else -> throw e
             }

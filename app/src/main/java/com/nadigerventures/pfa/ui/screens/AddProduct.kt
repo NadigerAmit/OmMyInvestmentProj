@@ -31,12 +31,12 @@ var isRecordInUpdateMode =  mutableStateOf(false)
 @Composable
 fun AddProduct(navController: NavHostController,viewModel: FinProductViewModel,padding: PaddingValues,
     accountNumber:String = "") {
-    Log.e("AddProductScreen","Adding the product ")
+    //Log.i("AddProductScreen","Adding the product ")
     screenSetUpInAddProductScreen(navController,viewModel,padding,accountNumber)
 }
 
 fun getScreenConfig4AddProduct():ScreenConfig {
-    Log.e("AddProduct","getScreenConfig4AddProduct");
+    //Log.i("AddProduct","getScreenConfig4AddProduct");
     if(!isRecordInUpdateMode.value) {
         return ScreenConfig(
             enableTopAppBar = true,
@@ -175,7 +175,7 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                 "Save" -> {
                     Button(onClick = {
                         fun validateInputs():Boolean {
-                            Log.e("AddProduct","In validateInputs ")
+                            Log.i("AddProduct","In validateInputs ")
                             if(!validateAccountNumber(accountNumber,context) ||
                                 !validateFinInstitution(finInstitutionName,context) ||
                                 !validateInvestmentDate(investmentDate,context) ||
@@ -190,7 +190,7 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                         }
                         if(validateInputs()) {
                             if(!isRecordInUpdateMode.value ) {
-                                Log.e("AddProduct","Inserting the new product  ")
+                                //Log.i("AddProduct","Inserting the new product  ")
                                 viewModel.insertFinProduct(
                                     Product(
                                         accountNumber,
@@ -207,7 +207,7 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                                     )
                                 )
                             } else {
-                                Log.e("AddProduct","Updating the existing product  ")
+                                //Log.i("AddProduct","Updating the existing product  ")
                                 viewModel.updateFinProduct(
                                     ProductUpdate(
                                         accountNumber,

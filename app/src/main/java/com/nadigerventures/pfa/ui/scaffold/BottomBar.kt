@@ -36,9 +36,9 @@ private val TAG ="BottomBar"
 private var backPressed = 0L
 
 private fun handleHomeScreenExit(context: Context) {
-    Log.e(TAG,"finish called")
+    //Log.i(TAG,"finish called")
     if (backPressed + 3000 > System.currentTimeMillis()) {
-        Log.e(TAG,"finish called ${context.getActivity().toString()}")
+        //Log.i(TAG,"finish called ${context.getActivity().toString()}")
         context.getActivity()?.finishAndRemoveTask()
         context.getActivity()?.finishAffinity()
         exitProcess(0)

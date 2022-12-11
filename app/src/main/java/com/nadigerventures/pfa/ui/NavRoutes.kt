@@ -48,7 +48,7 @@ private var launchScreenCache:String? = null
 var isLogInDone:Boolean = false
 
 fun getLaunchScreen(context:Context):String {
-    Log.i(TAG,"==>  getLaunchScreen ")
+//    Log.i(TAG,"==>  getLaunchScreen ")
     val dataStorageManager = DataStoreHolder.getDataStoreProvider(context,SECURE_DATASTORE,true)
 
     var launchScreen = NavRoutes.SignUp.route
@@ -66,7 +66,7 @@ fun getLaunchScreen(context:Context):String {
             }
         }
     }
-    Log.i(TAG,"getLaunchScreen ==>")
+ //  Log.i(TAG,"getLaunchScreen ==>")
    return launchScreen
 }
 
@@ -82,7 +82,7 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
         launchScreenCache = getLaunchScreen(context)
     }
 
-    Log.e(TAG,"Launch screen = $launchScreenCache")
+    Log.i(TAG,"Launch screen = $launchScreenCache")
     NavHost(navController = navController, startDestination = launchScreenCache!!) {
         composable(NavRoutes.Login.route) {
             LoginPage(navController = navController,padding)
@@ -114,7 +114,7 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
         composable(NavRoutes.ProductDetail.route + "/{id}") { navBackStack ->
             // Extracting the argument
             val accountId = navBackStack.arguments?.getString("id")
-            Log.e("MainActvity", "In ScreenNavigation fun , accountId = $accountId ")
+           // Log.i("MainActvity", "In ScreenNavigation fun , accountId = $accountId ")
             ProductDetail(navController = navController,
                 finProductViewModel,
                 finHistoryViewModel,
@@ -124,7 +124,7 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
         composable(NavRoutes.HistoryProductDetail.route + "/{id}") { navBackStack ->
             // Extracting the argument
             val accountId = navBackStack.arguments?.getString("id")
-            Log.e("MainActvity", "In ScreenNavigation fun , accountId = $accountId ")
+            //Log.i("MainActvity", "In ScreenNavigation fun , accountId = $accountId ")
             HistoryProductDetail(navController = navController,
                 finProductViewModel,
                 finHistoryViewModel,

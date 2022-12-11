@@ -78,12 +78,15 @@ class DateUtility {
                 }
             }
 
-            Log.e("DateUtility","FromDate = $fromDateInString  ToDate = $toDateInString ," +
+            /*
+            Log.i("DateUtility","FromDate = $fromDateInString  ToDate = $toDateInString ," +
                     "diffMillionSec = $millionSeconds " + "isBothDatesSame = " +
                     "${fromDateInString == toDateInString}"+
                     " days = ${TimeUnit.MILLISECONDS.toDays(millionSeconds)}  " +
                     "FinalNumOfDays = $numberOfDays " +
                     "Days = $days" )
+
+             */
             return numberOfDays
         }
 
@@ -134,8 +137,11 @@ class DateUtility {
                     duration = ""+period.years +" years, " +duration
                 }
             }
+            /*
             println("The difference between " + fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
                     + " and " + today.format(DateTimeFormatter.ISO_LOCAL_DATE) + duration)
+
+             */
             return duration
         }
 

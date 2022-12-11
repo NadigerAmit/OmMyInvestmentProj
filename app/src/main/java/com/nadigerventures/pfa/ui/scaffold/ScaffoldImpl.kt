@@ -29,11 +29,11 @@ fun ScaffoldImpl(navController: NavHostController,
    // Log.e("Scafold"," Entry showFabButton = $showFabButton")
     val coroutineScope = rememberCoroutineScope()
 
-    Log.e(TAG,"topAppBarTitle - ${screenConfig.topAppBarTitle}")
+    //Log.i(TAG,"topApp BarTitle - ${screenConfig.topAppBarTitle}")
 
     fun searchFunction() {
-        Log.e(TAG,"finProductViewModel.allAccounts.value?.size = " +
-                "${finProductViewModel.allAccounts.value?.size}" )
+        //Log.i(TAG,"finProductViewModel.allAccounts.value?.size = " +
+        //        "${finProductViewModel.allAccounts.value?.size}" )
         if(finProductViewModel.allAccounts.value?.size!! > 0) {
             navController.navigate(NavRoutes.SearchProduct.route)  {
                 navController.graph.startDestinationRoute?.let { route ->

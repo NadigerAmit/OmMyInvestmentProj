@@ -5,7 +5,7 @@ import android.R.drawable.*
 
 sealed class NavDrawerItem(var route: String, var icon: Int, var title: String) {
     object Home : NavDrawerItem("home",  R.drawable.ic_home,"Home")
-    object History : NavDrawerItem("history",   R.drawable.ic_history,"Recycle Bin")
+    object History : NavDrawerItem("history",   R.drawable.ic_recycle_bin,"Recycle Bin")
     //object News : NavDrawerItem("news",   R.drawable.ic_news,"FintechTwitterNews")
     object Settings : NavDrawerItem("setting",  R.drawable.ic_settings,"Settings")
     object Faq : NavDrawerItem("faq",   R.drawable.ic_faq,"FAQ")

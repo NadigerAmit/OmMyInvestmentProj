@@ -47,7 +47,7 @@ fun History(navController: NavHostController, viewModel: FinHistoryViewModel, pa
 
 }
 
-fun getScreenConfig4History():ScreenConfig = //Log.e("HomeScvreen","getScreenConfig4Home");
+fun getScreenConfig4History():ScreenConfig = //Log.e("Home screen","getScreenConfig4Home");
     ScreenConfig(
         enableTopAppBar = true,
         enableBottomAppBar = true,

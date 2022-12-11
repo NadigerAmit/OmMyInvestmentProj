@@ -31,9 +31,9 @@ object KeyStoreProvider {
     private fun createAndroidKeyStore() {
         try {
             keyStore = KeyStore.getInstance(ANDROID_KEYSTORE) // Get the Android key store
-            Log.i(TAG, "getDefaultType Key store <-" + KeyStore.getDefaultType().toString())
+          //  Log.i(TAG, "getDefaultType Key store <-" + KeyStore.getDefaultType().toString())
             keyStore!!.load(null) // <- Create an empty keystore based on our application Id.
-            Log.i(TAG, "createAndroidKeyStore <-")
+         //   Log.i(TAG, "createAndroidKeyStore <-")
         } catch (e: Exception) {
             when(e) {
                 is KeyStoreException ->{
@@ -180,7 +180,7 @@ object KeyStoreProvider {
                 ANDROID_KEYSTORE
             ) // <--Get the KeyPairGenerator instance from keyStore of type "RSA."
             // <= This is how keystore and generated keypair are related.
-            Log.e(TAG, "createAndroidKeyStoreAsymmetricKeyPair ")
+            //Log.i(TAG, "createAndroidKeyStoreAsymmetricKeyPair ")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 initGeneratorWithKeyGenParameterSpec(generator, alias)
             } else {
@@ -210,7 +210,7 @@ object KeyStoreProvider {
                 .setBlockModes(KeyProperties.BLOCK_MODE_ECB) //  .setKeySize(1024)  default size is 2048
                 .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1)
             generator.initialize(builder.build())
-            Log.e(TAG, "initGeneratorWithKeyGenParameterSpec >M")
+            Log.i(TAG, "initGeneratorWithKeyGenParameterSpec >M")
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -232,7 +232,7 @@ object KeyStoreProvider {
                 .setStartDate(startDate.time) // Date range of validity for the generated pair.
                 .setEndDate(endDate.time)
             generator.initialize(builder.build())
-            Log.e(TAG, "initGeneratorWithKeyPairGeneratorSpec ")
+            Log.i(TAG, "initGeneratorWithKeyPairGeneratorSpec ")
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -15,7 +15,7 @@ class ThemeRepository(context: Context) {
 
 
     suspend fun saveTheme(completed: Boolean) {
-        Log.e(TAG,"saveOnBoardingState completed = $completed")
+        //Log.i(TAG,"saveOnBoardingState completed = $completed")
         dataStoreProvider.putBool(DataStoreConst.IS_DARK_MODE,completed)
     }
 
@@ -25,10 +25,10 @@ class ThemeRepository(context: Context) {
             isDarkMode =  dataStoreProvider.getBool(DataStoreConst.IS_DARK_MODE).first()
         }
         if(isDarkMode == null) {
-            Log.e(TAG,"isDarkMode is null")
+            //Log.i(TAG,"isDarkMode is null")
             return true
         }
-        Log.e(TAG,"isOnBoardingComplete  $isDarkMode")
+        //Log.i(TAG,"isOnBoardingComplete  $isDarkMode")
         return isDarkMode!!
     }
 }

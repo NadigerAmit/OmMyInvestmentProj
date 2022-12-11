@@ -51,7 +51,7 @@ fun ProductListScreen(
     var advanceNotifyDays by remember { mutableStateOf(nod.value.toInt()) }
 
  */
-    Log.e(TAG, "advanceNotifyDays  $advanceNotifyDays and nod = ${nod.value}")
+   // Log.i(TAG, "advanceNotifyDays  $advanceNotifyDays and nod = ${nod.value}")
     if (allProducts.isNotEmpty()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

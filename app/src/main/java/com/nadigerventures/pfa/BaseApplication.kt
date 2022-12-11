@@ -14,18 +14,16 @@ class BaseApplication() : Application(){
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
     init {
-        Log.e(TAG,"Init-")
-        
-
+        //Log.i(TAG,"Init-")
     }
     override fun onCreate() {
         super.onCreate()
-        Log.e(TAG,"Current thread: ${Thread.currentThread()}")
-        Log.e(TAG,"onCreate- Creating work request")
+       // Log.i(TAG,"Current thread: ${Thread.currentThread()}")
+       // Log.i(TAG,"onCreate- Creating work request")
 
         coroutineScope.launch(Dispatchers.Default) {
-            Log.e(TAG,"Current coroutine: $CoroutineName")
-            Log.e(TAG,"Current thread: ${Thread.currentThread()}")
+            //Log.i(TAG,"Current coroutine: $CoroutineName")
+            //Log.i(TAG,"Current thread: ${Thread.currentThread()}")
             MyDailyWorker.createWorkRequest(applicationContext)
         }
     }

@@ -114,8 +114,6 @@ fun ProductRow(accountNumber:String,
             .fillMaxWidth()
             .padding(start = 3.dp,end = 3.dp, top = 0.dp, bottom = 0.dp)
             .clickable {
-                Log.e(TAG, "Jai shree Ram Row is clicked , parentScreen = $parentScreen  " +
-                        "and accountNumber = $accountNumber")
                 when(parentScreen) {
                     "HistoryProductDetail" -> {
                         navController.navigate(NavRoutes.HistoryProductDetail.route + "/$accountNumber") {

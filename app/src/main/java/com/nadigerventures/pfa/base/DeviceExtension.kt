@@ -38,8 +38,8 @@ fun Context.deviceId(): String {
 fun Context.appVersion(): String {
 
     val packageInfo = this.packageManager.getPackageInfo(this.packageName, 0)
-    Log.e("AppVersion",PackageInfoCompat.getLongVersionCode(packageInfo).toString())
-    Log.e("AppVersion--- ",packageManager.getPackageInfo(packageName, 0).versionName)
+  //  Log.e("AppVersion",PackageInfoCompat.getLongVersionCode(packageInfo).toString())
+  //  Log.e("AppVersion--- ",packageManager.getPackageInfo(packageName, 0).versionName)
     //return PackageInfoCompat.getLongVersionCode(packageInfo).toString()
     return packageManager.getPackageInfo(packageName, 0).versionName
 }

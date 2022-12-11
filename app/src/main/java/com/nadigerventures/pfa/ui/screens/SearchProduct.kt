@@ -227,7 +227,7 @@ fun search(viewModel: FinProductViewModel) {
                 operationFieldValue.value)
         }
         "Maturity Date"->{
-            Log.e("search", "Called in SearchProduct with Maturity date ")
+            //Log.i("search", "Called in SearchProduct with Maturity date ")
             viewModel.findProductsHavingMaturityDate(valueFieldValue.value,
                 operationFieldValue.value)
         }
@@ -254,7 +254,7 @@ fun search(viewModel: FinProductViewModel) {
 }
 
 fun getValuesList(fieldName:String,allProducts: List<Product>,):List<String> {
-    Log.e("SearchProduct", "getValuesList() fieldName -$fieldName")
+   // Log.i("SearchProduct", "getValuesList() fieldName -$fieldName")
     var listOfValues = mutableSetOf<String>()
     when(fieldName) {
         "Account Number"->{
@@ -316,7 +316,7 @@ fun getValuesList(fieldName:String,allProducts: List<Product>,):List<String> {
         "Deposit Period"->{
             for(i in allProducts) {
                 listOfValues.add(i.depositPeriod.toString() +" Days")
-                Log.e("depositPeriod", i.depositPeriod.toString() +" Days")
+                //Log.i("depositPeriod", i.depositPeriod.toString() +" Days")
             }
         }
     }
@@ -331,7 +331,7 @@ fun getOperationList(searchFieldList:String):List<String> {
     )
     when(searchFieldList) {
         "Account Number",
-        "financial Institution Name",
+        "Financial Institution Name",
         "Product Type",
         "Investor Name",
         "Nominee Name" -> return listOf("=","!=")
@@ -339,7 +339,7 @@ fun getOperationList(searchFieldList:String):List<String> {
     return operationFieldList
 }
 fun getScreenConfig4SearchScreen():ScreenConfig {
-    Log.e("SearchScreen","getScreenConfig4SearchScreen");
+    //Log.i("SearchScreen","getScreenConfig4SearchScreen");
     return ScreenConfig(
         enableTopAppBar = true,
         enableBottomAppBar = true,
@@ -347,7 +347,7 @@ fun getScreenConfig4SearchScreen():ScreenConfig {
         screenOnBackPress = NavRoutes.Home.route,
         enableFab = true,
         enableAction = false,
-        topAppBarTitle = "SearchInvestment", bottomAppBarTitle = "",
+        topAppBarTitle = "Search Investment", bottomAppBarTitle = "",
         fabString = "search",
     )
 }
