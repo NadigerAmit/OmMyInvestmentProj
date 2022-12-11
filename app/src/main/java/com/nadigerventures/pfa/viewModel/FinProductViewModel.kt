@@ -87,7 +87,6 @@ class FinProductViewModel(application: Application): ViewModel() {
                 i.maturityAmount = productUpdate.maturityAmount
                 i.interestRate = productUpdate.interestRate
                 i.nomineeName = productUpdate.nomineeName
-                Log.e("FinProductViewModel.kt","updateFinProduct API finished ${productUpdate.accountNumber}")
                 break
             }
         }
@@ -101,7 +100,6 @@ class FinProductViewModel(application: Application): ViewModel() {
         if(allAccounts.value == null) return null
         for(i in allAccounts.value!!) {
             if(i.accountNumber == accountNum) return i
-            Log.i(TAG,"findProductBasedOnAccountNumberFromLocalCache ${i.accountNumber}")
         }
         return null
     }
