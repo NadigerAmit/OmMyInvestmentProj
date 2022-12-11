@@ -41,7 +41,7 @@ private val TAG = "SignUpScreen"
 fun SignUpScreen(navController: NavHostController,
                  padding: PaddingValues) {
     val dateFormat = "yyyy-MM-dd"
-    Log.e(TAG,"SignUpScreen entered")
+
     var fullName by remember { mutableStateOf("") }
     var birthDate by remember { mutableStateOf( Calendar.getInstance()) }
     var isPasswordProtectRequired by remember { mutableStateOf(false) }
@@ -82,7 +82,7 @@ fun SignUpScreen(navController: NavHostController,
         passwordHint2 = text
     }
 
-    Log.e(TAG,"onExistingPasswordConfirm => confirmPwd - $isShowProfileUpdateScreenAllowed")
+   // Log.i(TAG,"onExistingPasswordConfirm => confirmPwd - $isShowProfileUpdateScreenAllowed")
    // Log.e(TAG,"isTriggerFrom => confirmPwd - $isTriggerFrom")
 
     val context = LocalContext.current
@@ -215,14 +215,14 @@ fun SignUpScreen(navController: NavHostController,
 }
 
 fun getScreenConfig4SignUpScreen():ScreenConfig {
-    Log.e("Login","getScreenConfig4SignUpScrean");
+    //Log.i("Login","getScreenConfig4SignUpScrean");
     return ScreenConfig(
         enableTopAppBar = true,
         enableBottomAppBar = false,
         enableDrawer = false,
         screenOnBackPress = NavRoutes.Home.route,
         enableFab = false,
-        topAppBarTitle = "UserProfileSetting",
+        topAppBarTitle = "User profile Setting",
         bottomAppBarTitle = "",
         fabString = "",
     )
@@ -244,7 +244,5 @@ fun LabelledCheckbox(textString:String,
             enabled = true,
             colors = CheckboxDefaults.colors(Color.Green)
         )
-        //Text(text = "Enable Password Protection On AppRestart")
-
     }
 }

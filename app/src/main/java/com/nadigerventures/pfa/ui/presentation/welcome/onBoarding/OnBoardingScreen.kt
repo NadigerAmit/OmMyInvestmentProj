@@ -137,7 +137,7 @@ fun FinishButton(
             ) {
                 Text(
                     //text = stringResource(id = R.string.text_finish),
-                    text = "Lets Go",
+                    text = "Done",
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp,

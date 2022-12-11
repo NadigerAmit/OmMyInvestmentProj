@@ -18,7 +18,7 @@ abstract class ProductRoomDatabase: RoomDatabase() {
         private var INSTANCE: ProductRoomDatabase? = null
 
         fun getInstance(context: Context,password: String): ProductRoomDatabase {
-            Log.e(TAG,"getInstance is called ")
+           //Log.i(TAG,"getInstance is called ")
             synchronized(this) {
                 val supportFactory = SupportFactory(SQLiteDatabase.getBytes(password.toCharArray()))
                 var instance = INSTANCE
@@ -38,7 +38,7 @@ abstract class ProductRoomDatabase: RoomDatabase() {
                  //           }
                  //       }
                  //   }
-                    Log.e(TAG,"getInstance is finished ")
+                 //   Log.i(TAG,"getInstance is finished ")
                     INSTANCE = instance
                 }
                 return instance

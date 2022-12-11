@@ -199,7 +199,6 @@ private fun isBirthDateVerifiedOk(dob:Calendar,context: Context):Boolean {
         dob.get(Calendar.YEAR),
         dob.get(Calendar.MONTH),
         dob.get(Calendar.DAY_OF_MONTH), dateFormat)
-    Log.e(TAG,"dobFromDs = $dobFromDs   dobFromUser = $dobFromUser")
     if(dobFromDs == dobFromUser) {
         return true
     }
@@ -212,8 +211,6 @@ fun isLoginAllowed(passwd:String,context: Context):Boolean {
         SECURE_DATASTORE,true)
     var isLoginOk = false
     runBlocking {
-        Log.e("LogIn","passwd from user = $passwd")
-        Log.e("LogIn","passwd from DataStore = ${dataStorageManager.getString(PASSWORD).first()}")
         if(dataStorageManager.getString(PASSWORD).first() == passwd)
             isLoginOk = true
     }
@@ -221,7 +218,7 @@ fun isLoginAllowed(passwd:String,context: Context):Boolean {
 }
 
 fun getScreenConfig4Login():ScreenConfig {
-    Log.e("Login","getScreenConfig4Login");
+   // Log.e("Login","getScreenConfig4Login");
     return ScreenConfig(
         enableTopAppBar = false,
         enableBottomAppBar = false,

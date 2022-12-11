@@ -29,7 +29,7 @@ fun Fab(navController: NavHostController,
             showAlert(onDismiss ={},finHistoryViewModel)
         }
 
-        Log.e("Scafold","showFabButton = True inside ")
+        //Log.i("Scafold","showFabButton = True inside ")
         FloatingActionButton(
             onClick = {
                 // When clicked open Snackbar

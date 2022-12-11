@@ -16,7 +16,7 @@ class WelcomeRepository (context: Context) {
 
 
     suspend fun saveOnBoardingState(completed: Boolean) {
-        Log.e(TAG,"saveOnBoardingState completed = $completed")
+        //Log.i(TAG,"saveOnBoardingState completed = $completed")
         dataStoreProvider.putBool(DataStoreConst.IS_ON_BOARDING_COMPLETED,completed)
     }
 
@@ -26,10 +26,10 @@ class WelcomeRepository (context: Context) {
             isOnBoardingComplete =  dataStoreProvider.getBool(DataStoreConst.IS_ON_BOARDING_COMPLETED).first()
         }
         if(isOnBoardingComplete == null) {
-            Log.e(TAG,"isOnBoardingComplete is null")
+            //Log.i(TAG,"isOnBoardingComplete is null")
             return false
         }
-        Log.e(TAG,"isOnBoardingComplete  $isOnBoardingComplete")
+        Log.i(TAG,"isOnBoardingComplete  $isOnBoardingComplete")
         return isOnBoardingComplete!!
     }
 }

@@ -36,7 +36,6 @@ val START_NOTTI_VAL_SEC = 0
 class MyDailyWorker (val ctx: Context,
                      params: WorkerParameters
 ) : Worker(ctx, params) {
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     companion object {
         fun  createWorkRequest(context: Context) {
@@ -54,7 +53,7 @@ class MyDailyWorker (val ctx: Context,
                 if (dueDate.before(currentDate)) {
                     dueDate.add(Calendar.HOUR_OF_DAY, 24)
                 }
-                Log.e(TAG, "createWorkRequest")
+                //Log.e(TAG, "createWorkRequest")
                 val timeDiff = dueDate.timeInMillis - currentDate.timeInMillis
                 val dailyWorkRequest = OneTimeWorkRequestBuilder<MyDailyWorker>()
                     .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)//.setConstraints(constraints)
@@ -62,7 +61,7 @@ class MyDailyWorker (val ctx: Context,
                     .build()
                 WorkManager.getInstance(context).enqueue(dailyWorkRequest)
             } else {
-                Log.e(TAG,"$TAG_NOTIFY_WORK is Already scheduled" )
+                //Log.i(TAG,"$TAG_NOTIFY_WORK is Already scheduled" )
             }
             pruneTask(context = context)
         }
@@ -73,9 +72,7 @@ class MyDailyWorker (val ctx: Context,
                 var isScheduled  = false
                 val workInfoList: List<WorkInfo> = statuses.get()
                 for (workInfo in workInfoList) {
-                    //  Log.e(TAG,"state = "+workInfo.state +" id = "+workInfo.id +"  tags= "+workInfo.tags
-                    //          +"  outputData= "+workInfo.outputData)
-                    Log.e(TAG, "workInfo to String = $workInfo")
+                    //Log.i(TAG, "workInfo to String = $workInfo")
                     val state = workInfo.state
                     if(state == WorkInfo.State.ENQUEUED ||
                         state == WorkInfo.State.RUNNING) {
@@ -83,7 +80,7 @@ class MyDailyWorker (val ctx: Context,
                         break
                     }
                 }
-                Log.e(TAG, "isScheduled = $isScheduled")
+                //Log.e(TAG, "isScheduled = $isScheduled")
                 isScheduled
             } catch (e: ExecutionException) {
                 e.printStackTrace()
@@ -99,7 +96,7 @@ class MyDailyWorker (val ctx: Context,
             val statuses: ListenableFuture<List<WorkInfo>> = instance.getWorkInfosByTag(tag)
             val workInfoList: List<WorkInfo> = statuses.get()
             for (workInfo in workInfoList) {
-                Log.e(TAG, "workInfo to String = $workInfo")
+                Log.i(TAG, "workInfo to String = $workInfo")
             }
         }
         private fun pruneTask(context: Context) {
@@ -109,9 +106,9 @@ class MyDailyWorker (val ctx: Context,
     }
     override fun doWork(): Result {
 
-        Log.e(TAG,"Current thread : ${Thread.currentThread()}")
-        printTasks(TAG_NOTIFY_WORK, context = ctx)
-        Log.e(TAG, "create new Work Request in doWork !!")
+        //Log.e(TAG,"Current thread : ${Thread.currentThread()}")
+        //printTasks(TAG_NOTIFY_WORK, context = ctx)
+        //Log.e(TAG, "create new Work Request in doWork !!")
         val currentDate = Calendar.getInstance()
         val dueDate = Calendar.getInstance()
         // Set Execution around 0:05:00 AM
@@ -121,7 +118,7 @@ class MyDailyWorker (val ctx: Context,
 
         if (dueDate.before(currentDate) ||
             dueDate.equals(currentDate)) {
-            Log.e(TAG,"Due date is before or equal to current date")
+            //Log.i(TAG,"Due date is before or equal to current date")
             dueDate.add(Calendar.HOUR_OF_DAY, 24)
         }
         val timeDiff = dueDate.timeInMillis - currentDate.timeInMillis
@@ -133,9 +130,7 @@ class MyDailyWorker (val ctx: Context,
         WorkManager.getInstance(applicationContext)
             .enqueue(dailyWorkRequest)
         pruneTask(context = ctx)
-        Log.e(TAG,"Finished doing work" )
         triggerNotification()
-
         return Result.success()
     }
 }

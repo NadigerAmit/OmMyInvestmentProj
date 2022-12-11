@@ -82,7 +82,8 @@ class Product {
         this.depositPeriod = depositPeriod
 
         this.nomineeName = nomineeName
-        Log.e("Product","Product is added accountNumber = ${this.accountNumber}" +
+        /*
+        Log.i("Product","Product is added accountNumber = ${this.accountNumber}" +
                 " \n financialInstitutionName +  ${this.financialInstitutionName}" +
                 " \n investorName = ${this.investorName} " +
                 " \ninvestmentAmount = ${this.investmentAmount}" +
@@ -91,6 +92,8 @@ class Product {
                 " \n interestRate = ${this.interestRate}  " +
                 " \n depositPeriod = ${this.depositPeriod} " +
                 " \n nomineeName = ${this.nomineeName} ")
+
+         */
 
     }
 

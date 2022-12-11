@@ -52,8 +52,6 @@ fun ProductDetail(navController: NavHostController,
                   finHistoryViewModel: FinHistoryViewModel,
                   accountNumber:String,padding: PaddingValues) {
 
-    Log.e(TAG,"Jai shree Ram Row is clicked ,ProductDetail  AccountNumber = $accountNumber ")
-
     deleteRecord(showDialog =showDeleteAlertDialogGlobal.value,
         onDismiss ={},// {showDeleteAlertDialogGlobal.value = false },
         productViewModel,finHistoryViewModel,accountNumber,navController)
@@ -64,8 +62,8 @@ fun ProductDetail(navController: NavHostController,
 }
 
 private fun addRecordToHistory(finHistoryViewModel: FinHistoryViewModel) {
-    Log.e(TAG,"Added below record to History  = ${deletedRecord.value.accountNumber} ")
-    printProductDetails(deletedRecord.value)
+    //Log.i(TAG,"Added below record to History  = ${deletedRecord.value.accountNumber} ")
+    //printProductDetails(deletedRecord.value)
     finHistoryViewModel.insertFinProduct(deletedRecord.value)
 }
 
@@ -95,26 +93,17 @@ private fun getListOPropertiesOfProduct(productDetail: Product): List<Pair<Strin
     )
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
     {
-   //     /*
         mutableList.add(9,Pair("Investment duration", getPeriodBetween2Dates(productDetail.investmentDate,productDetail.maturityDate)))
         mutableList.add(10,Pair("Remaining duration",getPeriodBetween2Dates(localDateToCalendar(LocalDateTime.now()),productDetail.maturityDate)))
 
- //        */
-/*
-mutableList.add(9,Pair("Investment Duration",
-    DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,productDetail.investmentDate).toString()+" Days"))
-mutableList.add(10,Pair("Remaining duration",
-    DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,Calendar.getInstance()).toString()+" Days"))
-
- */
-} else {
-mutableList.add(9,Pair("Investment duration",
-    DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,productDetail.investmentDate).toString()+" Days"))
-mutableList.add(10,Pair("Remaining duration",
-    DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,Calendar.getInstance()).toString()+" Days"))
-}
-return mutableList
-}
+    } else {
+        mutableList.add(9,Pair("Investment duration",
+        DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,productDetail.investmentDate).toString()+" Days"))
+        mutableList.add(10,Pair("Remaining duration",
+        DateUtility.getNumberOfDaysBetweenTwoDays(productDetail.maturityDate,Calendar.getInstance()).toString()+" Days"))
+    }
+        return mutableList
+    }
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
@@ -123,13 +112,6 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
                        accountNumber:String,
                        navController: NavHostController,
                        padding: PaddingValues)  {
-    /*
-    GlobalScope.launch {
-        viewModel.findProductsBasedOnAccountNumber(accountNumber)
-    }
-
-     */
-
 
     var productDetail:Product? = null
     productDetail =viewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
@@ -141,8 +123,7 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
         Log.e("ProductDetail.Kt","Got it from Database ")
         productDetail = viewModel.searchResults.value?.get(0)
     }
-
-     */
+    */
 
     if(productDetail == null) return
     val productFieldList = getListOPropertiesOfProduct(productDetail)
@@ -173,8 +154,8 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
                     ) {
                         Button(onClick = {
                                 showDeleteAlertDialogGlobal.value = true
-                                Log.e("DeleteAlert","Button clicked showDeleteAlertDialog.value - " +
-                                        "${showDeleteAlertDialogGlobal.value}")
+                               // Log.e("DeleteAlert","Button clicked showDeleteAlertDialog.value - " +
+                               //         "${showDeleteAlertDialogGlobal.value}")
                             },modifier = Modifier
                                 .padding(10.dp)) {
                                 Icon(Icons.Filled.Delete, "Delete")
@@ -225,7 +206,6 @@ Log.e("ProductDetail.Kt","Product is retived in Home \n accountNumber = ${produc
     " \n interestRate = $ {productDetail?.interestRate}  " +
     " \n depositPeriod = ${productDetail?.depositPeriod} " +
     " \n nomineeName = ${productDetail?.nomineeName} ")
-
 }
 
 @Composable
@@ -235,51 +215,50 @@ fun deleteRecord(showDialog: Boolean,
          finHistoryViewModel: FinHistoryViewModel,
          accountNumber:String,
          navController: NavHostController):Product? {
-val context = LocalContext.current
-var rec :Product?= null
+    val context = LocalContext.current
+    var rec :Product?= null
 
-Log.e("DeleteAlert","Called ->showDialog = $showDialog")
-if (showDialog) {
-
-Log.e("DeleteAlert","Showing the alert dialog  = $showDialog")
-AlertDialog(
-    title = { Text(text = "Are you sure to delete this record ?",color = Color.Red) },
-    text = { Text(text = "Deleted items will be moved to history , " +
-            "Delete from history if permanent deletion is required")},
-    onDismissRequest = onDismiss,
-    confirmButton = {
-        TextButton(onClick = {
-            rec = productViewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
-            if(rec!= null) {
-                productViewModel.deleteFinProduct(accountNumber)
-                Toast.makeText(context, "Record with accNum : $accountNumber deleted" , Toast.LENGTH_LONG)
-                    .show()
-                navController.navigate(NavRoutes.Home.route)
-                deletedRecord.value = rec!!
-                showDeleteAlertDialogGlobal.value = false
-            }
-        })
-        { Text(text = "Continue delete",color = Color.Red) }
-    },
-    shape  = MaterialTheme.shapes.medium,
-    dismissButton = {
-        onDismiss()
-        TextButton(onClick = {
-            showDeleteAlertDialogGlobal.value = false
-            navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber")
-        })
-        { Text(text = "Cancel delete",
-        modifier = Modifier.padding(end = 20.dp)) }
-    },
-    properties= DialogProperties(dismissOnBackPress = true,
-        dismissOnClickOutside=true)
-)
-}
+    //Log.e("DeleteAlert","Called ->showDialog = $showDialog")
+    if (showDialog) {
+        //Log.e("DeleteAlert","Showing the alert dialog  = $showDialog")
+        AlertDialog(
+            title = { Text(text = "Are you sure to delete this record ?",color = Color.Red) },
+            text = { Text(text = "Deleted items will be moved to history , " +
+                    "Delete from history if permanent deletion is required")},
+            onDismissRequest = onDismiss,
+            confirmButton = {
+                TextButton(onClick = {
+                    rec = productViewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
+                    if(rec!= null) {
+                        productViewModel.deleteFinProduct(accountNumber)
+                        Toast.makeText(context, "Record with accNum : $accountNumber deleted" , Toast.LENGTH_LONG)
+                            .show()
+                        navController.navigate(NavRoutes.Home.route)
+                        deletedRecord.value = rec!!
+                        showDeleteAlertDialogGlobal.value = false
+                    }
+                })
+                { Text(text = "Continue delete",color = Color.Red) }
+            },
+            shape  = MaterialTheme.shapes.medium,
+            dismissButton = {
+                onDismiss()
+                TextButton(onClick = {
+                    showDeleteAlertDialogGlobal.value = false
+                    navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber")
+                })
+                { Text(text = "Cancel delete",
+                modifier = Modifier.padding(end = 20.dp)) }
+            },
+            properties= DialogProperties(dismissOnBackPress = true,
+                dismissOnClickOutside=true)
+        )
+    }
 return rec
 }
 
 fun getScreenConfig4ProductDetail():ScreenConfig {
-    Log.e("ProductDetail","getScreenConfig4ProductDetail");
+  //  Log.e("ProductDetail","getScreenConfig4ProductDetail");
     return ScreenConfig(
         enableTopAppBar = true,
         enableBottomAppBar = true,
@@ -287,7 +266,7 @@ fun getScreenConfig4ProductDetail():ScreenConfig {
         enableFab = false,
         screenOnBackPress = NavRoutes.Home.route,
         enableAction = false,
-        topAppBarTitle = "AccountDetail", bottomAppBarTitle = "",
+        topAppBarTitle = "Account Detail", bottomAppBarTitle = "",
         fabString = "",
     )
 }
@@ -297,18 +276,17 @@ fun ProductDetailsRow(FirstColumn: String,
        SecondColumn: String,
               color:Color = Color.Unspecified
 ) {
-Row(
-modifier = Modifier
-    .fillMaxWidth()
-    .padding(7.dp)
-) {
-var textColor: Color = Color.Unspecified
-if(FirstColumn == "Remaining duration") {
-    textColor = color
-}
-Text(FirstColumn.toString(), color = textColor,modifier = Modifier
-    .weight(0.2f))
-Text(SecondColumn ,  color = textColor,modifier = Modifier.weight(0.2f))
-
-}
+    Row(
+    modifier = Modifier
+        .fillMaxWidth()
+        .padding(7.dp)
+    ) {
+        var textColor: Color = Color.Unspecified
+        if(FirstColumn == "Remaining duration") {
+            textColor = color
+        }
+        Text(FirstColumn.toString(), color = textColor,modifier = Modifier
+            .weight(0.2f))
+        Text(SecondColumn ,  color = textColor,modifier = Modifier.weight(0.2f))
+    }
 }

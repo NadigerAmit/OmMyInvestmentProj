@@ -29,22 +29,22 @@ import com.nadigerventures.pfa.ui.screens.ScreenConfig
 
 val privacyPolicy = "\nAbout personal data:\n" +
         "\n" +
-        "All the data provide to this app will be stored within the device " +
+        "All the data provided to this app will be stored within the device " +
         "in the encrypted format and will be accessed only by PFA app.\n" +
         "None of the data is sent outside the device by any means.\n" +
         "\n" +
         "Below is the list of personal data which are stored in" +
-        " encrypted format within the device\n" +
+        " encrypted format within the device.\n" +
         "\n" +
-        "1. Full Name -> Used for displaying name in the profile page\n\n" +
+        "1. Full Name -> Used for displaying name in the profile page.\n\n" +
         "2. Date of birth -> Used for authentication of user to display,Password hint when user clicks forgot password in login screen.\n\n" +
-        "3. Password -> Used to login in PFA app if user wants to protect his data with password to access the app\n\n" +
+        "3. Password -> Used to login in PFA app if user wants to protect his data with password to access the app.\n\n" +
         "4. Password Hint1/2 - To help user if he forgets the password in login page when user clicks forgot passwd.\n\n" +
         "   the hint will be shown after user provide the correct date of birth registered during signup.\n\n" +
 
         "How to delete profile data ?\n" +
         "Go to profile setting page within the app , then Press Delete button at the end of page."+
-        "All the below is the list of personal investment data will be stored in the encrypted local database within the device.\n" +
+        "Below is the list of personal investment data that will be stored in the encrypted local database within the device.\n" +
         " None of the data is sent outside the device by any means.\n" +
         "\n" +
         "1. Account Number - used as Unique ID for any investment, usually provided by banks in India. \n" +

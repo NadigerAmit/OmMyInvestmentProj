@@ -31,7 +31,7 @@ class SecureSharedPreference {
         val encryptedValue: EncryptedData? =
             cryptoProvider?.encrypt(value.toString()) // This is for Value
         if (encryptedValue == null) {
-            Log.e(TAG, "Encrypted data is null ")
+           // Log.i(TAG, "Encrypted data is null ")
             return
         }
         mPref!!.edit().putString(key, encryptedValue.encryptedStr).apply()
@@ -42,7 +42,7 @@ class SecureSharedPreference {
         val encryptedValue: EncryptedData? =
             cryptoProvider?.encrypt(value.toString()) // This is for Value
         if (encryptedValue == null) {
-            Log.e(TAG, "Encrypted data is null ")
+           // Log.i(TAG, "Encrypted data is null ")
             return
         }
         mPref!!.edit().putString(key, encryptedValue.encryptedStr).apply()
@@ -51,9 +51,9 @@ class SecureSharedPreference {
 
     fun putString(key: String, value: String) {
         val encryptedValue: EncryptedData? = cryptoProvider?.encrypt(value) // This is for Value
-        Log.d(TAG, "Encrypted Value of  $value = $encryptedValue")
+       // Log.d(TAG, "Encrypted Value of  $value = $encryptedValue")
         if (encryptedValue == null) {
-            Log.e(TAG, "Encrypted data is null ")
+          //  Log.e(TAG, "Encrypted data is null ")
             return
         }
         mPref!!.edit().putString(key, encryptedValue.encryptedStr).apply()
@@ -64,7 +64,7 @@ class SecureSharedPreference {
         val encryptedValue: EncryptedData? =
             cryptoProvider?.encrypt(value.toString()) // This is for Value
         if (encryptedValue == null) {
-            Log.e(TAG, "Encrypted data is null ")
+          //  Log.e(TAG, "Encrypted data is null ")
             return
         }
         mPref!!.edit().putString(key, encryptedValue.encryptedStr).apply()
@@ -75,7 +75,7 @@ class SecureSharedPreference {
         val encryptedValue: EncryptedData? =
             cryptoProvider?.encrypt(value.toString()) // This is for Value
         if (encryptedValue == null) {
-            Log.e(TAG, "Encrypted data is null ")
+          //  Log.e(TAG, "Encrypted data is null ")
             return
         }
         mPref!!.edit().putString(key, encryptedValue.encryptedStr).apply()
@@ -85,7 +85,7 @@ class SecureSharedPreference {
     fun putStringSet(key: String, value: Set<String?>) {
         val encryptedValue: EncryptedData? = cryptoProvider?.encrypt(value.toString())
         if (encryptedValue == null) {
-            Log.e(TAG, "Encrypted data is null ")
+           // Log.e(TAG, "Encrypted data is null ")
             return
         }
         mPref!!.edit().putString(key, encryptedValue.encryptedStr).apply()
@@ -96,7 +96,7 @@ class SecureSharedPreference {
         val encryptedValue: EncryptedData? =
             cryptoProvider?.encrypt(value.toString()) // This is for Value
         if (encryptedValue == null) {
-            Log.e(TAG, "Encrypted data is null ")
+           // Log.i(TAG, "Encrypted data is null ")
             return
         }
         mPref!!.edit().putString(key, encryptedValue.encryptedStr).apply()

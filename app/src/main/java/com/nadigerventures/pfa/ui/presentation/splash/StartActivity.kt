@@ -21,9 +21,9 @@ private val TAG = "StartActivity"
 class StartActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.e(TAG,"StartActivity called ")
+        //Log.i(TAG,"StartActivity called ")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            Log.e(TAG,"StartActivity called Build.VERSION.SDK_INT is less than S")
+            //Log.i(TAG,"StartActivity called Build.VERSION.SDK_INT is less than S")
             val splashScreen = installSplashScreen()
             splashScreen.setKeepOnScreenCondition { true }
         }
@@ -32,21 +32,21 @@ class StartActivity : FragmentActivity() {
         val startViewModel = resourceProvider.getStartViewModel()
         lifecycleScope.launchWhenCreated {
             var isOnBoardingCompleted = startViewModel.readOnBoardingState()
-            Log.e(TAG,"isOnBoardingCompleted  $isOnBoardingCompleted")
+            //Log.i(TAG,"isOnBoardingCompleted  $isOnBoardingCompleted")
             if (isOnBoardingCompleted) navigateMainActivity() else navigateWelcomeActivity()
 
         }
     }
 
     private fun navigateMainActivity() {
-        Log.e(TAG,"StartActivity : navigateMainActivity ")
+        //Log.i(TAG,"StartActivity : navigateMainActivity ")
         val intent = Intent(this@StartActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
 
     private fun navigateWelcomeActivity() {
-        Log.e(TAG,"StartActivity : navigateWelcomeActivity ")
+        //Log.i(TAG,"StartActivity : navigateWelcomeActivity ")
         val intent = Intent(this@StartActivity, WelcomeActivity::class.java)
         startActivity(intent)
         finish()

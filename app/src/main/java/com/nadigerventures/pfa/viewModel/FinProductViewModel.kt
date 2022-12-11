@@ -41,7 +41,7 @@ class FinProductViewModel(application: Application): ViewModel() {
         val passCode = getPassCode(application.applicationContext)
 
         val finProductDb = ProductRoomDatabase.getInstance(application,passCode)
-        Log.i(TAG,"ProductRoomDatabase.getInstance done  = ")
+      //  Log.i(TAG,"ProductRoomDatabase.getInstance done  = ")
         val finProductStoreDao = finProductDb.accountProductStoreDao()
         repository = ProductRepository(finProductStoreDao)
         allAccounts = finProductStoreDao.all()
@@ -55,13 +55,13 @@ class FinProductViewModel(application: Application): ViewModel() {
         var passCode:String? = null
         runBlocking {
             passCode = dataStoreProvider.getString(DataStoreConst.DB_PASSCODE).first()
-            Log.i(TAG,"Retrived passcode from data store  = $passCode")
+          //  Log.i(TAG,"Retrived passcode from data store  = $passCode")
         }
 
         if(passCode == null) {
             // is registration Done
             passCode = UUID.randomUUID().toString()+abs((0..999999999999).random()).toString()
-            Log.i(TAG,"Generated new passcode = $passCode")
+           // Log.i(TAG,"Generated new passcode = $passCode")
             runBlocking {
                 dataStoreProvider.putString(DataStoreConst.DB_PASSCODE,passCode!!)
             }
@@ -74,8 +74,23 @@ class FinProductViewModel(application: Application): ViewModel() {
     }
 
     fun updateFinProduct(productUpdate: ProductUpdate) {
-        Log.e("FinProductViewModel.kt","updateFinProduct API finished ${productUpdate.investorName}")
+       // Log.e("FinProductViewModel.kt","updateFinProduct API finished ${productUpdate.investorName}")
         repository.updateProduct(productUpdate)
+        for(i in allAccounts.value!!) {
+            if(i.accountNumber == productUpdate.accountNumber) {
+                i.investorName = productUpdate.investorName
+                i.financialInstitutionName = productUpdate.financialInstitutionName
+                i.productType = productUpdate.productType
+                i.investmentAmount = productUpdate.investmentAmount
+                i.investmentDate = productUpdate.investmentDate
+                i.maturityDate = productUpdate.maturityDate
+                i.maturityAmount = productUpdate.maturityAmount
+                i.interestRate = productUpdate.interestRate
+                i.nomineeName = productUpdate.nomineeName
+                Log.e("FinProductViewModel.kt","updateFinProduct API finished ${productUpdate.accountNumber}")
+                break
+            }
+        }
     }
 
     fun deleteFinProduct(accountNum: String) {
@@ -86,6 +101,7 @@ class FinProductViewModel(application: Application): ViewModel() {
         if(allAccounts.value == null) return null
         for(i in allAccounts.value!!) {
             if(i.accountNumber == accountNum) return i
+            Log.i(TAG,"findProductBasedOnAccountNumberFromLocalCache ${i.accountNumber}")
         }
         return null
     }
@@ -134,8 +150,7 @@ class FinProductViewModel(application: Application): ViewModel() {
                 repository.findProductsHavingInvestorNameNotEqualTo(name)
             }
         }
-
-        Log.e("FinProductViewModel.kt","findProductsBasedOnInvestorName API finished ${searchResults.value}")
+       // Log.e("FinProductViewModel.kt","findProductsBasedOnInvestorName API finished ${searchResults.value}")
     }
 
     fun findProductsBasedOnNomineeName(name: String,operation:String) {
@@ -148,15 +163,15 @@ class FinProductViewModel(application: Application): ViewModel() {
             }
         }
 
-        Log.e("FinProductViewModel.kt","findProductsBasedOnNomineeName API finished ${searchResults.value}")
+        //Log.e("FinProductViewModel.kt","findProductsBasedOnNomineeName API finished ${searchResults.value}")
     }
 
     //
     fun findProductsHavingInvestmentAmount(investmentAmount: String,
                                             operation:String) {
         val investmentAmountInInt = investmentAmount.toInt()
-        Log.e("FinProductViewModel.kt","investmentAmountInString = $investmentAmount")
-        Log.e("FinProductViewModel.kt","investmentAmountInInt = $investmentAmountInInt")
+       // Log.e("FinProductViewModel.kt","investmentAmountInString = $investmentAmount")
+       // Log.e("FinProductViewModel.kt","investmentAmountInInt = $investmentAmountInInt")
         when(operation) {
             "=" -> {
                 repository.findProductsHavingInvestmentAmount(investmentAmountInInt)
@@ -182,8 +197,8 @@ class FinProductViewModel(application: Application): ViewModel() {
     fun findProductsHavingMaturityAmount(maturityAmount: String,
                                            operation:String) {
         val maturityAmountInInt = maturityAmount.replace(",", "").toDouble()
-        Log.e("FinProductViewModel.kt","investmentAmountInString = $maturityAmount")
-        Log.e("FinProductViewModel.kt","investmentAmountInInt = $maturityAmountInInt")
+       // Log.e("FinProductViewModel.kt","investmentAmountInString = $maturityAmount")
+       // Log.e("FinProductViewModel.kt","investmentAmountInInt = $maturityAmountInInt")
         when(operation) {
             "=" -> {
                 repository.findProductsHavingMaturityAmount(maturityAmountInInt)
@@ -298,7 +313,7 @@ class FinProductViewModel(application: Application): ViewModel() {
                                        operation:String) {
 
         val depositPeriodInInt = getDaysFromString(depositPeriod).toInt()
-        Log.e("DepositPeriod","$depositPeriodInInt")
+       // Log.e("DepositPeriod","$depositPeriodInInt")
         when(operation) {
             "=" -> {
                 repository.findProductsHavingDepositPeriodEqualTo(depositPeriodInInt)

@@ -43,7 +43,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
     }
 
     fun updateProduct(newProduct: ProductUpdate) {
-        Log.e(TAG,"updateFinProduct API finished ${newProduct.investorName}")
+        //Log.i(TAG,"updateFinProduct API finished ${newProduct.investorName}")
         coroutineScope.launch(Dispatchers.IO) {
             try {
                 productStoreDao.update(newProduct)
@@ -115,7 +115,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
                 return@async productStoreDao.findProductsHavingAccountNumberNotEqualTo(accountNum)
             }.await()
         }
-        Log.e("ProdRepository.kt","findProductsBasedOnAccountNumber API finished ${searchResults.value}")
+        //Log.i("ProdRepository.kt","findProductsBasedOnAccountNumber API finished ${searchResults.value}")
     }
 
     fun findProductsHavingFinanceInstituteName(name: String) {

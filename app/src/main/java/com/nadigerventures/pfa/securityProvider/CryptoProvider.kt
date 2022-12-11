@@ -33,7 +33,7 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
        false)
 
     init {
-        Log.d(TAG, "CryptoService Cons")
+        Log.i(TAG, "CryptoService Cons")
         createMasterKey(null)
     }
 
@@ -60,7 +60,7 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
     }
 
     override fun decrypt(encryptedData: EncryptedData): String? {
-        Log.d(TAG, "decrypt ")
+        //Log.i(TAG, "decrypt ")
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             decryptWithAndroidSymmetricKey(encryptedData) // Symmetric algo
         } else {
@@ -136,7 +136,7 @@ class CryptoProvider(val context:Context ):ICryptoProvider {
 
     //( Java symmetric Key + Android Asymmetric key pair  )
     private fun createDefaultSymmetricKey() {
-        Log.d(TAG, "createDefaultSymmetricKey")
+        //Log.d(TAG, "createDefaultSymmetricKey")
         var encryptedSymmetricKey: String? = null
 
         runBlocking {

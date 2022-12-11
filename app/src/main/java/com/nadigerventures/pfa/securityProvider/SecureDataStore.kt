@@ -36,7 +36,7 @@ class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
     }
 
     override suspend fun getString(key: String) = context.dataStore.data.map {
-        Log.i(TAG, "getString -->  Key = $key")
+        //Log.i(TAG, "getString -->  Key = $key")
         var decryptedStr: String? = null
         if (stringMap.containsKey(key)) {
             decryptedStr = stringMap[key]
@@ -174,7 +174,7 @@ class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
     }
 
     override suspend fun removeKey(key: String,type:String) {
-        Log.d(TAG,"Key($key) is removed")
+        Log.i(TAG,"Key($key) is removed")
         context.dataStore.edit {
             when(type) {
                 "Bool" -> {

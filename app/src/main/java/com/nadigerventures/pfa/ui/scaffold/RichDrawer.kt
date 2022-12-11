@@ -122,8 +122,6 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
                     .fillMaxWidth()
                     .padding(top = 10.dp)
             )
-
-
              */
 
         }
@@ -148,8 +146,7 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
                 DrawerItem(item = items, selected = currentRoute == items.route, onItemClick = {
                     when(items.route) {
                         "license" -> {
-                            Log.e(TAG, "license is triggerred ")
-
+                            //Log.i(TAG, "license is triggerred ")
                             // val intent = Intent(context, OssLicensesMenuActivity::class.java)
                             // context.startActivity(intent)
                             context.launchActivity<OssLicensesMenuActivity> { }

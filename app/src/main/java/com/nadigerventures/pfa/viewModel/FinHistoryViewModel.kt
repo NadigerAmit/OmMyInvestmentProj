@@ -48,13 +48,13 @@ class FinHistoryViewModel(application: Application): ViewModel() {
         var passCode: String? = null
         runBlocking {
             passCode = dataStoreProvider.getString(DataStoreConst.DB_PASSCODE).first()
-            Log.i(TAG, "Retrived passcode from data store  = $passCode")
+            //Log.i(TAG, "Retrived passcode from data store  = $passCode")
         }
         return passCode!!
     }
 
     fun insertFinProduct(product: Product) {
-        Log.i(TAG, "Inserting the Product   = ${product.investorName}")
+       // Log.i(TAG, "Inserting the Product   = ${product.investorName}")
         repository.insertProduct(product)
     }
 
