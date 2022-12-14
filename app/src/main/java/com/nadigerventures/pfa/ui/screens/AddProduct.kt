@@ -177,7 +177,7 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                 "Save" -> {
                     Button(onClick = {
                         fun validateInputs():Boolean {
-                            Log.i("AddProduct","In validateInputs ")
+                            //Log.i("AddProduct","In validateInputs ")
                             if(!validateAccountNumber(accountNumber,context) ||
                                 !validateFinInstitution(finInstitutionName,context) ||
                                 !validateInvestmentDate(investmentDate,context) ||

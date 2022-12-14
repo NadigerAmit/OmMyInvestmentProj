@@ -380,6 +380,7 @@ fun deleteAllPersonalData(context: Context) {
 
 @Composable
 fun confirmPasswordScreen(fullName:String,existingPasswd:String,onPasswdConfirm: (Boolean) -> Unit = {}, ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
     var password by remember { mutableStateOf("") }
     val onPasswordTextChange = { text : String ->
         password = text
@@ -410,6 +411,9 @@ fun confirmPasswordScreen(fullName:String,existingPasswd:String,onPasswdConfirm:
             }
             if(existingPasswd == password) {
                 onPasswdConfirm(true)
+            } else {
+                Toast.makeText(context, "Incorrect Password !!", Toast.LENGTH_LONG)
+                    .show()
             }
         }) {
             Text("Confirm")
