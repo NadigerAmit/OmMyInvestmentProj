@@ -167,7 +167,7 @@ class FinProductViewModel(application: Application): ViewModel() {
     //
     fun findProductsHavingInvestmentAmount(investmentAmount: String,
                                             operation:String) {
-        val investmentAmountInInt = investmentAmount.toInt()
+        val investmentAmountInInt = investmentAmount.toDouble()
        // Log.e("FinProductViewModel.kt","investmentAmountInString = $investmentAmount")
        // Log.e("FinProductViewModel.kt","investmentAmountInInt = $investmentAmountInInt")
         when(operation) {

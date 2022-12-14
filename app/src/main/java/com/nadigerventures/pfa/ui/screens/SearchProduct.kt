@@ -88,7 +88,7 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
     var searchByField by rememberSaveable { mutableStateOf("") }
     var operationField by rememberSaveable { mutableStateOf("") }
     var valueField by rememberSaveable { mutableStateOf("") }
-    var totalInvestmentAmount = 0
+    var totalInvestmentAmount = 0.0
     var totalMaturityAmount = 0.0
 
     for(i in searchResults) {
@@ -110,7 +110,7 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
     var finalList:MutableList<Product> = searchResults.toMutableList()
     finalList.add(
         Product("00000000000",
-    "","","TotalInvestmentAmount",0, Calendar.getInstance(), Calendar.getInstance(),1.1,
+    "","","TotalInvestmentAmount",0.0, Calendar.getInstance(), Calendar.getInstance(),1.1,
             0.0f,0)
     )
 
@@ -159,7 +159,7 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
                         var color: Color = getProductColor(product,nod.value.toInt())
 
                         if(product.accountNumber == "00000000000"
-                            && totalInvestmentAmount != 0 ) {
+                            && totalInvestmentAmount != 0.0 ) {
                             SummaryRow("\n   Σ InvestAmount\n\n"+
                                     "  Σ MaturityAmount\n\n","\n  "+totalInvestmentAmount.toString()
                                     + "\n\n"+"  "+

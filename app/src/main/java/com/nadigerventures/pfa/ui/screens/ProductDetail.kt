@@ -40,7 +40,7 @@ import java.util.*
 
 var showDeleteAlertDialogGlobal =  mutableStateOf(false)
 var deletedRecord =  mutableStateOf(Product("",
-    "","","",0, Calendar.getInstance(), Calendar.getInstance(),1.1,
+    "","","",1.1, Calendar.getInstance(), Calendar.getInstance(),1.1,
     0.0f,0))
 private val TAG = "ProductDetail"
 val dateFormat = "yyyy-MM-dd"
@@ -78,7 +78,7 @@ private fun getListOPropertiesOfProduct(productDetail: Product): List<Pair<Strin
             productDetail.investmentDate.get(Calendar.MONTH),
             productDetail.investmentDate.get(Calendar.DAY_OF_MONTH)
             ,dateFormat)),
-        Pair("Investment amount",  productDetail.investmentAmount.toString()),
+        Pair("Investment amount",  NumberFormat.getInstance().format(productDetail.investmentAmount)),
         Pair("Maturity date", DateUtility.getPickedDateAsString(
             productDetail.maturityDate.get(Calendar.YEAR),
             productDetail.maturityDate.get(Calendar.MONTH),
@@ -197,7 +197,7 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
 }
 
 private fun printProductDetails(productDetail: Product){
-Log.e("ProductDetail.Kt","Product is retived in Home \n accountNumber = ${productDetail?.accountNumber}" +
+Log.i("ProductDetail.Kt","Product is retived in Home \n accountNumber = ${productDetail?.accountNumber}" +
     " \n financialInstitutionName +  ${productDetail?.financialInstitutionName}" +
     " \n investorName = ${productDetail?.investorName} " +
     " \ninvestmentAmount = ${productDetail?.investmentAmount}" +

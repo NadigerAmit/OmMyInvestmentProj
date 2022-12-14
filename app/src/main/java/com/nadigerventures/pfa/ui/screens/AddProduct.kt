@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavHostController
 import com.nadigerventures.pfa.room.Product
 import com.nadigerventures.pfa.room.ProductUpdate
@@ -54,7 +55,8 @@ fun getScreenConfig4AddProduct():ScreenConfig {
         enableDrawer = true,
         enableFab = false,
         topAppBarTitle = "Update Investment", bottomAppBarTitle = "",
-        fabString = "",)
+        fabString = "",
+    )
 }
 
 
@@ -197,7 +199,7 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                                         finInstitutionName,
                                         productType,
                                         investorName,
-                                        investmentAmount.toInt(),
+                                        investmentAmount.toDouble(),
                                         investmentDate,
                                         maturityDate,
                                         maturityAmount.toDouble(),
@@ -214,7 +216,7 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                                         finInstitutionName,
                                         productType,
                                         investorName,
-                                        investmentAmount.toInt(),
+                                        investmentAmount.toDouble(),
                                         investmentDate,
                                         maturityDate,
                                         maturityAmount.toDouble(),
@@ -246,7 +248,9 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                     }) {
                         Text("Save")
                     }
-                    Spacer(modifier = Modifier.width(40.dp).height(90.dp))
+                    Spacer(modifier = Modifier
+                        .width(40.dp)
+                        .height(90.dp))
                 }
                 "Investment Date",
                 "Maturity Date"->
@@ -332,12 +336,28 @@ private fun validateInvestmentAmount(investmentAmount: String,context:Context):B
             .show()
         return false
     }
+    try {
+        investmentAmount.toDouble()
+    } catch (ex: NumberFormatException) {
+        // Not a float
+        Toast.makeText(context, "Cant have a non digit field in Investment Amount ", Toast.LENGTH_LONG)
+            .show()
+        return false
+    }
     return true
 }
 
 private fun validateMaturityAmount(maturityAmount: String,context:Context):Boolean {
     if(maturityAmount.isEmpty()||maturityAmount.isBlank()) {
         Toast.makeText(context, "Cant have a blank maturityAmount field ", Toast.LENGTH_LONG)
+            .show()
+        return false
+    }
+    try {
+        maturityAmount.toDouble()
+    } catch (ex: NumberFormatException) {
+        // Not a float
+        Toast.makeText(context, "Cant have a non digit field in maturity Amount ", Toast.LENGTH_LONG)
             .show()
         return false
     }
@@ -369,5 +389,15 @@ private fun validateInterestRate(interestRate: String,context:Context):Boolean {
             .show()
         return false
     }
+
+    try {
+        interestRate.toFloat()
+    } catch (ex: NumberFormatException) {
+        // Not a float
+        Toast.makeText(context, "Cant have a non digit field in interest rate ", Toast.LENGTH_LONG)
+            .show()
+        return false
+    }
+
     return true
 }

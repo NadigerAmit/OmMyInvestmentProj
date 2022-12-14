@@ -20,7 +20,7 @@ class ProductUpdate {
     var investorName : String = ""
 
     @ColumnInfo(name = "investmentAmount")
-    var investmentAmount: Int = 0
+    var investmentAmount: Double = 0.0
 
     @ColumnInfo(name = "investmentDate")
     var investmentDate: Calendar = Calendar.getInstance()
@@ -43,7 +43,7 @@ class ProductUpdate {
 
     constructor(accountNumber: String, financialInstitutionName: String,
                 productType:String,investorName: String,
-                investmentAmount: Int, investmentDate: Calendar, maturityDate: Calendar,
+                investmentAmount: Double =0.0, investmentDate: Calendar, maturityDate: Calendar,
                 maturityAmount: Double =1.1, interestRate: Float =1.1f, depositPeriod: Int=1,
                 nomineeName: String ="") {
         this.accountNumber = accountNumber
