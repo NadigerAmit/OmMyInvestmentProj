@@ -73,7 +73,7 @@ fun ProductListScreen(
 
                 items(allProducts) { product ->
 
-                //    /*
+                    /*
                     Log.e(TAG,"Product is retived in $parentScreen \n accountNumber = ${product.accountNumber}" +
                             // " \n financialInstitutionName +  ${product.financialInstitutionName}" +
                             //  " \n investorName = ${product.investorName} " +
@@ -85,7 +85,7 @@ fun ProductListScreen(
                         //       " \n depositPeriod = ${product.depositPeriod} " +
                         //       " \n nomineeName = ${product.nomineeName} "
                     )
-                  //   */
+                     */
 
                     var color: Color = getProductColor(product, advanceNotifyDays)
 
