@@ -185,7 +185,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
 
 
       // Investment Amount
-    fun findProductsHavingInvestmentAmount(investmentAmountInInt: Int) {
+    fun findProductsHavingInvestmentAmount(investmentAmountInInt: Double) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = coroutineScope.async(Dispatchers.IO) {
                 return@async productStoreDao.findProductsHavingInvestmentAmount(investmentAmountInInt)
@@ -193,7 +193,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
         }
     }
 
-    fun findProductsHavingInvestmentAmountNotEqualTo(investmentAmountInInt: Int) {
+    fun findProductsHavingInvestmentAmountNotEqualTo(investmentAmountInInt: Double) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = coroutineScope.async(Dispatchers.IO) {
                 return@async productStoreDao.findProductsHavingInvestmentAmountNotEqualTo(investmentAmountInInt)
@@ -201,7 +201,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
         }
     }
 
-    fun findProductsHavingInvestmentAmountGraterThan(investmentAmountInInt: Int) {
+    fun findProductsHavingInvestmentAmountGraterThan(investmentAmountInInt: Double) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = coroutineScope.async(Dispatchers.IO) {
                 return@async productStoreDao.findProductsHavingInvestmentGraterThan(investmentAmountInInt)
@@ -209,7 +209,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
         }
     }
 
-    fun findProductsHavingInvestmentAmountGraterThanOrEqualTo(investmentAmountInInt: Int) {
+    fun findProductsHavingInvestmentAmountGraterThanOrEqualTo(investmentAmountInInt: Double) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = coroutineScope.async(Dispatchers.IO) {
                 return@async productStoreDao.findProductsHavingInvestmentGraterThanOrEqualTo(investmentAmountInInt)
@@ -217,7 +217,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
         }
     }
 
-    fun findProductsHavingInvestmentAmountLessThanOrEqualTo(investmentAmountInInt: Int) {
+    fun findProductsHavingInvestmentAmountLessThanOrEqualTo(investmentAmountInInt: Double) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = coroutineScope.async(Dispatchers.IO) {
                 return@async productStoreDao.findProductsHavingInvestmentLessThanOrEqualTo(investmentAmountInInt)
@@ -225,7 +225,7 @@ class ProductRepository(private val productStoreDao: ProductStoreDao) {
         }
     }
 
-    fun findProductsHavingInvestmentAmountLessThan(investmentAmountInInt: Int) {
+    fun findProductsHavingInvestmentAmountLessThan(investmentAmountInInt: Double) {
         coroutineScope.launch(Dispatchers.Main) {
             searchResults.value = coroutineScope.async(Dispatchers.IO) {
                 return@async productStoreDao.findProductsHavingInvestmentLessThan(investmentAmountInInt)

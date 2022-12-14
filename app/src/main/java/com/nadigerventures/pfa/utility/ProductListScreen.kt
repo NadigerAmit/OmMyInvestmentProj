@@ -73,18 +73,19 @@ fun ProductListScreen(
 
                 items(allProducts) { product ->
 
-                    /*
+                //    /*
                     Log.e(TAG,"Product is retived in $parentScreen \n accountNumber = ${product.accountNumber}" +
                             // " \n financialInstitutionName +  ${product.financialInstitutionName}" +
                             //  " \n investorName = ${product.investorName} " +
-                            //  " \ninvestmentAmount = ${product.investmentAmount}" +
+                              " \ninvestmentAmount = ${product.investmentAmount}" +
+                            " \nMaturitytAmount = ${product.maturityAmount}" +
                             //   " \ninvestmentDate in long = ${product.investmentDate.time.time}  " +
                             " \n maturityDate in Long = ${product.maturityDate}  "
                         //    + " \n interestRate = ${product.interestRate}  " +
                         //       " \n depositPeriod = ${product.depositPeriod} " +
                         //       " \n nomineeName = ${product.nomineeName} "
                     )
-                     */
+                  //   */
 
                     var color: Color = getProductColor(product, advanceNotifyDays)
 
@@ -94,7 +95,7 @@ fun ProductListScreen(
                             product.accountNumber
                         )
                                 + "\n" + truncateString(product.productType),
-                        SecondColumn = truncateString(product.investmentAmount.toString()) + "\n" + truncateString(
+                        SecondColumn = truncateString(NumberFormat.getInstance().format(product.investmentAmount)) + "\n" + truncateString(
                             NumberFormat.getInstance().format(product.maturityAmount)
                         ) + "\n" +
                                 truncateString(product.interestRate.toString()),

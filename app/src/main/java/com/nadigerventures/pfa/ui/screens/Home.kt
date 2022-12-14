@@ -115,13 +115,16 @@ private fun notifyToUser(context: Context,allProducts: List<Product>,advanceNoti
             val notificationString = prepareNotificationMessage(numberOfAlreadyMaturedItems,
                 numberOfToBeMaturedItemsWithinAdvanceNotification,
                 advanceNotifyDays)
-            notifyMaturedAndToBeMaturedItems(context = context,notificationString)
+            notifyMaturedAndToBeMaturedItems(context = context,notificationString,
+                numberOfAlreadyMaturedItems+numberOfToBeMaturedItemsWithinAdvanceNotification
+                )
         }
     }
 
 }
 private fun createNotification(notificationManager: NotificationManager, context: Context,
-                               notificationString:String?) {
+                               notificationString:String?,
+                               totalNumberOfItemsToBeNotified:Int) {
 
     //Log.i(TAG,"Notification message = textDesc = $notificationString")
     val CHANNEL_ID = "pfa_01"
@@ -151,7 +154,7 @@ private fun createNotification(notificationManager: NotificationManager, context
         .setAutoCancel(true)
         .setBadgeIconType(NotificationCompat.BADGE_ICON_LARGE)
         .setPriority(importance)
-        .setNumber(10)
+        .setNumber(totalNumberOfItemsToBeNotified)
         .build()
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -168,12 +171,13 @@ private fun createNotification(notificationManager: NotificationManager, context
 }
 
 
-private fun notifyMaturedAndToBeMaturedItems(context: Context, notificationString:String?) {
+private fun notifyMaturedAndToBeMaturedItems(context: Context, notificationString:String?,
+totalNumberOfItemsToBeNotified:Int) {
    // Log.i(TAG,"in notifyMaturedAndToBeMaturedItems")
 
     val notificationManager: NotificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    createNotification(notificationManager,context,notificationString)
+    createNotification(notificationManager,context,notificationString,totalNumberOfItemsToBeNotified)
 }
 
 private fun prepareNotificationMessage(maturedItems:Int,

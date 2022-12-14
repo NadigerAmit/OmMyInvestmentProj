@@ -28,7 +28,7 @@ class Product {
 
     @NonNull
     @ColumnInfo(name = "investmentAmount")
-    var investmentAmount: Int = 0
+    var investmentAmount: Double = 0.0
 
     @NonNull
     @ColumnInfo(name = "investmentDate")
@@ -58,7 +58,7 @@ class Product {
 
     constructor(accountNumber: String, financialInstitutionName: String,
                 productType:String,investorName: String,
-                investmentAmount: Int, investmentDate: Calendar, maturityDate: Calendar,
+                investmentAmount: Double =0.0, investmentDate: Calendar, maturityDate: Calendar,
                 maturityAmount: Double =0.0, interestRate: Float =0.0f, depositPeriod: Int=1,
                 nomineeName: String ="") {
         this.accountNumber = accountNumber

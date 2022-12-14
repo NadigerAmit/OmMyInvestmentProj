@@ -35,7 +35,7 @@ import java.util.*
 var showMoveAlertDialogGlobal =  mutableStateOf(false)
 var movedRecord =  mutableStateOf(
     Product("",
-    "","","",0, Calendar.getInstance(), Calendar.getInstance(),1.1,
+    "","","",0.0, Calendar.getInstance(), Calendar.getInstance(),1.1,
     0.0f,0)
 )
 private val TAG = "HistoryProductDetail"

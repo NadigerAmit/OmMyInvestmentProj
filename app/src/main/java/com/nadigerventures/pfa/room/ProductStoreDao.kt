@@ -109,22 +109,22 @@ interface ProductStoreDao {
 
  // InvestmentAmount related queries
     @Query("SELECT * FROM productTable WHERE investmentAmount = :investmentAmountInInt")
-    fun findProductsHavingInvestmentAmount(investmentAmountInInt: Int): List<Product>
+    fun findProductsHavingInvestmentAmount(investmentAmountInInt: Double): List<Product>
 
     @Query("SELECT * FROM productTable WHERE investmentAmount != :investmentAmountInInt")
-    fun findProductsHavingInvestmentAmountNotEqualTo(investmentAmountInInt: Int): List<Product>
+    fun findProductsHavingInvestmentAmountNotEqualTo(investmentAmountInInt: Double): List<Product>
 
     @Query("SELECT * FROM productTable WHERE investmentAmount > :investmentAmountInInt")
-    fun findProductsHavingInvestmentGraterThan(investmentAmountInInt: Int): List<Product>
+    fun findProductsHavingInvestmentGraterThan(investmentAmountInInt: Double): List<Product>
 
     @Query("SELECT * FROM productTable WHERE investmentAmount >= :investmentAmountInInt")
-    fun findProductsHavingInvestmentGraterThanOrEqualTo(investmentAmountInInt: Int): List<Product>
+    fun findProductsHavingInvestmentGraterThanOrEqualTo(investmentAmountInInt: Double): List<Product>
 
     @Query("SELECT * FROM productTable WHERE investmentAmount < :investmentAmountInInt")
-    fun findProductsHavingInvestmentLessThan(investmentAmountInInt: Int): List<Product>
+    fun findProductsHavingInvestmentLessThan(investmentAmountInInt: Double): List<Product>
 
     @Query("SELECT * FROM productTable WHERE investmentAmount <= :investmentAmountInInt")
-    fun findProductsHavingInvestmentLessThanOrEqualTo(investmentAmountInInt: Int): List<Product>
+    fun findProductsHavingInvestmentLessThanOrEqualTo(investmentAmountInInt: Double): List<Product>
 
 
     // MaturityAmount related queries
