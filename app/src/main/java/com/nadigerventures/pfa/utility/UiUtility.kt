@@ -1,18 +1,22 @@
 package com.nadigerventures.pfa.utility
 
+import android.R
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -20,6 +24,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,9 +33,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 
 import com.nadigerventures.pfa.ui.NavRoutes
+import com.nadigerventures.pfa.ui.screens.searchByFieldValue
 
 
 private val TAG = "ProductDetail"
@@ -294,6 +301,62 @@ fun CustomTextField(
             disabledTextColor = MaterialTheme.colors.primary
         ),
     )
+}
+
+@Composable
+fun CustomDialog(value: String, setShowDialog: (Boolean) -> Unit, setValue: (String) -> Unit) {
+    val txtFieldError = remember { mutableStateOf("") }
+    val txtField = remember { mutableStateOf(value) }
+
+    Dialog(onDismissRequest = { setShowDialog(false) }) {
+        Surface(
+            shape = RoundedCornerShape(10.dp),
+            // color = Color.White
+        ) {
+            Box(
+                contentAlignment = Alignment.Center
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    val sortFieldList = listOf("Account Number",
+                        "Financial Institution Name",
+                        "Product Type", "Investor Name",
+                        "Investment Amount", "Investment Date",
+                        "Maturity Date","Maturity Amount",
+                        "Interest Rate","Deposit Period",
+                        "Nominee Name"
+                    )
+                    var sortByField:String =  "Maturity Date"
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        sortByField = DropDownBox(sortFieldList,"Sort by",230.dp,
+                            searchByFieldValue.value)
+                        if (!sortByField.isEmpty()) {
+                            setValue(sortByField)
+                            setShowDialog(false)
+                        } else {
+                            txtFieldError.value = "Field can not be empty"
+                        }
+
+                        Log.i(TAG,"SortingOrderChanged = true : sortByField  $sortByField")
+                        Icon(
+                            imageVector = Icons.Filled.Cancel,
+                            contentDescription = "",
+                            tint = colorResource(R.color.darker_gray),
+                            modifier = Modifier
+                                .width(30.dp)
+                                .height(30.dp)
+                                .clickable { setShowDialog(false) }
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                }
+            }
+        }
+    }
 }
 
 

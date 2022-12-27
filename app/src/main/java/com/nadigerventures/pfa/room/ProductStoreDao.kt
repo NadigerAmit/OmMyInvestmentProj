@@ -24,6 +24,9 @@ interface ProductStoreDao {
     @Query("SELECT * FROM productTable ORDER BY maturityDate asc")
     fun all(): LiveData<List<Product>>
 
+    @Query("SELECT * FROM productTable ORDER BY investmentDate asc")
+    fun allSortedByInvestmentDate(): LiveData<List<Product>>
+
     @Insert
     fun insertProduct(product: Product)
 
