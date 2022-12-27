@@ -32,6 +32,7 @@ private val TAG = "Home"
 
 private var isNotificationTimerFired = mutableStateOf(false)
 private var isNotificationAgreedByUser = mutableStateOf(false)
+var isSortingOrderChanged = mutableStateOf(false)
 
 private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
@@ -61,14 +62,28 @@ fun Home(navController: NavHostController,viewModel: FinProductViewModel,padding
         "GuideToAddItems",
       //  "ImageToAddItems",
     )
-      ProductListScreen(
+
+    if(isSortingOrderChanged.value) {
+
+        ProductListScreen(
+            navController,
+            allProducts = allProducts,
+            padding,
+            "ProductDetail",
+            displayItemListOfBlankHome,
+            advanceNotifyDays
+        )
+        isSortingOrderChanged.value = false
+    }
+
+    ProductListScreen(
           navController,
         allProducts = allProducts,
-          padding,
-          "ProductDetail",
-          displayItemListOfBlankHome,
-          advanceNotifyDays
-      )
+        padding,
+         "ProductDetail",
+         displayItemListOfBlankHome,
+         advanceNotifyDays
+    )
 
     if(isNotificationTimerFired.value) {
         //Log.i(TAG," Home => isNotificationTimerFired.value is true ")

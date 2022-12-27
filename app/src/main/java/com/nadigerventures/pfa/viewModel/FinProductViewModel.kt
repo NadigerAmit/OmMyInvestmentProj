@@ -9,9 +9,11 @@ import androidx.lifecycle.ViewModel
 import com.nadigerventures.pfa.repository.ProductRepository
 import com.nadigerventures.pfa.room.Product
 import com.nadigerventures.pfa.room.ProductRoomDatabase
+import com.nadigerventures.pfa.room.ProductStoreDao
 import com.nadigerventures.pfa.room.ProductUpdate
 import com.nadigerventures.pfa.securityProvider.DataStoreHolder
 import com.nadigerventures.pfa.ui.screens.dateFormat
+import com.nadigerventures.pfa.ui.screens.isSortingOrderChanged
 import com.nadigerventures.pfa.utility.DataStoreConst
 import com.nadigerventures.pfa.utility.DateUtility
 import kotlinx.coroutines.flow.first
@@ -33,16 +35,17 @@ class FinProductViewModel(application: Application): ViewModel() {
 
    // val allAccounts:kotlinx.coroutines.flow.Flow<List<Product>>
    private val TAG = "FinProductViewModel"
-    val allAccounts: LiveData<List<Product>>
+    var allAccounts: LiveData<List<Product>>
     private val repository: ProductRepository
     val searchResults: MutableLiveData<List<Product>>
+    private val finProductStoreDao: ProductStoreDao
 
     init {
         val passCode = getPassCode(application.applicationContext)
 
         val finProductDb = ProductRoomDatabase.getInstance(application,passCode)
       //  Log.i(TAG,"ProductRoomDatabase.getInstance done  = ")
-        val finProductStoreDao = finProductDb.accountProductStoreDao()
+        finProductStoreDao = finProductDb.accountProductStoreDao()
         repository = ProductRepository(finProductStoreDao)
         allAccounts = finProductStoreDao.all()
         searchResults = repository.searchResults
@@ -67,6 +70,16 @@ class FinProductViewModel(application: Application): ViewModel() {
             }
         }
         return passCode!!
+    }
+
+    fun sortFinProductBasedOnInvestmentDate() {
+        allAccounts = finProductStoreDao.allSortedByInvestmentDate()
+        isSortingOrderChanged.value = true
+    }
+
+    fun sortFinProductBasedOnMaturityDate() {
+        allAccounts = finProductStoreDao.all()
+        isSortingOrderChanged.value = true
     }
 
     fun insertFinProduct(product: Product) {
