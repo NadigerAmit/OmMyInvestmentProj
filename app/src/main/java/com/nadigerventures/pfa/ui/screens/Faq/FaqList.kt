@@ -71,7 +71,7 @@ fun gerFaqList(): List<Pair<String,String>> {
                 "to this app can be protected by password.\n"))
 
     faqList.add(Pair("${++questionNumber}. Can I change sorting order in home screen ?",
-        "No, it is fixed i.e home screen always sorted based on maturity dates as of now.\n"))
+        "Yes , Sorting can be changed based on any field. Remember default sorting order is : based on maturity date\n"))
 
     faqList.add(Pair("${++questionNumber}. Is advance notification in terms of days is configurable ?",
         "Default advance notification is 30 days .\n" +

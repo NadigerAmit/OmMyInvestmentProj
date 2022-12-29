@@ -82,6 +82,46 @@ class FinProductViewModel(application: Application): ViewModel() {
         isSortingOrderChanged.value = true
     }
 
+    fun sortFinProductBasedOnAccountNumber() {
+        allAccounts = finProductStoreDao.allSortedByAccountNumber()
+        isSortingOrderChanged.value = true
+    }
+
+    fun sortFinProductBasedOnInvestmentAmount() {
+        allAccounts = finProductStoreDao.allSortedByInvestmentAmount()
+        isSortingOrderChanged.value = true
+    }
+
+    fun sortFinProductBasedOnInvestorName() {
+        allAccounts = finProductStoreDao.allSortedByInvestorName()
+        isSortingOrderChanged.value = true
+    }
+
+    fun sortFinProductBasedOnFinInstitune() {
+        allAccounts = finProductStoreDao.allSortedByFinInstituteName()
+        isSortingOrderChanged.value = true
+    }
+
+    fun sortFinProductBasedOnProductType() {
+        allAccounts = finProductStoreDao.allSortedByProductType()
+        isSortingOrderChanged.value = true
+    }
+
+    fun sortFinProductBasedOnMaturityAmount() {
+        allAccounts = finProductStoreDao.allSortedByMaturityAmount()
+        isSortingOrderChanged.value = true
+    }
+
+    fun sortFinProductBasedOnInterestRate() {
+        allAccounts = finProductStoreDao.allSortedByInterestRate()
+        isSortingOrderChanged.value = true
+    }
+
+    fun sortFinProductBasedOnNomineeName() {
+        allAccounts = finProductStoreDao.allSortedByNomineeName()
+        isSortingOrderChanged.value = true
+    }
+
     fun insertFinProduct(product: Product) {
         repository.insertProduct(product)
     }
