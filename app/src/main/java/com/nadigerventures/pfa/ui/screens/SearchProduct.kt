@@ -119,7 +119,7 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
         "Product Type", "Investor Name",
         "Investment Amount", "Investment Date",
         "Maturity Date","Maturity Amount",
-        "Interest Rate","Deposit Period",
+        "Interest Rate",
         "Nominee Name"
     )
 

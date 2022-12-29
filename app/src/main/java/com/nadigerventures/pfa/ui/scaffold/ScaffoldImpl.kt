@@ -11,13 +11,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
 import com.nadigerventures.pfa.ui.NavRoutes
 import com.nadigerventures.pfa.ui.screens.ScreenConfig
-import com.nadigerventures.pfa.utility.CustomDialog
+import com.nadigerventures.pfa.utility.CustomSortingDialog
 import com.nadigerventures.pfa.viewModel.FinHistoryViewModel
 import com.nadigerventures.pfa.viewModel.FinProductViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 private val TAG = "ScaffoldImpl"
+
 @Composable
 fun ScaffoldImpl(navController: NavHostController,
                  finProductViewModel: FinProductViewModel,
@@ -53,6 +54,7 @@ fun ScaffoldImpl(navController: NavHostController,
                 .show()
         }
     }
+
 
     var showDialog =  remember { mutableStateOf(false) }
     var sortValue =  remember { mutableStateOf("") }
@@ -120,15 +122,19 @@ fun ScaffoldImpl(navController: NavHostController,
         }
     }
     if(showDialog.value) {
-        //       Log.e(TAG,"Showing the custom Dialog : ")
-        CustomDialog(value = "", setShowDialog = {
+        val sortFieldList = listOf("Account Number",
+            "Financial Institution Name",
+            "Product Type", "Investor Name",
+            "Investment Amount", "Investment Date",
+            "Maturity Date","Maturity Amount",
+            "Interest Rate",
+            "Nominee Name"
+        )
+        CustomSortingDialog(value = "",sortFieldList, setShowDialog = {
             showDialog.value = it
         }) {
             sortValue.value = it
-           // coroutineScope.launch(Dispatchers.Default) {
-                sortFunction(sortValue.value)
-           // }
-
+            sortFunction(sortValue.value)
             Log.i(TAG,"Showing the custom Dialog : $it")
         }
     }
