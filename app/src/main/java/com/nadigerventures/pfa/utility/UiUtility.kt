@@ -304,9 +304,8 @@ fun CustomTextField(
 }
 
 @Composable
-fun CustomDialog(value: String, setShowDialog: (Boolean) -> Unit, setValue: (String) -> Unit) {
+fun CustomSortingDialog(value: String,sortFieldList:List<String>,setShowDialog: (Boolean) -> Unit, setValue: (String) -> Unit) {
     val txtFieldError = remember { mutableStateOf("") }
-    val txtField = remember { mutableStateOf(value) }
 
     Dialog(onDismissRequest = { setShowDialog(false) }) {
         Surface(
@@ -317,22 +316,13 @@ fun CustomDialog(value: String, setShowDialog: (Boolean) -> Unit, setValue: (Str
                 contentAlignment = Alignment.Center
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
-                    val sortFieldList = listOf("Account Number",
-                        "Financial Institution Name",
-                        "Product Type", "Investor Name",
-                        "Investment Amount", "Investment Date",
-                        "Maturity Date","Maturity Amount",
-                        "Interest Rate","Deposit Period",
-                        "Nominee Name"
-                    )
                     var sortByField:String =  "Maturity Date"
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        sortByField = DropDownBox(sortFieldList,"Sort by",230.dp,
-                            searchByFieldValue.value)
+                        sortByField = DropDownBox(sortFieldList,"Sort by",230.dp)
                         if (!sortByField.isEmpty()) {
                             setValue(sortByField)
                             setShowDialog(false)
