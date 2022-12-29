@@ -58,49 +58,64 @@ fun ScaffoldImpl(navController: NavHostController,
     var sortValue =  remember { mutableStateOf("") }
     fun sortFunction(sortBy:String) {
         if(finProductViewModel.allAccounts.value?.size == null ) return
-        if(finProductViewModel.allAccounts.value?.size!! <= 0) {
-            Toast.makeText(context, "No investment records yet in DataBase, "
-                , Toast.LENGTH_LONG)
-                .show()
-        }
-        Log.e(TAG,"sortBy = $sortBy")
-        when(sortBy) {
-            "Account Number" -> {
-
+        coroutineScope.launch(Dispatchers.Default) {
+            if(finProductViewModel.allAccounts.value?.size!! <= 0) {
+                Toast.makeText(context, "No investment records yet in DataBase, "
+                    , Toast.LENGTH_LONG)
+                    .show()
             }
-            "Financial Institution Name"-> {
-
-            }
-            "Product Type"-> {
-
-            }
-            "Investor Name"-> {
-
-            }
-            "Investment Amount"-> {
-
-            }
-            "Investment Date"-> {
-                if(finProductViewModel.allAccounts.value?.size!! > 0) {
-                    finProductViewModel.sortFinProductBasedOnInvestmentDate()
+            Log.e(TAG,"sortBy = $sortBy")
+            when(sortBy) {
+                "Account Number" -> {
+                    if(finProductViewModel.allAccounts.value?.size!! > 0 ) {
+                        finProductViewModel.sortFinProductBasedOnAccountNumber()
+                    }
                 }
-            }
-            "Maturity Date"-> {
-                if(finProductViewModel.allAccounts.value?.size!! > 0 ) {
-                    finProductViewModel.sortFinProductBasedOnMaturityDate()
+                "Financial Institution Name"-> {
+                    if(finProductViewModel.allAccounts.value?.size!! > 0 ) {
+                        finProductViewModel.sortFinProductBasedOnFinInstitune()
+                    }
                 }
-            }
-            "Maturity Amount"-> {
-
-            }
-            "Interest Rate"-> {
-
-            }
-            "Deposit Period"-> {
-
-            }
-            "Nominee Name" -> {
-
+                "Product Type"-> {
+                    if(finProductViewModel.allAccounts.value?.size!! > 0 ) {
+                        finProductViewModel.sortFinProductBasedOnProductType()
+                    }
+                }
+                "Investor Name"-> {
+                    if(finProductViewModel.allAccounts.value?.size!! > 0 ) {
+                        finProductViewModel.sortFinProductBasedOnInvestorName()
+                    }
+                }
+                "Investment Amount"-> {
+                    if(finProductViewModel.allAccounts.value?.size!! > 0 ) {
+                        finProductViewModel.sortFinProductBasedOnInvestmentAmount()
+                    }
+                }
+                "Investment Date"-> {
+                    if(finProductViewModel.allAccounts.value?.size!! > 0) {
+                        finProductViewModel.sortFinProductBasedOnInvestmentDate()
+                    }
+                }
+                "Maturity Date"-> {
+                    if(finProductViewModel.allAccounts.value?.size!! > 0 ) {
+                        finProductViewModel.sortFinProductBasedOnMaturityDate()
+                    }
+                }
+                "Maturity Amount"-> {
+                    if(finProductViewModel.allAccounts.value?.size!! > 0 ) {
+                        finProductViewModel.sortFinProductBasedOnMaturityAmount()
+                    }
+                }
+                "Interest Rate"-> {
+                    if(finProductViewModel.allAccounts.value?.size!! > 0 ) {
+                        finProductViewModel.sortFinProductBasedOnInterestRate()
+                    }
+                }
+                "Nominee Name" -> {
+                    if(finProductViewModel.allAccounts.value?.size!! > 0 ) {
+                        finProductViewModel.sortFinProductBasedOnNomineeName()
+                    }
+                }
             }
         }
     }
@@ -110,7 +125,10 @@ fun ScaffoldImpl(navController: NavHostController,
             showDialog.value = it
         }) {
             sortValue.value = it
-            sortFunction(sortValue.value)
+           // coroutineScope.launch(Dispatchers.Default) {
+                sortFunction(sortValue.value)
+           // }
+
             Log.i(TAG,"Showing the custom Dialog : $it")
         }
     }

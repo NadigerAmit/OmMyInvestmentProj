@@ -27,6 +27,30 @@ interface ProductStoreDao {
     @Query("SELECT * FROM productTable ORDER BY investmentDate asc")
     fun allSortedByInvestmentDate(): LiveData<List<Product>>
 
+    @Query("SELECT * FROM productTable ORDER BY accountNumber asc")
+    fun allSortedByAccountNumber(): LiveData<List<Product>>
+
+    @Query("SELECT * FROM productTable ORDER BY investmentAmount asc")
+    fun allSortedByInvestmentAmount(): LiveData<List<Product>>
+
+    @Query("SELECT * FROM productTable ORDER BY investorName asc")
+    fun allSortedByInvestorName(): LiveData<List<Product>>
+
+    @Query("SELECT * FROM productTable ORDER BY financialInstitutionName asc")
+    fun allSortedByFinInstituteName(): LiveData<List<Product>>
+
+    @Query("SELECT * FROM productTable ORDER BY productType asc")
+    fun allSortedByProductType(): LiveData<List<Product>>
+
+    @Query("SELECT * FROM productTable ORDER BY maturityAmount asc")
+    fun allSortedByMaturityAmount(): LiveData<List<Product>>
+
+    @Query("SELECT * FROM productTable ORDER BY interestRate asc")
+    fun allSortedByInterestRate(): LiveData<List<Product>>
+
+    @Query("SELECT * FROM productTable ORDER BY nomineeName asc")
+    fun allSortedByNomineeName(): LiveData<List<Product>>
+
     @Insert
     fun insertProduct(product: Product)
 

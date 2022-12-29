@@ -124,7 +124,7 @@ class DateUtility {
                     ""+ period.getDays() + " days"
              */
 
-            if(period.days <=0) {
+            if(period.days <0) {
                 duration = ""+ period.days + " days"
             } else {
                 if(period.days >0) {
