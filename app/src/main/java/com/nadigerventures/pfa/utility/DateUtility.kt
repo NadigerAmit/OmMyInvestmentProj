@@ -6,12 +6,14 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.nadigerventures.pfa.ui.screens.dateFormat
+import java.text.ParseException
 
 import java.text.SimpleDateFormat
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.TimeUnit
+private val TAG = "DateUtility"
 
 class DateUtility {
     companion object{
@@ -20,7 +22,7 @@ class DateUtility {
                                  inputDate:String,
                                  dateFormat:String,
                                  onChange: (String) -> Unit = {}) {
-            val calendar = getCalendar(inputDate, dateFormat)
+            val calendar = getCalendar(inputDate, dateFormat) ?: return
             DatePickerDialog(
                 context, { _, year, month, day ->
                     onChange(getPickedDateAsString(year, month, day, dateFormat))
@@ -31,7 +33,7 @@ class DateUtility {
             ).show()
         }
 
-        fun getCalendar(inputDate:String,dateFormat:String): Calendar {
+        fun getCalendar(inputDate:String,dateFormat:String): Calendar? {
             //return Calendar.getInstance()
             return if (inputDate.isEmpty())
                 Calendar.getInstance()
@@ -40,10 +42,16 @@ class DateUtility {
 
         }
 
-        private fun getLastPickedDateCalendar(inputDate:String, dateFormat:String): Calendar {
+        private fun getLastPickedDateCalendar(inputDate:String, dateFormat:String): Calendar? {
             val dateFormat = SimpleDateFormat(dateFormat)
             val calendar = Calendar.getInstance()
-            calendar.time = dateFormat.parse(inputDate)
+            try {
+                calendar.time = dateFormat.parse(inputDate)
+            } catch (e: ParseException) {
+                Log.e(TAG,""+e.message)
+                return null
+            }
+
             return calendar
         }
 

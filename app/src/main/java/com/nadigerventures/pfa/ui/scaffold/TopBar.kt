@@ -53,22 +53,9 @@ fun TopBar(screenConfig: ScreenConfig,
             },
 
             actions = {
-
+/*
                 if(screenConfig.enableDrawer &&
                    screenConfig.enableAction) {
-                    Icon(
-                        imageVector = Icons.Default.Sort,
-                        contentDescription = "Sort",
-
-                        // When clicked trigger onClick
-                        // Callback to trigger drawer open
-                        modifier = Modifier.
-                        clickable(onClick = onSortClicked)
-                            .wrapContentWidth(Alignment.Start),
-                        tint = MaterialTheme.colors.primary
-                    )
-
-                    Spacer(modifier = Modifier.width(7.dp))
                     Icon(
                         imageVector = Icons.Default.Email,
                         contentDescription = "Email",
@@ -80,20 +67,35 @@ fun TopBar(screenConfig: ScreenConfig,
                             .wrapContentWidth(Alignment.Start),
                         tint = MaterialTheme.colors.primary
                     )
-                    Spacer(modifier = Modifier.width(7.dp))
-
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "search",
-
-                        // When clicked trigger onClick
-                        // Callback to trigger drawer open
-                        modifier = Modifier.
-                        clickable(onClick = onSearchClicked)
-                            .wrapContentWidth(Alignment.Start),
-                        tint = MaterialTheme.colors.primary
-                    )
                 }
+
+ */
+                Spacer(modifier = Modifier.width(7.dp))
+                Icon(
+                    imageVector = Icons.Default.Sort,
+                    contentDescription = "Sort",
+
+                    // When clicked trigger onClick
+                    // Callback to trigger drawer open
+                    modifier = Modifier.
+                    clickable(onClick = onSortClicked)
+                        .wrapContentWidth(Alignment.Start),
+                    tint = MaterialTheme.colors.primary
+                )
+
+                Spacer(modifier = Modifier.width(7.dp))
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "search",
+
+                    // When clicked trigger onClick
+                    // Callback to trigger drawer open
+                    modifier = Modifier.
+                    clickable(onClick = onSearchClicked)
+                        .wrapContentWidth(Alignment.Start),
+                    tint = MaterialTheme.colors.primary
+                )
+
             },
             // background color of topAppBar
             backgroundColor = MaterialTheme.colors.background

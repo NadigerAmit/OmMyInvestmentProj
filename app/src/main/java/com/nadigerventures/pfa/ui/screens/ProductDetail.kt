@@ -44,21 +44,24 @@ var deletedRecord =  mutableStateOf(Product("",
     0.0f,0))
 private val TAG = "ProductDetail"
 val dateFormat = "yyyy-MM-dd"
+private var gTriggeringScreen:String = ""
 
 @Composable
 @UiThread
 fun ProductDetail(navController: NavHostController,
                   productViewModel: FinProductViewModel,
                   finHistoryViewModel: FinHistoryViewModel,
-                  accountNumber:String,padding: PaddingValues) {
-
+                  accountNumber:String,
+                  triggeringScreen:String ,padding: PaddingValues) {
+    gTriggeringScreen = triggeringScreen
+    Log.e(TAG,"triggeringScreen = $triggeringScreen")
     deleteRecord(showDialog =showDeleteAlertDialogGlobal.value,
         onDismiss ={},// {showDeleteAlertDialogGlobal.value = false },
         productViewModel,finHistoryViewModel,accountNumber,navController)
     if(deletedRecord.value.accountNumber == accountNumber) {
         addRecordToHistory(finHistoryViewModel)
     }
-    screenSetUpInProductDetail(productViewModel,accountNumber,navController,padding)
+    screenSetUpInProductDetail(productViewModel,accountNumber,navController,padding,triggeringScreen)
 }
 
 private fun addRecordToHistory(finHistoryViewModel: FinHistoryViewModel) {
@@ -111,7 +114,7 @@ private fun getListOPropertiesOfProduct(productDetail: Product): List<Pair<Strin
 fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
                        accountNumber:String,
                        navController: NavHostController,
-                       padding: PaddingValues)  {
+                       padding: PaddingValues, triggeringScreen:String)  {
 
     var productDetail:Product? = null
     productDetail =viewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
@@ -163,7 +166,7 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
                                 Text("Delete")
                             }
                             Button(onClick = {
-                                navController.navigate(NavRoutes.AddProduct.route + "/$accountNumber") {
+                                navController.navigate(NavRoutes.AddProduct.route + "/$accountNumber"+"/$triggeringScreen") {
                                     // Pop up to the start destination of the graph to
                                     // avoid building up a large stack of destinations
                                     // on the back stack as users select items
@@ -233,7 +236,7 @@ fun deleteRecord(showDialog: Boolean,
                         productViewModel.deleteFinProduct(accountNumber)
                         Toast.makeText(context, "Record with accNum : $accountNumber deleted" , Toast.LENGTH_LONG)
                             .show()
-                        navController.navigate(NavRoutes.Home.route)
+                        navController.navigate(NavRoutes.SearchProduct.route)
                         deletedRecord.value = rec!!
                         showDeleteAlertDialogGlobal.value = false
                     }
@@ -258,17 +261,35 @@ return rec
 }
 
 fun getScreenConfig4ProductDetail():ScreenConfig {
-  //  Log.e("ProductDetail","getScreenConfig4ProductDetail");
-    return ScreenConfig(
-        enableTopAppBar = true,
-        enableBottomAppBar = true,
-        enableDrawer = true,
-        enableFab = false,
-        screenOnBackPress = NavRoutes.Home.route,
-        enableAction = false,
-        topAppBarTitle = "Account Detail", bottomAppBarTitle = "",
-        fabString = "",
-    )
+    Log.e(TAG,"getScreenConfig4ProductDetail gTriggeringScreen  $gTriggeringScreen");
+    when(gTriggeringScreen) {
+
+        "SearchProduct"-> {
+            return ScreenConfig(
+                enableTopAppBar = true,
+                enableBottomAppBar = true,
+                enableDrawer = true,
+                enableFab = false,
+                screenOnBackPress = NavRoutes.SearchProduct.route,
+                enableAction = false,
+                topAppBarTitle = "Account Detail", bottomAppBarTitle = "",
+                fabString = "",
+            )
+        }
+        else -> {
+            return ScreenConfig(
+                enableTopAppBar = true,
+                enableBottomAppBar = true,
+                enableDrawer = true,
+                enableFab = false,
+                screenOnBackPress = NavRoutes.Home.route,
+                enableAction = false,
+                topAppBarTitle = "Account Detail", bottomAppBarTitle = "",
+                fabString = "",
+            )
+        }
+    }
+
 }
 
 @Composable

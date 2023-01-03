@@ -118,6 +118,11 @@ fun ScaffoldImpl(navController: NavHostController,
                         finProductViewModel.sortFinProductBasedOnNomineeName()
                     }
                 }
+                "Deposit Period"-> {
+                    if(finProductViewModel.allAccounts.value?.size!! > 0 ) {
+                        finProductViewModel.sortFinProductBasedOnDepositPeriod()
+                    }
+                }
             }
         }
     }
@@ -128,7 +133,8 @@ fun ScaffoldImpl(navController: NavHostController,
             "Investment Amount", "Investment Date",
             "Maturity Date","Maturity Amount",
             "Interest Rate",
-            "Nominee Name"
+            "Nominee Name",
+            "Deposit Period"
         )
         CustomSortingDialog(value = "",sortFieldList, setShowDialog = {
             showDialog.value = it

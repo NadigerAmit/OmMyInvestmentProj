@@ -37,7 +37,7 @@ class FinProductViewModel(application: Application): ViewModel() {
    private val TAG = "FinProductViewModel"
     var allAccounts: LiveData<List<Product>>
     private val repository: ProductRepository
-    val searchResults: MutableLiveData<List<Product>>
+    var searchResults: MutableLiveData<List<Product>>
     private val finProductStoreDao: ProductStoreDao
 
     init {
@@ -121,6 +121,12 @@ class FinProductViewModel(application: Application): ViewModel() {
         allAccounts = finProductStoreDao.allSortedByNomineeName()
         isSortingOrderChanged.value = true
     }
+
+    fun sortFinProductBasedOnDepositPeriod() {
+        allAccounts = finProductStoreDao.allSortedByDepositPeriod()
+        isSortingOrderChanged.value = true
+    }
+
 
     fun insertFinProduct(product: Product) {
         repository.insertProduct(product)
@@ -220,7 +226,14 @@ class FinProductViewModel(application: Application): ViewModel() {
     //
     fun findProductsHavingInvestmentAmount(investmentAmount: String,
                                             operation:String) {
-        val investmentAmountInInt = investmentAmount.toDouble()
+        var investmentAmountInInt:Double? = null
+        try{
+            investmentAmountInInt =  investmentAmount.toDouble()
+        } catch(e:NumberFormatException) {
+            Log.e(TAG,""+e.message)
+            repository.searchResults.value = null
+            return
+        }
        // Log.e("FinProductViewModel.kt","investmentAmountInString = $investmentAmount")
        // Log.e("FinProductViewModel.kt","investmentAmountInInt = $investmentAmountInInt")
         when(operation) {
@@ -247,9 +260,15 @@ class FinProductViewModel(application: Application): ViewModel() {
 
     fun findProductsHavingMaturityAmount(maturityAmount: String,
                                            operation:String) {
-        val maturityAmountInInt = maturityAmount.replace(",", "").toDouble()
-       // Log.e("FinProductViewModel.kt","investmentAmountInString = $maturityAmount")
-       // Log.e("FinProductViewModel.kt","investmentAmountInInt = $maturityAmountInInt")
+        var maturityAmountInInt:Double? = null
+        try{
+            maturityAmountInInt = maturityAmount.replace(",", "").toDouble()
+        } catch(e:NumberFormatException) {
+            Log.e(TAG,""+e.message)
+            repository.searchResults.value = null
+            return
+        }
+
         when(operation) {
             "=" -> {
                 repository.findProductsHavingMaturityAmount(maturityAmountInInt)
@@ -277,6 +296,10 @@ class FinProductViewModel(application: Application): ViewModel() {
         val maturityDateInCalendar = DateUtility.getCalendar(maturityDate,dateFormat)
         //Log.e("FinProductViewModel.kt","maturityDate = $maturityDate")
        // Log.e("FinProductViewModel.kt","maturityDateInCalendar = $maturityDateInCalendar")
+        if(maturityDateInCalendar == null){
+            repository.searchResults.value = null
+            return
+        }
         when(operation) {
             "=" -> {
                 repository.findProductsHavingMaturityDateEqualTo(maturityDateInCalendar)
@@ -302,6 +325,10 @@ class FinProductViewModel(application: Application): ViewModel() {
     fun findProductsHavingInvestmentDate(investmentDate: String,
                                        operation:String) {
         val investmentDateInCalendar = DateUtility.getCalendar(investmentDate,dateFormat)
+        if(investmentDateInCalendar == null){
+            repository.searchResults.value = null
+            return
+        }
         //Log.e("FinProductViewModel.kt","maturityDate = $maturityDate")
         // Log.e("FinProductViewModel.kt","maturityDateInCalendar = $maturityDateInCalendar")
         when(operation) {
@@ -330,40 +357,62 @@ class FinProductViewModel(application: Application): ViewModel() {
 
     fun findProductsHavingInterestRate(interestRate: String,
                                          operation:String) {
-        val interestRate = interestRate.toFloat()
-
+        var ir:Float? = null
+        try{
+            ir = interestRate.toFloat()
+        } catch(e:NumberFormatException) {
+            Log.e(TAG,""+e.message)
+            repository.searchResults.value = null
+            return
+        }
         when(operation) {
             "=" -> {
-                repository.findProductsHavingInterestRateEqualTo(interestRate)
+                repository.findProductsHavingInterestRateEqualTo(ir)
             }
             "!=" -> {
-                repository.findProductsHavingInterestRateNotEqualTo(interestRate)
+                repository.findProductsHavingInterestRateNotEqualTo(ir)
             }
             ">=" -> {
-                repository.findProductsHavingInterestRateGraterThanOrEqualTo(interestRate)
+                repository.findProductsHavingInterestRateGraterThanOrEqualTo(ir)
             }
             ">" -> {
-                repository.findProductsHavingInterestRateGraterThan(interestRate)
+                repository.findProductsHavingInterestRateGraterThan(ir)
             }
             "<" -> {
-                repository.findProductsHavingInterestRateLessThan(interestRate)
+                repository.findProductsHavingInterestRateLessThan(ir)
             }
             "<=" -> {
-                repository.findProductsHavingInterestRateLessThanOrEqualTo(interestRate)
+                repository.findProductsHavingInterestRateLessThanOrEqualTo(ir)
             }
         }
     }
 
-    private fun getDaysFromString(str:String):String {
+    private fun getDaysFromString(str:String):String? {
         var endIndex:Int = str.length-" Days".length
-
-        return str.subSequence(0,endIndex).toString()
+        var noOfDays:String? = null
+        try {
+            noOfDays = str.subSequence(0,endIndex).toString()
+        } catch(e:StringIndexOutOfBoundsException) {
+            Log.e(TAG,""+e.message)
+            return null
+        }
+        return noOfDays
     }
 
     fun findProductsHavingDepositPeriod(depositPeriod: String,
                                        operation:String) {
-
-        val depositPeriodInInt = getDaysFromString(depositPeriod).toInt()
+        var depositPeriodInInt:Int? = null
+        try {
+            depositPeriodInInt = getDaysFromString(depositPeriod)?.toInt()
+        } catch(e:NumberFormatException) {
+            Log.e(TAG,""+e.message)
+            repository.searchResults.value = null
+            return
+        }
+        if(depositPeriodInInt == null) {
+            repository.searchResults.value = null
+            return
+        }
        // Log.e("DepositPeriod","$depositPeriodInInt")
         when(operation) {
             "=" -> {

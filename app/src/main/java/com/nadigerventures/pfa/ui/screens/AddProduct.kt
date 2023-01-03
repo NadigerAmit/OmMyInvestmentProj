@@ -31,9 +31,9 @@ var isRecordInUpdateMode =  mutableStateOf(false)
 
 @Composable
 fun AddProduct(navController: NavHostController,viewModel: FinProductViewModel,padding: PaddingValues,
-    accountNumber:String = "") {
+    accountNumber:String = "",triggeringScreen:String= "") {
     //Log.i("AddProductScreen","Adding the product ")
-    screenSetUpInAddProductScreen(navController,viewModel,padding,accountNumber)
+    screenSetUpInAddProductScreen(navController,viewModel,padding,accountNumber,triggeringScreen)
 }
 
 fun getScreenConfig4AddProduct():ScreenConfig {
@@ -63,7 +63,7 @@ fun getScreenConfig4AddProduct():ScreenConfig {
 @Composable
 fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: FinProductViewModel,
                                   padding:PaddingValues,
-                                  accountNumber:String)  {
+                                  accountNumber:String,triggeringScreen:String)  {
 
 
     var product:Product? = null
@@ -225,7 +225,7 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                                         nomineeName
                                     )
                                 )
-                                navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber") {
+                                navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber"+"/$triggeringScreen") {
                                     // Pop up to the start destination of the graph to
                                     // avoid building up a large stack of destinations
                                     // on the back stack as users select items
