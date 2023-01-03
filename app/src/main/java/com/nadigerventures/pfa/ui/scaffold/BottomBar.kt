@@ -62,6 +62,7 @@ fun BottomBar(screenConfig:ScreenConfig,
     }
 
     val onBackArrowPressed  = {
+        Log.e(TAG,"screenConfig.screenOnBackPress  ${screenConfig.screenOnBackPress}")
         when(screenConfig.screenOnBackPress) {
             "ExitApp" -> {
                 handleHomeScreenExit(context)

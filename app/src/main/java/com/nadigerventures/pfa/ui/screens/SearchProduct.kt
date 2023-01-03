@@ -26,7 +26,7 @@ import java.util.*
 var searchByFieldValue = mutableStateOf("")
 var operationFieldValue = mutableStateOf("")
 var valueFieldValue = mutableStateOf("")
-
+private val TAG = "SearchProduct"
 
 data class SearchQuery(val searchByFieldValue: String,
                        val operationFieldValue: String,
@@ -90,10 +90,19 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
     var valueField by rememberSaveable { mutableStateOf("") }
     var totalInvestmentAmount = 0.0
     var totalMaturityAmount = 0.0
+    if(searchResults != null) {
+        for(i in searchResults) {
+            totalInvestmentAmount +=i.investmentAmount
+            totalMaturityAmount +=i.maturityAmount
+        }
+    }
 
-    for(i in searchResults) {
-        totalInvestmentAmount +=i.investmentAmount
-        totalMaturityAmount +=i.maturityAmount
+
+    if(searchByFieldValue.value != "" &&
+        operationFieldValue.value != "" &&
+        valueFieldValue.value != ""  ) {
+        Log.i(TAG,"Search triggerred again ")
+        search(viewModel)
     }
 /*
     val dataStorageManager = UnsecureDataStore.getLocalDataStoreManagerInstance()
@@ -106,13 +115,18 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
     } else {
         Log.e("SearchProduct","getSearchQuery is null")
     }
+
  */
-    var finalList:MutableList<Product> = searchResults.toMutableList()
-    finalList.add(
-        Product("00000000000",
-    "","","TotalInvestmentAmount",0.0, Calendar.getInstance(), Calendar.getInstance(),1.1,
-            0.0f,0)
-    )
+    var finalList:MutableList<Product>?= null
+    if(searchResults != null) {
+        finalList = searchResults!!.toMutableList()
+        finalList.add(
+            Product("00000000000",
+                "","","TotalInvestmentAmount",0.0, Calendar.getInstance(), Calendar.getInstance(),1.1,
+                0.0f,0)
+        )
+    }
+
 
     val searchFieldList = listOf("Account Number",
         "Financial Institution Name",
@@ -120,7 +134,7 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
         "Investment Amount", "Investment Date",
         "Maturity Date","Maturity Amount",
         "Interest Rate",
-        "Nominee Name"
+        "Nominee Name","Deposit Period"
     )
 
     Row(
@@ -144,7 +158,7 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
             operationFieldValue.value = operationField
             valueFieldValue.value = valueField
 
-            if(finalList.size>1) {
+            if(finalList !== null && finalList.size!!>1) {
                 TitleRow(head1 = " Fin Ins\n\n AccNum\n\n Product ",
                     head2 = " Dep.amount\n\n Mat.amount\n\n Int.Rte %",
                     head3 =" Dep.Date\n\n Mat.Date\n\n Investor")
@@ -190,7 +204,7 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
                                             )
                                         ) + "\n" +
                                         truncateString(product.investorName),
-                                navController, color,"ProductDetail"
+                                navController, color,"SearchProduct"
                             )
                         }
                     }
@@ -345,7 +359,7 @@ fun getScreenConfig4SearchScreen():ScreenConfig {
         enableBottomAppBar = true,
         enableDrawer = false,
         screenOnBackPress = NavRoutes.Home.route,
-        enableFab = true,
+        enableFab = false,
         enableAction = false,
         topAppBarTitle = "Search Investment", bottomAppBarTitle = "",
         fabString = "search",

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.*
 
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.R
 
 import androidx.compose.ui.Modifier
 
@@ -40,9 +41,7 @@ import com.nadigerventures.pfa.viewModel.FinHistoryViewModel
 import com.nadigerventures.pfa.viewModel.FinHistoryViewModelFactory
 import com.nadigerventures.pfa.viewModel.FinProductViewModel
 import com.nadigerventures.pfa.viewModel.FinProductViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+
 import kotlin.system.exitProcess
 
 @SuppressLint("StaticFieldLeak")
@@ -60,6 +59,7 @@ class MainActivity : ComponentActivity() {
             exitProcess(0)
         } else {
             Toast.makeText(this, "Press BACK again to exit", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, getString(R.string.app_exit_label), Toast.LENGTH_SHORT).show()
         }
         backPressed = System.currentTimeMillis()
     }
@@ -124,7 +124,7 @@ fun setupMainScreen(finish: () -> Unit) {
 
         val destination = currentBackStackEntryAsState?.destination?.route
             ?: "home"
-        //Log.i(TAG,"destination = $destination")
+        Log.i(TAG,"destination = $destination")
         if (destination == "home") {
             BackHandler { finish() }
         }
@@ -146,13 +146,13 @@ fun setupMainScreen(finish: () -> Unit) {
             "history" -> {
                 getScreenConfig4History()
             }
-            "addProduct/{id}" -> {
+            "addProduct/{id}/{id1}" -> {
                 getScreenConfig4AddProduct()
             }
             "searchProduct" -> {
                 getScreenConfig4SearchScreen()
             }
-            "productDetail/{id}" -> {
+            "productDetail/{id}/{id1}" -> {
                 getScreenConfig4ProductDetail()
             }
             "historyDetail/{id}" -> {

@@ -46,13 +46,13 @@ class ProductUpdate {
                 investmentAmount: Double =0.0, investmentDate: Calendar, maturityDate: Calendar,
                 maturityAmount: Double =1.1, interestRate: Float =1.1f, depositPeriod: Int=1,
                 nomineeName: String ="") {
-        this.accountNumber = accountNumber
+        this.accountNumber = accountNumber.trim()
 
-        this.financialInstitutionName = financialInstitutionName
+        this.financialInstitutionName = financialInstitutionName.trim()
 
-        this.productType = productType
+        this.productType = productType.trim()
 
-        this.investorName = investorName
+        this.investorName = investorName.trim()
 
         this.investmentAmount = investmentAmount
 
@@ -66,7 +66,7 @@ class ProductUpdate {
 
         this.depositPeriod = depositPeriod
 
-        this.nomineeName = nomineeName
+        this.nomineeName = nomineeName.trim()
 
     }
 }

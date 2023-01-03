@@ -56,18 +56,23 @@ class Product {
 
     constructor() {}
 
+    fun normalizeString(str:String):String {
+
+        return str
+    }
+
     constructor(accountNumber: String, financialInstitutionName: String,
                 productType:String,investorName: String,
                 investmentAmount: Double =0.0, investmentDate: Calendar, maturityDate: Calendar,
                 maturityAmount: Double =0.0, interestRate: Float =0.0f, depositPeriod: Int=1,
                 nomineeName: String ="") {
-        this.accountNumber = accountNumber
+        this.accountNumber = accountNumber.trim()
 
-        this.financialInstitutionName = financialInstitutionName
+        this.financialInstitutionName = financialInstitutionName.trim()
 
-        this.productType = productType
+        this.productType = productType.trim()
 
-        this.investorName = investorName
+        this.investorName = investorName.trim()
 
         this.investmentAmount = investmentAmount
 
@@ -81,7 +86,7 @@ class Product {
 
         this.depositPeriod = depositPeriod
 
-        this.nomineeName = nomineeName
+        this.nomineeName = nomineeName.trim()
         /*
         Log.i("Product","Product is added accountNumber = ${this.accountNumber}" +
                 " \n financialInstitutionName +  ${this.financialInstitutionName}" +

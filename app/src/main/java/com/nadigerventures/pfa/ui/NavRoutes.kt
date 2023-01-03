@@ -104,21 +104,24 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
             Faq(navController = navController,padding)
         }
 
-        composable(NavRoutes.AddProduct.route+ "/{id}" ) { navBackStack ->
+        composable(NavRoutes.AddProduct.route+ "/{id}"+ "/{id1}" ) { navBackStack ->
             val accountId = navBackStack.arguments?.getString("id")
+            val triggeringScreen = navBackStack.arguments?.getString("id1")
             AddProduct(navController = navController,
                 finProductViewModel,
-                padding, accountNumber = accountId!!)
+                padding, accountNumber = accountId!!,triggeringScreen = triggeringScreen!!)
         }
 
-        composable(NavRoutes.ProductDetail.route + "/{id}") { navBackStack ->
+        composable(NavRoutes.ProductDetail.route + "/{id}"+ "/{id1}") { navBackStack ->
             // Extracting the argument
             val accountId = navBackStack.arguments?.getString("id")
+            val triggeringScreen = navBackStack.arguments?.getString("id1")
            // Log.i("MainActvity", "In ScreenNavigation fun , accountId = $accountId ")
             ProductDetail(navController = navController,
                 finProductViewModel,
                 finHistoryViewModel,
-                accountNumber = accountId!!,padding)
+                accountNumber = accountId!!,
+                triggeringScreen = triggeringScreen!!,padding)
         }
 
         composable(NavRoutes.HistoryProductDetail.route + "/{id}") { navBackStack ->

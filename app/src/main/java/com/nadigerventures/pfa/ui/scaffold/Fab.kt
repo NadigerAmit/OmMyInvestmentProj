@@ -36,7 +36,8 @@ fun Fab(navController: NavHostController,
                 coroutineScope.launch {
                     if(screenConfig.fabString == "add") {
                         var accountNumber:String? = null
-                        navController.navigate(NavRoutes.AddProduct.route + "/$accountNumber") {
+                        val triggeringScreen = "home"
+                        navController.navigate(NavRoutes.AddProduct.route + "/$accountNumber"+"/$triggeringScreen") {
                             // Pop up to the start destination of the graph to
                             // avoid building up a large stack of destinations
                             // on the back stack as users select items
@@ -53,7 +54,7 @@ fun Fab(navController: NavHostController,
                         }
                     }
                     if(screenConfig.fabString == "search") {
-                        search(finProductViewModel)
+                      //  search(finProductViewModel)
                     }
                     if(screenConfig.fabString == "Clear all") {
                         showDeleteAllAlertDialogGlobal.value = true
