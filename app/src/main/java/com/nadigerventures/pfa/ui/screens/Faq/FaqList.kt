@@ -1,6 +1,7 @@
 package com.nadigerventures.pfa.ui.screens.Faq
 
-import com.nadigerventures.pfa.utility.nod
+import com.nadigerventures.pfa.ui.screens.fragment.nod
+
 
 val faqList = mutableSetOf<Pair<String,String>>()
 
@@ -71,7 +72,7 @@ fun gerFaqList(): List<Pair<String,String>> {
                 "to this app can be protected by password.\n"))
 
     faqList.add(Pair("${++questionNumber}. Can I change sorting order in home screen ?",
-        "Yes , Sorting can be changed based on any field. Remember default sorting order is : based on maturity date\n"))
+        "Yes , Sorting can be changed based on any field. Remember default sorting order is based on maturity date\n"))
 
     faqList.add(Pair("${++questionNumber}. Is advance notification in terms of days is configurable ?",
         "Default advance notification is 30 days .\n" +

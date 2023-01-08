@@ -37,7 +37,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 
 import com.nadigerventures.pfa.ui.NavRoutes
-import com.nadigerventures.pfa.ui.screens.searchByFieldValue
 
 
 private val TAG = "ProductDetail"
@@ -111,7 +110,7 @@ fun ProductRow(accountNumber:String,
                ThirdColumn: String,
                navController: NavHostController,
                textColor: Color = Color.Unspecified,
-               parentScreen:String,
+               triggeringScreen:String,
 ) {
 
     var cellBorderWidth:Dp = .4.dp
@@ -121,8 +120,8 @@ fun ProductRow(accountNumber:String,
             .fillMaxWidth()
             .padding(start = 3.dp,end = 3.dp, top = 0.dp, bottom = 0.dp)
             .clickable {
-                when(parentScreen) {
-                    "HistoryProductDetail" -> {
+                when(triggeringScreen) {
+                    "History" -> {
                         navController.navigate(NavRoutes.HistoryProductDetail.route + "/$accountNumber") {
                             navController.graph.startDestinationRoute?.let { route ->
                                 popUpTo(route) {
@@ -132,8 +131,8 @@ fun ProductRow(accountNumber:String,
                             launchSingleTop = true
                         }
                     }
-                    "ProductDetail" ->{
-                        navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber"+"/$parentScreen") {
+                    "Home" ->{
+                        navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber"+"/$triggeringScreen") {
                             // Pop up to the start destination of the graph to
                             // avoid building up a large stack of destinations
                             // on the back stack as users select items
@@ -150,7 +149,7 @@ fun ProductRow(accountNumber:String,
                         }
                     }
                     "SearchProduct" ->{
-                        navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber"+"/$parentScreen") {
+                        navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber"+"/$triggeringScreen") {
                             // Pop up to the start destination of the graph to
                             // avoid building up a large stack of destinations
                             // on the back stack as users select items

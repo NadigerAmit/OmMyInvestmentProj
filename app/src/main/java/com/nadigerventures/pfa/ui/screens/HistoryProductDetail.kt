@@ -23,9 +23,10 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import com.nadigerventures.pfa.room.Product
 import com.nadigerventures.pfa.ui.NavRoutes
+import com.nadigerventures.pfa.ui.screens.fragment.nod
 import com.nadigerventures.pfa.utility.DateUtility
 import com.nadigerventures.pfa.utility.getProductColor
-import com.nadigerventures.pfa.utility.nod
+
 import com.nadigerventures.pfa.viewModel.FinHistoryViewModel
 import com.nadigerventures.pfa.viewModel.FinProductViewModel
 import java.text.NumberFormat
@@ -275,6 +276,8 @@ fun getScreenConfig4HistoryProductDetail():ScreenConfig {
         enableTopAppBar = true,
         enableBottomAppBar = true,
         enableDrawer = true,
+        enableFilter = false,
+        enableSort= false,
         screenOnBackPress = NavRoutes.History.route,
         enableFab = false,
         topAppBarTitle = "History Detail", bottomAppBarTitle = "",

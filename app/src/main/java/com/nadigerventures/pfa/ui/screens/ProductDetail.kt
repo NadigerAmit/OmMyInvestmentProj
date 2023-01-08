@@ -25,11 +25,12 @@ import androidx.navigation.NavHostController
 
 import com.nadigerventures.pfa.room.Product
 import com.nadigerventures.pfa.ui.NavRoutes
+import com.nadigerventures.pfa.ui.screens.fragment.nod
 import com.nadigerventures.pfa.utility.DateUtility
 import com.nadigerventures.pfa.utility.DateUtility.Companion.getPeriodBetween2Dates
 import com.nadigerventures.pfa.utility.DateUtility.Companion.localDateToCalendar
 import com.nadigerventures.pfa.utility.getProductColor
-import com.nadigerventures.pfa.utility.nod
+
 import com.nadigerventures.pfa.viewModel.FinHistoryViewModel
 import com.nadigerventures.pfa.viewModel.FinProductViewModel
 import kotlinx.coroutines.GlobalScope
@@ -54,12 +55,13 @@ fun ProductDetail(navController: NavHostController,
                   accountNumber:String,
                   triggeringScreen:String ,padding: PaddingValues) {
     gTriggeringScreen = triggeringScreen
-    Log.e(TAG,"triggeringScreen = $triggeringScreen")
+    Log.e(TAG,"accountNumber  $accountNumber  triggeringScreen = $triggeringScreen")
     deleteRecord(showDialog =showDeleteAlertDialogGlobal.value,
         onDismiss ={},// {showDeleteAlertDialogGlobal.value = false },
         productViewModel,finHistoryViewModel,accountNumber,navController)
     if(deletedRecord.value.accountNumber == accountNumber) {
         addRecordToHistory(finHistoryViewModel)
+        isSearchQueryUpdated.value = true
     }
     screenSetUpInProductDetail(productViewModel,accountNumber,navController,padding,triggeringScreen)
 }
@@ -117,6 +119,7 @@ fun screenSetUpInProductDetail(viewModel: FinProductViewModel,
                        padding: PaddingValues, triggeringScreen:String)  {
 
     var productDetail:Product? = null
+    Log.e(TAG,"screenSetUpInProductDetail - $accountNumber")
     productDetail =viewModel.findProductBasedOnAccountNumberFromLocalCache(accountNumber)
     /*
     if(viewModel.searchResults.value == null || viewModel.searchResults.value!!.isEmpty()) {
@@ -236,7 +239,15 @@ fun deleteRecord(showDialog: Boolean,
                         productViewModel.deleteFinProduct(accountNumber)
                         Toast.makeText(context, "Record with accNum : $accountNumber deleted" , Toast.LENGTH_LONG)
                             .show()
-                        navController.navigate(NavRoutes.SearchProduct.route)
+                        when(gTriggeringScreen) {
+                            "SearchProduct"-> {
+                                navController.navigate(NavRoutes.SearchProduct.route)
+                            }
+                            else -> {
+                                navController.navigate(NavRoutes.Home.route)
+                            }
+                        }
+
                         deletedRecord.value = rec!!
                         showDeleteAlertDialogGlobal.value = false
                     }
@@ -248,7 +259,8 @@ fun deleteRecord(showDialog: Boolean,
                 onDismiss()
                 TextButton(onClick = {
                     showDeleteAlertDialogGlobal.value = false
-                    navController.navigate(NavRoutes.ProductDetail.route + "/$accountNumber")
+                    navController.navigate(NavRoutes.ProductDetail.route +
+                            "/$accountNumber"+"/$gTriggeringScreen")
                 })
                 { Text(text = "Cancel delete",
                 modifier = Modifier.padding(end = 20.dp)) }
@@ -272,6 +284,8 @@ fun getScreenConfig4ProductDetail():ScreenConfig {
                 enableFab = false,
                 screenOnBackPress = NavRoutes.SearchProduct.route,
                 enableAction = false,
+                enableFilter = false,
+                enableSort= false,
                 topAppBarTitle = "Account Detail", bottomAppBarTitle = "",
                 fabString = "",
             )
@@ -284,6 +298,8 @@ fun getScreenConfig4ProductDetail():ScreenConfig {
                 enableFab = false,
                 screenOnBackPress = NavRoutes.Home.route,
                 enableAction = false,
+                enableFilter = false,
+                enableSort= false,
                 topAppBarTitle = "Account Detail", bottomAppBarTitle = "",
                 fabString = "",
             )

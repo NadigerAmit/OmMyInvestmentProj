@@ -116,7 +116,7 @@ fun ScreenNavigation(navController: NavHostController, finProductViewModel: FinP
             // Extracting the argument
             val accountId = navBackStack.arguments?.getString("id")
             val triggeringScreen = navBackStack.arguments?.getString("id1")
-           // Log.i("MainActvity", "In ScreenNavigation fun , accountId = $accountId ")
+            Log.i("MainActvity", "In ScreenNavigation fun , accountId = $accountId ")
             ProductDetail(navController = navController,
                 finProductViewModel,
                 finHistoryViewModel,

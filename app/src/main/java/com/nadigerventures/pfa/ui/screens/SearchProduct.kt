@@ -1,22 +1,14 @@
 package com.nadigerventures.pfa.ui.screens
 
-import android.util.Log
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+
 import androidx.navigation.NavHostController
 import com.nadigerventures.pfa.room.Product
 import com.nadigerventures.pfa.ui.NavRoutes
+import com.nadigerventures.pfa.ui.screens.fragment.ProductListFragment
 import com.nadigerventures.pfa.utility.*
 import com.nadigerventures.pfa.viewModel.FinProductViewModel
 import java.text.NumberFormat
@@ -26,58 +18,8 @@ import java.util.*
 var searchByFieldValue = mutableStateOf("")
 var operationFieldValue = mutableStateOf("")
 var valueFieldValue = mutableStateOf("")
+var isSearchQueryUpdated = mutableStateOf(false)
 private val TAG = "SearchProduct"
-
-data class SearchQuery(val searchByFieldValue: String,
-                       val operationFieldValue: String,
-                       val valueFieldValue: String)
-
-/*
-
-fun getSearchQueryAsync( searchQueryLocal : Flow<SearchQuery>,dataStorageManager:UnsecureDataStore):SearchQuery? {
-    val coroutineScope = CoroutineScope(Dispatchers.Main)
-    //var TestTrple = dataStorageManager.getSearchDataFromDataStore()
-    var query1 :SearchQuery?=null
-    coroutineScope.launch  {
-        dataStorageManager.getSearchDataFromDataStore().catch {
-                exception ->
-            if (exception is IOException) {
-                emit(Triple("","",""))
-            } else {
-                throw exception
-            }
-        }.collect { value ->
-            query1 = SearchQuery(value.first,
-                value.second,
-                value.third)
-        }
-    }
-    return query1
-    //return query
-}
-
-
-fun getSearchQuerySync( searchQueryLocal : Flow<SearchQuery>,dataStorageManager:UnsecureDataStore):SearchQuery {
-  //  var TestTrple = dataStorageManager.getSearchDataFromDataStore()
-    var query :SearchQuery
-    var query1 :SearchQuery
-    runBlocking {
-        /*
-        query1 = SearchQuery(TestTrple.first().first,
-            TestTrple.first().second,
-            TestTrple.first().third)
-
-         */
-
-        query = SearchQuery(searchQueryLocal.first().searchByFieldValue,
-            searchQueryLocal.first().operationFieldValue,
-            searchQueryLocal.first().valueFieldValue)
-    }
-    //return query1
-    return query
-}
-
- */
 
 @Composable
 fun SearchProduct(navController: NavHostController,viewModel: FinProductViewModel,padding:PaddingValues) {
@@ -85,9 +27,6 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
 
     val allProducts by viewModel.allAccounts.observeAsState(listOf())
     val searchResults by viewModel.searchResults.observeAsState(listOf())
-    var searchByField by rememberSaveable { mutableStateOf("") }
-    var operationField by rememberSaveable { mutableStateOf("") }
-    var valueField by rememberSaveable { mutableStateOf("") }
     var totalInvestmentAmount = 0.0
     var totalMaturityAmount = 0.0
     if(searchResults != null) {
@@ -97,37 +36,15 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
         }
     }
 
-
     if(searchByFieldValue.value != "" &&
         operationFieldValue.value != "" &&
-        valueFieldValue.value != ""  ) {
-        Log.i(TAG,"Search triggerred again ")
+        valueFieldValue.value != "" &&
+        isSearchQueryUpdated.value
+    ) {
+        //Log.i(TAG,"Search triggerred again ")
         search(viewModel)
+        isSearchQueryUpdated.value = false
     }
-/*
-    val dataStorageManager = UnsecureDataStore.getLocalDataStoreManagerInstance()
-
-    val getSearchQuery = getSearchQuerySync(dataStorageManager.searchQueryLocal,dataStorageManager)
-    if(getSearchQuery !=null) {
-        Log.e("SearchProduct","getSearchQuery.searchByFieldValue = ${getSearchQuery.searchByFieldValue}")
-        Log.e("SearchProduct","getSearchQuery.operationFieldValue = ${getSearchQuery.operationFieldValue}")
-        Log.e("SearchProduct","getSearchQuery.valueFieldValue = ${getSearchQuery.valueFieldValue}")
-    } else {
-        Log.e("SearchProduct","getSearchQuery is null")
-    }
-
- */
-    var finalList:MutableList<Product>?= null
-    if(searchResults != null) {
-        finalList = searchResults!!.toMutableList()
-        finalList.add(
-            Product("00000000000",
-                "","","TotalInvestmentAmount",0.0, Calendar.getInstance(), Calendar.getInstance(),1.1,
-                0.0f,0)
-        )
-    }
-
-
     val searchFieldList = listOf("Account Number",
         "Financial Institution Name",
         "Product Type", "Investor Name",
@@ -137,81 +54,9 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
         "Nominee Name","Deposit Period"
     )
 
-    Row(
-        modifier = Modifier
-            .background(MaterialTheme.colors.background)
-            .fillMaxWidth()
-            .padding(5.dp)
-    ) {
-
-        Column(
-            horizontalAlignment = CenterHorizontally,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(padding)
-        ) {
-            searchByField = DropDownBox(searchFieldList,"Search by",280.dp,searchByFieldValue.value)
-            operationField = DropDownBox(getOperationList(searchByField),"Operation",150.dp,operationFieldValue.value)
-            valueField = DropDownBox(getValuesList(searchByField,allProducts),"Value",280.dp,valueFieldValue.value)
-
-            searchByFieldValue.value = searchByField
-            operationFieldValue.value = operationField
-            valueFieldValue.value = valueField
-
-            if(finalList !== null && finalList.size!!>1) {
-                TitleRow(head1 = " Fin Ins\n\n AccNum\n\n Product ",
-                    head2 = " Dep.amount\n\n Mat.amount\n\n Int.Rte %",
-                    head3 =" Dep.Date\n\n Mat.Date\n\n Investor")
-
-                LazyColumn(
-                    Modifier
-                        .fillMaxWidth()
-                        .border(width = 1.dp, color = Color.Black)
-                ) {
-
-                    items(finalList) { product ->
-                        var color: Color = getProductColor(product,nod.value.toInt())
-
-                        if(product.accountNumber == "00000000000"
-                            && totalInvestmentAmount != 0.0 ) {
-                            SummaryRow("\n   Σ InvestAmount\n\n"+
-                                    "  Σ MaturityAmount\n\n","\n  "+NumberFormat.getInstance().format(totalInvestmentAmount)
-                                    + "\n\n"+"  "+
-                                    NumberFormat.getInstance().format(totalMaturityAmount)+ "\n\n")
-                        } else {
-                            ProductRow(
-                                product.accountNumber,
-                                FirstColumn = truncateString(product.financialInstitutionName) + "\n" + truncateString(
-                                    product.accountNumber.toString()
-                                )
-                                        + "\n" + truncateString(product.productType),
-                                SecondColumn = truncateString(product.investmentAmount.toString()) + "\n" + truncateString(
-                                    NumberFormat.getInstance().format(product.maturityAmount)
-                                ) + "\n" +
-                                        truncateString(product.interestRate.toString()),
-                                ThirdColumn = truncateString(
-                                    DateUtility.getPickedDateAsString(
-                                        product.investmentDate.get(Calendar.YEAR),
-                                        product.investmentDate.get(Calendar.MONTH),
-                                        product.investmentDate.get(Calendar.DAY_OF_MONTH), dateFormat
-                                    )
-                                ) + "\n" +
-                                        truncateString(
-                                            DateUtility.getPickedDateAsString(
-                                                product.maturityDate.get(Calendar.YEAR),
-                                                product.maturityDate.get(Calendar.MONTH),
-                                                product.maturityDate.get(Calendar.DAY_OF_MONTH), dateFormat
-                                            )
-                                        ) + "\n" +
-                                        truncateString(product.investorName),
-                                navController, color,"SearchProduct"
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
+    ProductListFragment(navController,allProducts,searchResults,
+        totalInvestmentAmount,totalMaturityAmount,
+        padding,"SearchProduct",searchFieldList,)
 }
 
 fun search(viewModel: FinProductViewModel) {
@@ -357,11 +202,13 @@ fun getScreenConfig4SearchScreen():ScreenConfig {
     return ScreenConfig(
         enableTopAppBar = true,
         enableBottomAppBar = true,
-        enableDrawer = false,
+        enableDrawer = true,
         screenOnBackPress = NavRoutes.Home.route,
         enableFab = false,
         enableAction = false,
-        topAppBarTitle = "Search Investment", bottomAppBarTitle = "",
-        fabString = "search",
+        enableFilter = false,
+        enableSort= false,
+        topAppBarTitle = "Filter Investments", bottomAppBarTitle = "",
+        fabString = "Filter Investment",
     )
 }
