@@ -30,9 +30,10 @@ import com.nadigerventures.pfa.R
 import com.nadigerventures.pfa.securityProvider.DataStoreHolder
 import com.nadigerventures.pfa.ui.NavRoutes
 import com.nadigerventures.pfa.ui.screens.*
+import com.nadigerventures.pfa.ui.screens.fragment.nod
 import com.nadigerventures.pfa.utility.CustomTextField
 import com.nadigerventures.pfa.utility.DataStoreConst
-import com.nadigerventures.pfa.utility.nod
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -246,6 +247,8 @@ fun getScreenConfig4NotificationSetting(): ScreenConfig {
         enableFab = false,
         screenOnBackPress = NavRoutes.Setting.route,
         topAppBarStartPadding =0.dp,
+        enableFilter = false,
+        enableSort= false,
         topAppBarTitle = "Notification Settings", bottomAppBarTitle = "",
         fabString = "",
         fabColor = Color.Red

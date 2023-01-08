@@ -8,9 +8,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.nadigerventures.pfa.securityProvider.DataStoreHolder
 import com.nadigerventures.pfa.ui.NavRoutes
+import com.nadigerventures.pfa.ui.screens.fragment.ProductListFragment
+import com.nadigerventures.pfa.ui.screens.fragment.nod
 import com.nadigerventures.pfa.utility.DataStoreConst
-import com.nadigerventures.pfa.utility.ProductListScreen
-import com.nadigerventures.pfa.utility.nod
 import com.nadigerventures.pfa.viewModel.FinHistoryViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -35,16 +35,29 @@ fun History(navController: NavHostController, viewModel: FinHistoryViewModel, pa
         "GuideToDeleteAllItemsFromHistory",
       //  "ImageToDeleteAllItemsFromHistory"
     )
+    var totalInvestmentAmount = 0.0
+    var totalMaturityAmount = 0.0
 
-    ProductListScreen(
+    if(allProducts.isNotEmpty()) {
+        for(i in allProducts) {
+            totalInvestmentAmount +=i.investmentAmount
+            totalMaturityAmount +=i.maturityAmount
+        }
+    } else {
+        HomeDisplaySettingFragment(displayItemListOfBlankHistory)
+    }
+
+    ProductListFragment(
         navController,
         allProducts = allProducts,
-        // searchResults = searchResults,
-        padding,"HistoryProductDetail",
-        displayItemListOfBlankHistory,
+        null,
+        totalInvestmentAmount,
+        totalMaturityAmount,
+        padding,
+        "History",
+        null,
         advanceNotifyDays
     )
-
 }
 
 fun getScreenConfig4History():ScreenConfig = //Log.e("Home screen","getScreenConfig4Home");
@@ -54,6 +67,8 @@ fun getScreenConfig4History():ScreenConfig = //Log.e("Home screen","getScreenCon
         enableDrawer = true,
         screenOnBackPress = NavRoutes.Home.route,
         enableFab = true,
+        enableFilter = false,
+        enableSort= false,
         topAppBarStartPadding = 20.dp,
         topAppBarTitle = "Recycle Bin", bottomAppBarTitle = "",
         fabString = "Clear all",

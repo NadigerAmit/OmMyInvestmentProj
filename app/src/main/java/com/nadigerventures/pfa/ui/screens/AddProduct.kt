@@ -25,36 +25,57 @@ import com.nadigerventures.pfa.utility.CustomTextField
 import com.nadigerventures.pfa.utility.DateUtility
 import com.nadigerventures.pfa.utility.DateUtility.Companion.getNumberOfDaysBetweenTwoDays
 import com.nadigerventures.pfa.viewModel.FinProductViewModel
+import java.text.NumberFormat
 import java.util.*
 
 var isRecordInUpdateMode =  mutableStateOf(false)
+private val TAG = "AddProduct"
+var addProductTriggeringScreen: String = "Home"
 
 @Composable
 fun AddProduct(navController: NavHostController,viewModel: FinProductViewModel,padding: PaddingValues,
     accountNumber:String = "",triggeringScreen:String= "") {
     //Log.i("AddProductScreen","Adding the product ")
+    addProductTriggeringScreen = triggeringScreen
     screenSetUpInAddProductScreen(navController,viewModel,padding,accountNumber,triggeringScreen)
 }
 
 fun getScreenConfig4AddProduct():ScreenConfig {
     //Log.i("AddProduct","getScreenConfig4AddProduct");
+    var screenOnBackPress:String
+    var topBarTitle:String
     if(!isRecordInUpdateMode.value) {
-        return ScreenConfig(
-            enableTopAppBar = true,
-            enableBottomAppBar = true,
-            enableDrawer = true,
-            screenOnBackPress = NavRoutes.Home.route,
-            enableFab = false,
-            topAppBarTitle = "Add Investment", bottomAppBarTitle = "",
-            fabString = "",
-        )
+        when(addProductTriggeringScreen) {
+            "SearchProduct" -> {
+                screenOnBackPress = NavRoutes.SearchProduct.route
+                topBarTitle =  "Add Investment"
+            } else -> {
+                screenOnBackPress = NavRoutes.Home.route
+                topBarTitle =  "Add Investment"
+
+            }
+        }
+    } else {
+        when(addProductTriggeringScreen) {
+            "SearchProduct" -> {
+                screenOnBackPress = NavRoutes.SearchProduct.route
+                topBarTitle = "Update Investment"
+            } else -> {
+                screenOnBackPress = NavRoutes.Home.route
+                topBarTitle = "Update Investment"
+            }
+        }
     }
+
     return ScreenConfig(
         enableTopAppBar = true,
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
-        topAppBarTitle = "Update Investment", bottomAppBarTitle = "",
+        enableFilter = false,
+        screenOnBackPress = screenOnBackPress,
+        enableSort= false,
+        topAppBarTitle = topBarTitle, bottomAppBarTitle = "",
         fabString = "",
     )
 }
@@ -124,6 +145,7 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
     val onNomineeNameTextChange = { text : String ->
         nomineeName = text
     }
+  //  Log.e(TAG,"triggeringScreen = $triggeringScreen")
 
     if(product !=null) {
         LaunchedEffect(Unit) {
@@ -176,6 +198,7 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
             when(items.first) {
                 "Save" -> {
                     Button(onClick = {
+                        isSearchQueryUpdated.value = true
                         fun validateInputs():Boolean {
                             //Log.i("AddProduct","In validateInputs ")
                             if(!validateAccountNumber(accountNumber,context) ||
@@ -209,7 +232,7 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                                     )
                                 )
                             } else {
-                                //Log.i("AddProduct","Updating the existing product  ")
+                                Log.i("AddProduct","Updating the existing product accountNumber = $accountNumber ")
                                 viewModel.updateFinProduct(
                                     ProductUpdate(
                                         accountNumber,
@@ -238,7 +261,7 @@ fun screenSetUpInAddProductScreen(navController: NavHostController,viewModel: Fi
                                     // reselecting the same item
                                     launchSingleTop = true
                                     // Restore state when reselecting a previously selected item
-                                    restoreState = true
+                                    //restoreState = true
                                 }
                             }
                             isRecordInUpdateMode.value = false

@@ -140,6 +140,8 @@ fun getScreenConfig4TCAndPrivacy(): ScreenConfig = //Log.e("HomeScvreen","getScr
         enableDrawer = true,
         screenOnBackPress = NavRoutes.Home.route,
         enableFab = false,
+        enableFilter = false,
+        enableSort= false,
         topAppBarStartPadding = 20.dp,
         topAppBarTitle = "Privacy Policy", bottomAppBarTitle = "",
         fabString = "",

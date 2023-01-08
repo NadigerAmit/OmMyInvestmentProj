@@ -115,6 +115,8 @@ fun setupMainScreen(finish: () -> Unit) {
                 enableBottomAppBar = true,
                 enableDrawer = true,
                 enableFab = true,
+                enableFilter = false,
+                enableSort = false,
                 screenOnBackPress = "Home",
                 topAppBarTitle = "",
                 bottomAppBarTitle = "",

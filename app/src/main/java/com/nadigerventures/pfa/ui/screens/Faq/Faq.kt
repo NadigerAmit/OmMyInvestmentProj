@@ -123,6 +123,8 @@ fun getScreenConfig4Faq(): ScreenConfig {
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
+        enableFilter = false,
+        enableSort= false,
         screenOnBackPress = NavRoutes.Home.route,
         topAppBarTitle = "FAQ", bottomAppBarTitle = "",
         fabString = "",

@@ -21,6 +21,8 @@ import androidx.navigation.NavHostController
 import com.nadigerventures.pfa.MainActivity
 import com.nadigerventures.pfa.room.Product
 import com.nadigerventures.pfa.securityProvider.DataStoreHolder
+import com.nadigerventures.pfa.ui.screens.fragment.ProductListFragment
+import com.nadigerventures.pfa.ui.screens.fragment.nod
 
 import com.nadigerventures.pfa.utility.*
 
@@ -62,28 +64,67 @@ fun Home(navController: NavHostController,viewModel: FinProductViewModel,padding
         "GuideToAddItems",
       //  "ImageToAddItems",
     )
+    var totalInvestmentAmount = 0.0
+    var totalMaturityAmount = 0.0
+
+    if(allProducts.isNotEmpty()) {
+        for(i in allProducts) {
+            totalInvestmentAmount +=i.investmentAmount
+            totalMaturityAmount +=i.maturityAmount
+        }
+    } else {
+        HomeDisplaySettingFragment(displayItemListOfBlankHome)
+    }
 
     if(isSortingOrderChanged.value) {
+        ProductListFragment(
+            navController,
+            allProducts = allProducts,
+            null,
+            totalInvestmentAmount,
+            totalMaturityAmount,
+            padding,
+            "Home",
+            null,
+            advanceNotifyDays
+        )
 
+/*
         ProductListScreen(
             navController,
             allProducts = allProducts,
             padding,
-            "ProductDetail",
+            "Home",
             displayItemListOfBlankHome,
             advanceNotifyDays
         )
+
+ */
         isSortingOrderChanged.value = false
     }
 
+    ProductListFragment(
+        navController,
+        allProducts = allProducts,
+        null,
+                totalInvestmentAmount,
+        totalMaturityAmount,
+        padding,
+        "Home",
+        null,
+        advanceNotifyDays
+    )
+/*
     ProductListScreen(
           navController,
         allProducts = allProducts,
         padding,
-         "ProductDetail",
+         "Home",
          displayItemListOfBlankHome,
          advanceNotifyDays
     )
+
+ */
 
     if(isNotificationTimerFired.value) {
         //Log.i(TAG," Home => isNotificationTimerFired.value is true ")
@@ -228,7 +269,10 @@ fun getScreenConfig4Home():ScreenConfig {
         enableFab = true,
         screenOnBackPress = "ExitApp",
         enableAction = true,
-        topAppBarTitle = "Investments", bottomAppBarTitle = "",
+        enableFilter = true,
+        enableSort= true,
+        topAppBarTitle = "My Investments",
+        bottomAppBarTitle = "",
         fabString = "add",
         fabColor = Color.Red
     )

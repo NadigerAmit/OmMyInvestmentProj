@@ -189,6 +189,8 @@ fun getScreenConfig4Setting(): ScreenConfig {
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
+        enableFilter = false,
+        enableSort= false,
         screenOnBackPress = NavRoutes.Home.route,
         topAppBarStartPadding = 40.dp,
         topAppBarTitle = "Settings", bottomAppBarTitle = "",

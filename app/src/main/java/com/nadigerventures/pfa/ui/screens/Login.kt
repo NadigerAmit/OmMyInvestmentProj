@@ -226,6 +226,8 @@ fun getScreenConfig4Login():ScreenConfig {
         screenOnBackPress = NavRoutes.Home.route,
         enableFab = false,
         enableAction = false,
+        enableFilter = false,
+        enableSort= false,
         topAppBarTitle = "", bottomAppBarTitle = "",
         fabString = "",
     )

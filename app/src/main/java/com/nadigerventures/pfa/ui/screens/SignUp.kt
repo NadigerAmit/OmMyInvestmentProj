@@ -222,6 +222,8 @@ fun getScreenConfig4SignUpScreen():ScreenConfig {
         enableDrawer = false,
         screenOnBackPress = NavRoutes.Home.route,
         enableFab = false,
+        enableFilter = false,
+        enableSort= false,
         topAppBarTitle = "User profile Setting",
         bottomAppBarTitle = "",
         fabString = "",

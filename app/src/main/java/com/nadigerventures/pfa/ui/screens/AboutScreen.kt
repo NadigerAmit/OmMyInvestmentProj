@@ -110,6 +110,8 @@ fun getScreenConfig4About():ScreenConfig {
         enableBottomAppBar = true,
         enableDrawer = true,
         enableFab = false,
+        enableFilter = false,
+        enableSort= false,
         screenOnBackPress = NavRoutes.Setting.route,
         topAppBarTitle = "About", bottomAppBarTitle = "",
         fabString = "",
