@@ -85,8 +85,7 @@ fun Home(navController: NavHostController,viewModel: FinProductViewModel,padding
             totalMaturityAmount,
             padding,
             "Home",
-            null,
-            advanceNotifyDays
+            null
         )
 
 /*
@@ -111,8 +110,7 @@ fun Home(navController: NavHostController,viewModel: FinProductViewModel,padding
         totalMaturityAmount,
         padding,
         "Home",
-        null,
-        advanceNotifyDays
+        null
     )
 /*
     ProductListScreen(

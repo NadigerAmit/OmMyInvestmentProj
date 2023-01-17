@@ -147,7 +147,7 @@ object KeyStoreProvider {
         try {
             val keyGenerator: KeyGenerator =
                 KeyGenerator.getInstance("AES") // <= Create symmetric key(MASTER) with one of default Java Providers.
-            Log.e(TAG, "generateDefaultSymmetricKey ")
+            //Log.e(TAG, "generateDefaultSymmetricKey ")
             return keyGenerator.generateKey()
         } catch (e: Exception) {
             when(e) {
@@ -167,7 +167,7 @@ object KeyStoreProvider {
     fun removeAndroidKeyStoreKey(alias: String?) {
         try {
             keyStore?.deleteEntry(alias)
-            Log.e(TAG, "removeAndroidKeyStoreKey ")
+           // Log.e(TAG, "removeAndroidKeyStoreKey ")
         } catch (e: Exception) {
             e.printStackTrace()
         }

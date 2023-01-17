@@ -112,7 +112,7 @@ fun getScreenConfig4About():ScreenConfig {
         enableFab = false,
         enableFilter = false,
         enableSort= false,
-        screenOnBackPress = NavRoutes.Setting.route,
+        screenOnBackPress = NavRoutes.Home.route,
         topAppBarTitle = "About", bottomAppBarTitle = "",
         fabString = "",
         fabColor = Color.Red

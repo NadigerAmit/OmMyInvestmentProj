@@ -1,8 +1,11 @@
 package com.nadigerventures.pfa.ui.screens.setting
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,11 +33,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
+import coil.Coil
+import coil.compose.rememberImagePainter
 import com.nadigerventures.pfa.room.Product
 import com.nadigerventures.pfa.securityProvider.DataStoreHolder
 import com.nadigerventures.pfa.ui.NavRoutes
 import com.nadigerventures.pfa.ui.screens.*
 import com.nadigerventures.pfa.utility.*
+import com.nadigerventures.pfa.utility.DataStoreConst.Companion.IS_PROFILE_IMAGE_AVAILABLE
+import com.nadigerventures.pfa.utility.DataStoreConst.Companion.PROFILE_IMAGE_URL
 import com.nadigerventures.pfa.utility.DateUtility.Companion.getCalendar
 import com.nadigerventures.pfa.viewModel.FinHistoryViewModel
 import com.nadigerventures.pfa.viewModel.FinProductViewModel
@@ -44,6 +51,34 @@ import java.util.*
 
 private val TAG = "UserProfileSetting"
 var showDeletePersonalDataAlertDialogGlobal =  mutableStateOf(false)
+var isShowImagePicker =  mutableStateOf(false)
+var isProfileImageAvailable =  mutableStateOf(false)
+
+val pickedImage = mutableStateOf<Uri?>(null)
+
+@Composable
+fun ImagePickerView(
+    modifier: Modifier = Modifier,
+    lastSelectedImage: Uri?,
+    onSelection: (Uri?) -> Unit
+) {
+    val galleryLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.GetContent()) {
+        onSelection(it)
+    }
+    Image(
+        modifier = modifier
+            .size(100.dp)
+            .clip(CircleShape)
+            .background(Color.LightGray)
+            .clickable {
+                galleryLauncher.launch("image/*")
+            },
+        painter = rememberImagePainter(lastSelectedImage),
+        contentDescription = "Profile Picture",
+        contentScale = ContentScale.Crop
+    )
+}
 
 @Composable
 fun UserProfileSetting(navController: NavHostController,
@@ -55,6 +90,7 @@ fun UserProfileSetting(navController: NavHostController,
 
     val dataStorageManager = DataStoreHolder.getDataStoreProvider(context,
         DataStoreConst.SECURE_DATASTORE,true)
+
     var isRegistrationComplete:Boolean? = null
     var fname:String? = null
     var dob:String? = null
@@ -68,6 +104,17 @@ fun UserProfileSetting(navController: NavHostController,
             fname = dataStorageManager.getString(DataStoreConst.FULL_NAME).first()
             dob = dataStorageManager.getString(DataStoreConst.DOB).first()
             isPasswdReq = dataStorageManager.getBool(DataStoreConst.IS_PASS_PROTECTION_REQ).first()
+            isProfileImageAvailable.value =
+                dataStorageManager.getBool(DataStoreConst.IS_PROFILE_IMAGE_AVAILABLE).first() == true
+            if(isProfileImageAvailable.value) {
+                if(dataStorageManager.getBool(DataStoreConst.PROFILE_IMAGE_URL).first()!=null) {
+                    try {
+                        pickedImage.value = Uri.parse(dataStorageManager.getString(DataStoreConst.PROFILE_IMAGE_URL).first()!!)
+                    } catch (e:Exception) {
+                        Log.e(TAG,"pickedImage.value exception caught "+e.message)
+                    }
+                }
+            }
             if(isPasswdReq == true) {
                 passwd = dataStorageManager.getString(DataStoreConst.PASSWORD).first()
                 ph1 = dataStorageManager.getString(DataStoreConst.PASSWORD_HINT1).first()
@@ -125,7 +172,31 @@ fun UserProfileSetting(navController: NavHostController,
         // Log.e(TAG,"onExistingPasswordConfirm => confirmPwd - $confirmPwd")
     }
 
+    val onImagePickerLaunched = { isImagePickerClicked : Boolean ->
+        isShowImagePicker.value = isImagePickerClicked
+        // Log.e(TAG,"onExistingPasswordConfirm => confirmPwd - $confirmPwd")
+    }
 
+    val onProfileImageUpdated = { onProfileImageUpdated : Boolean,uri:Uri? ->
+
+        runBlocking {
+            if(!isProfileImageAvailable.value && onProfileImageUpdated) {
+                Log.i(TAG,"onProfileImageUpdated is called " +
+                        "isProfileImageAvailable.value = ${isProfileImageAvailable.value} -")
+
+                isProfileImageAvailable.value = true
+                dataStorageManager.putBool(IS_PROFILE_IMAGE_AVAILABLE,isProfileImageAvailable.value)
+            }
+            if(uri !=null &&
+               pickedImage.value != uri) {
+                pickedImage.value = uri
+                Log.i(TAG,"onProfileImageUpdated is called " +
+                        "URI = ${ pickedImage.value} -")
+                dataStorageManager.putString(PROFILE_IMAGE_URL,uri.toString())
+            }
+
+        }
+    }
 
     val registerItemList = listOf(
         // Pair("Heading",Pair("") { _: String -> }),
@@ -188,22 +259,50 @@ fun UserProfileSetting(navController: NavHostController,
                 // .border(width = 1.dp, color = Color.LightGray)
             ) {
                 Box(
-                    modifier = Modifier.size(80.dp).clip(CircleShape).background(Color.White)
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(CircleShape)
+                        .background(Color.White)
+                        .clickable(onClick = { isShowImagePicker.value = !isShowImagePicker.value })
                 ) {
                     Spacer(modifier = Modifier.width(30.dp))
-                    Image(
-                        painter = painterResource(id = com.nadigerventures.pfa.R.drawable.ic_profile),
-                        contentDescription = "UserSetting",
-                        colorFilter = ColorFilter.tint(Color.Black),
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .height(80.dp)
-                            .width(80.dp)
-                    )
+                    Log.i(TAG,"isProfileImageAvailable.value = ${isProfileImageAvailable.value} -")
+
+                    if(isProfileImageAvailable.value &&
+                        pickedImage.value != null ) {
+                        val uri = pickedImage.value
+                        Coil.imageLoader(context).apply {
+                            Image(
+                                modifier = Modifier
+                                    .height(80.dp)
+                                    .width(80.dp)
+                                    // .clip(CircleShape)
+                                    .background(Color.LightGray),
+
+                                painter = rememberImagePainter(uri),
+                                contentDescription = "Profile Picture",
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                    } else {
+                        Image(
+                            painter = painterResource(id = com.nadigerventures.pfa.R.drawable.ic_profile),
+                            contentDescription = "Profile Picture",
+                            colorFilter = ColorFilter.tint(Color.Black),
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier
+                                .height(80.dp)
+                                .width(80.dp)
+                        )
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.width(30.dp))
+            if(isShowImagePicker.value) {
+                ImagePicker(onProfileImageUpdated)
+                Spacer(modifier = Modifier.width(30.dp))
+            }
             LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -249,7 +348,9 @@ fun UserProfileSetting(navController: NavHostController,
 
                             }
 
-                            Spacer(modifier = Modifier.width(40.dp).height(90.dp))
+                            Spacer(modifier = Modifier
+                                .width(40.dp)
+                                .height(90.dp))
                         }
                         "BirthDate"-> {
                             if(isPasswordProtectRequired) {
@@ -394,7 +495,9 @@ fun confirmPasswordScreen(fullName:String,existingPasswd:String,onPasswdConfirm:
     ) {
         Text(text = "Hello $fullName ", style = TextStyle(fontSize = 25.sp))
         Text(text = "Enter password to see/edit rest of details", style = TextStyle(fontSize = 18.sp))
-        Spacer(modifier = Modifier.width(40.dp).height(10.dp))
+        Spacer(modifier = Modifier
+            .width(40.dp)
+            .height(10.dp))
 
         CustomTextField(
             placeholder = "Enter current password",

@@ -56,7 +56,7 @@ fun SearchProduct(navController: NavHostController,viewModel: FinProductViewMode
 
     ProductListFragment(navController,allProducts,searchResults,
         totalInvestmentAmount,totalMaturityAmount,
-        padding,"SearchProduct",searchFieldList,)
+        padding,"SearchProduct",searchFieldList)
 }
 
 fun search(viewModel: FinProductViewModel) {

@@ -174,7 +174,7 @@ class SecureDataStore(val context:Context, dataStoreName:String): IDataStore {
     }
 
     override suspend fun removeKey(key: String,type:String) {
-        Log.i(TAG,"Key($key) is removed")
+       // Log.i(TAG,"Key($key) is removed")
         context.dataStore.edit {
             when(type) {
                 "Bool" -> {

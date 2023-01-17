@@ -37,14 +37,12 @@ fun ProductListFragment(
     padding: PaddingValues,
     triggeringScreen:String,
     searchFieldList:List<String>? = null,
-    advanceNotifyDays:Int = 30,
-
  ) {
 
     var searchByField by rememberSaveable { mutableStateOf("") }
     var operationField by rememberSaveable { mutableStateOf("") }
     var valueField by rememberSaveable { mutableStateOf("") }
-    Log.e(TAG,"Inside ProductListFragment ")
+   // Log.e(TAG,"Inside ProductListFragment ")
 
     var finalList:MutableList<Product>?= null
     finalList = when(triggeringScreen) {
@@ -115,7 +113,7 @@ fun ProductListFragment(
                             /*&& totalInvestmentAmount != 0.0*/
                              ) {
 
-                            Log.e(TAG,"Inside the summary row ")
+                           // Log.e(TAG,"Inside the summary row ")
                             SummaryRow(
                                 "\n  Σ Investments\n\n"+
                                         "  Σ InvestAmount\n\n"+
