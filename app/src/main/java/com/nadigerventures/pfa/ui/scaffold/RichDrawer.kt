@@ -1,5 +1,7 @@
 package com.nadigerventures.pfa.ui.scaffold
 
+import android.annotation.SuppressLint
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -20,12 +22,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -35,24 +39,44 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.currentBackStackEntryAsState
+import coil.compose.rememberImagePainter
 import com.nadigerventures.pfa.base.launchActivity
 import com.nadigerventures.pfa.securityProvider.DataStoreHolder
 import com.nadigerventures.pfa.ui.NavRoutes
 import com.nadigerventures.pfa.utility.DataStoreConst
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.nadigerventures.pfa.ui.screens.setting.isProfileImageAvailable
+import com.nadigerventures.pfa.ui.screens.setting.pickedImage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 private val TAG = "RichDrawer"
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navController: NavController) {
     val dataStorageManager = DataStoreHolder.getDataStoreProvider(
         LocalContext.current,
         DataStoreConst.SECURE_DATASTORE,true)
     var fname:String? = null
+    //scope.launch(Dispatchers.Main) {
     runBlocking {
         fname = dataStorageManager.getString(DataStoreConst.FULL_NAME).first()
+        if(!isProfileImageAvailable.value ||
+            pickedImage.value == null) {
+            isProfileImageAvailable.value =
+                dataStorageManager.getBool(DataStoreConst.IS_PROFILE_IMAGE_AVAILABLE).first() == true
+            if(isProfileImageAvailable.value) {
+                if(dataStorageManager.getBool(DataStoreConst.PROFILE_IMAGE_URL).first()!=null) {
+                    try {
+                        pickedImage.value = Uri.parse(dataStorageManager.getString(DataStoreConst.PROFILE_IMAGE_URL).first()!!)
+                    } catch (e:Exception) {
+                        Log.e(TAG,"pickedImage.value exception caught "+e.message)
+                    }
+                }
+            }
+        }
     }
 
     val settingItems = listOf(
@@ -82,22 +106,51 @@ fun RichDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navControlle
                 modifier = Modifier
                     .padding(5.dp)
             ) {
-                Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "ProfileUpdate",
-                    Modifier.height(90.dp).width(90.dp)
-                        // Modifier.fillMaxSize()
-                        .clickable {
-                            scope.launch {
-                                navController.navigate(NavRoutes.UserProfileSetting.route) {
-                                    navController.graph.startDestinationRoute?.let { route ->
-                                        popUpTo(route) {
-                                            saveState = true
+                if(isProfileImageAvailable.value &&
+                    pickedImage.value != null) {
+                    val uri = pickedImage.value
+                    Log.e(TAG,"Image url = $uri")
+                    Image(
+                        modifier = Modifier.height(90.dp).width(90.dp)
+                            .clip(CircleShape)
+                            .background(Color.LightGray).clickable {
+                                scope.launch {
+                                    navController.navigate(NavRoutes.UserProfileSetting.route) {
+                                        navController.graph.startDestinationRoute?.let { route ->
+                                            popUpTo(route) {
+                                                saveState = true
+                                            }
                                         }
+                                        launchSingleTop = true
                                     }
-                                    launchSingleTop = true
+                                    scaffoldState.drawerState.close()
                                 }
-                                scaffoldState.drawerState.close()
-                            }
-                        })
+                            },
+
+                        painter = rememberImagePainter(uri),
+                        contentDescription = "Profile Picture",
+                        contentScale = ContentScale.Crop
+                    )
+
+                } else {
+                    Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "ProfileUpdate",
+                        Modifier.height(90.dp).width(90.dp)
+                            // Modifier.fillMaxSize()
+                            .clickable {
+                                scope.launch {
+                                    navController.navigate(NavRoutes.UserProfileSetting.route) {
+                                        navController.graph.startDestinationRoute?.let { route ->
+                                            popUpTo(route) {
+                                                saveState = true
+                                            }
+                                        }
+                                        launchSingleTop = true
+                                    }
+                                    scaffoldState.drawerState.close()
+                                }
+                            })
+                }
+
                 Spacer(
                     modifier = Modifier
                         .height(4.dp)

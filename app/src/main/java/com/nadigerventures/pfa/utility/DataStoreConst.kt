@@ -7,6 +7,8 @@ class DataStoreConst {
         const val SEARCH_FIELD = "SEARCH_FIELD"
         const val OPERATION ="OPERATION"
         const val VALUE = "VALUE"
+        const val IS_PROFILE_IMAGE_AVAILABLE ="IS_PROFILE_IMAGE_AVAILABLE"
+        const val PROFILE_IMAGE_URL ="PROFILE_IMAGE_URL"
         const val FULL_NAME = "FULL_NAME"
         const val DOB = "DOB"
         const val IS_PASS_PROTECTION_REQ ="IS_PASS_PROTECTION_REQ"
@@ -20,5 +22,6 @@ class DataStoreConst {
         const val NOTIFICATION_DAYS = "NOTIFICATION_DAYS"
 
         const val IS_ON_BOARDING_COMPLETED ="IS_ON_BOARDING_COMPLETED"
+
     }
 }

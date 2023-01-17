@@ -55,8 +55,7 @@ fun History(navController: NavHostController, viewModel: FinHistoryViewModel, pa
         totalMaturityAmount,
         padding,
         "History",
-        null,
-        advanceNotifyDays
+        null
     )
 }
 
